@@ -1,12 +1,3 @@
----
-name: 공통 템플릿
-about: 작업할 내용을 간략하게 요약해 주세요.
-title: 'label: 작업할 내용'
-labels: ''
-assignees: ''
-
----
-
 ### 작업 개요
 - 
 
@@ -14,4 +5,4 @@ assignees: ''
 - 
 
 ### Todo list
--
+- [ ] ex) DTO 생성
