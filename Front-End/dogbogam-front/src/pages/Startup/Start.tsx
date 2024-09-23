@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import smallLogo from "../../assets/Startup/smallLogo.png";
 import dogDoctor from "../../assets/Startup/dogDoctor.png";
 import { Button } from "../../components/Button";
@@ -23,9 +23,9 @@ export const Start = () => {
       />
       <p className="text-sub-color">
         아직 가입을 안하셨다면?{" "}
-        <a href="/signup" className="font-semibold underline">
+        <Link className="font-semibold underline" to={"/signup"}>
           회원가입 하기
-        </a>
+        </Link>
       </p>
     </div>
   );
