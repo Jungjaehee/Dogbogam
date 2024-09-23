@@ -11,10 +11,10 @@ interface inputUserInfo {
   nickname: string;
 }
 
-interface SignupState {
-  inputUserInfo: inputUserInfo;
-  setInputUserInfo: (newInfo: Partial<inputUserInfo>) => void; // 부분적 업데이트를 허용
-}
+// interface SignupState {
+//   inputUserInfo: inputUserInfo;
+//   setInputUserInfo: (newInfo: Partial<inputUserInfo>) => void; // 부분적 업데이트를 허용
+// }
 
 export const Signup = () => {
   const navigate = useNavigate();
@@ -31,8 +31,8 @@ export const Signup = () => {
   //     setInputUserInfo: state.setInputUserInfo,
   //   })
   // );
-  const [message, setMessage] = useState("");
-  const [color, setColor] = useState("");
+  const [message /* setMessage */] = useState("");
+  const [color /* setColor */] = useState("");
 
   // 비밀번호 검증
   const checkPwd = (input: string) => {
@@ -52,15 +52,15 @@ export const Signup = () => {
     }
   };
 
-  const check = async (input: string) => {
-    // const checkResponse = await checkEmail(input);
-    // setMessage(checkResponse.responseMessage);
-    // if (checkResponse.responseCode === "E4003") {
-    //   setColor("text-main-color");
-    // } else {
-    //   setColor("text-red-500");
-    // }
-  };
+  // const check = async (input: string) => {
+  //   const checkResponse = await checkEmail(input);
+  //   setMessage(checkResponse.responseMessage);
+  //   if (checkResponse.responseCode === "E4003") {
+  //     setColor("text-main-color");
+  //   } else {
+  //     setColor("text-red-500");
+  //   }
+  // };
 
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col">
@@ -101,7 +101,7 @@ export const Signup = () => {
               maxLength={30}
               className="border rounded-lg px-4 py-3 w-full text-sm focus:border-blue-100 focus:outline-none"
               onChange={handleChange} // 상태 업데이트
-              onBlur={() => check(inputUserInfo.email)} // 포커스 아웃 시 check 함수 호출
+              // onBlur={() => check(inputUserInfo.email)} // 포커스 아웃 시 check 함수 호출
             />
             {message && <p className={`${color} text-sm`}>{message}</p>}
           </div>

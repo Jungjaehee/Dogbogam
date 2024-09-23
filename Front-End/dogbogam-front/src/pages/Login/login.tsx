@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TopBar } from "../../components/Topbar";
 import { useNavigate } from "react-router-dom";
-import useUserStore from "../../store/UseUserStore";
+// import useUserStore from "../../store/UseUserStore";
 import { Button } from "../../components/Button";
 
 interface Member {
@@ -11,12 +11,12 @@ interface Member {
 
 export const Login = () => {
   const navigate = useNavigate();
-  const setToken = useUserStore((state) => state.setToken);
-  const [member, setMember] = useState<Member>({
+  // const setToken = useUserStore((state) => state.setToken);
+  const [, /* member */ setMember] = useState<Member>({
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
+  const [error /* setError */] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

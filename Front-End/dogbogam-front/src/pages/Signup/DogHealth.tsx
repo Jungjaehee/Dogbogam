@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TopBar } from "../../components/Topbar";
 import { useNavigate } from "react-router-dom";
-import useUserStore from "../../store/UseUserStore";
+// import useUserStore from "../../store/UseUserStore";
 import { Button } from "../../components/Button";
 import eye from "../../assets/Signup/health/eye.png";
 import bone from "../../assets/Signup/health/bone.png";
@@ -19,7 +19,7 @@ interface Problem {
 
 export const DogHealth = () => {
   const navigate = useNavigate();
-  const setToken = useUserStore((state) => state.setToken);
+  // const setToken = useUserStore((state) => state.setToken);
   const [problemList, setProblemList] = useState<Problem[]>([]);
   const problemName = [
     { image: eye, name: "눈" },

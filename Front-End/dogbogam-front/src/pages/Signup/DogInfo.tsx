@@ -16,10 +16,10 @@ interface inputPetInfo {
   isNeutered: boolean;
 }
 
-interface SignupState {
-  inputPetInfo: inputPetInfo;
-  setInputPetInfo: (newInfo: Partial<inputPetInfo>) => void; // 부분적 업데이트를 허용
-}
+// interface SignupState {
+//   inputPetInfo: inputPetInfo;
+//   setInputPetInfo: (newInfo: Partial<inputPetInfo>) => void; // 부분적 업데이트를 허용
+// }
 
 export const DogInfo = () => {
   const navigate = useNavigate();
