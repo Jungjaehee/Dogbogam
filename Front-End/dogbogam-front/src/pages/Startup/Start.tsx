@@ -19,11 +19,11 @@ export const Start = () => {
       <Button
         text="로그인하기"
         bgColor="bg-sub-color"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/login")}
       />
       <p className="text-sub-color">
         아직 가입을 안하셨다면?{" "}
-        <a href="" className="font-semibold underline">
+        <a href="/signup" className="font-semibold underline">
           회원가입 하기
         </a>
       </p>
