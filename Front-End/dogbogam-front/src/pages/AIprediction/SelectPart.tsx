@@ -73,11 +73,7 @@ export const SelectPart = () => {
           ))}
         </div>
       </div>
-      <Button
-        onClick={() => next()}
-        text={"다음으로"}
-        bgColor={"bg-main-color"}
-      />
+      <Button onClick={() => next()} text={"확인"} bgColor={"bg-main-color"} />
     </div>
   );
 };
