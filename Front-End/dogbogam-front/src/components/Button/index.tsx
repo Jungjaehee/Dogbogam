@@ -1,11 +1,10 @@
 interface ButtonProps {
   text: string;
+  bgColor: string;
   onClick?: () => void;
 }
 
-export const Button = ({ text, onClick }: ButtonProps) => {
-  const bgColor = "bg-main-color";
-
+export const Button = ({ text, bgColor, onClick }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
