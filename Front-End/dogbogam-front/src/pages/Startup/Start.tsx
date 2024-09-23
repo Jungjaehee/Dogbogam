@@ -1,20 +1,32 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import smallLogo from "../../assets/Startup/smallLogo.png";
+import dogDoctor from "../../assets/Startup/dogDoctor.png";
+import { Button } from "../../components/Button";
 
 export const Start = () => {
   const navigate = useNavigate();
-  useEffect(() => {
-    setTimeout(() => {
-      navigate("/start", { replace: true });
-    }, 2000);
-  }, []);
 
   return (
-    <div className="h-full flex flex-col justify-center pt-6 px-4 text-center bg-white">
-      <div className="space-y-3 mb-16">
-        <p className="text-2xl font-semibold">회원가입 완료!</p>
-        <p className="font-medium">멍이냥의 회원이 되신 것을 환영해요</p>
+    <div className="h-full w-full flex flex-col justify-center px-4 text-center bg-main-color">
+      <div className="space-y-10 mb-5">
+        <div className="flex place-content-center">
+          <img src={smallLogo} alt="" className="w-1/3" />
+        </div>
+        <div className="flex place-content-center">
+          <img src={dogDoctor} alt="" className="w-5/6" />
+        </div>
       </div>
+      <Button
+        text="로그인하기"
+        bgColor="bg-sub-color"
+        onClick={() => navigate("/")}
+      />
+      <p className="text-sub-color">
+        아직 가입을 안하셨다면?{" "}
+        <a href="" className="font-semibold underline">
+          회원가입 하기
+        </a>
+      </p>
     </div>
   );
 };
