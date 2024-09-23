@@ -1,8 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import { Splash } from "./pages/Startup/Splash";
 import { Start } from "./pages/Startup/Start";
-import { Login } from "./pages/Login/login";
+import { Login } from "./pages/Login";
 import SignupPages from "./routes/SignupPages";
+import AIpredictionPages from "./routes/AIpredictionPages";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/start" element={<Start />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup/*" element={<SignupPages />} />
+          <Route path="/AI/*" element={<AIpredictionPages />} />
         </Routes>
       </div>
     </>
