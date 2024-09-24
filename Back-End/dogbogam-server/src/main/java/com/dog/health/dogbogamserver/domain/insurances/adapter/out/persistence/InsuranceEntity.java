@@ -15,31 +15,31 @@ public class InsuranceEntity {
     @Column(name = "insurance_id")
     private Long insuranceId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "company")
+    @Column(name = "company", nullable = false)
     private String company;
 
-    @Column(name = "min_age")
+    @Column(name = "min_age", nullable = false)
     private int minAge;
 
-    @Column(name = "max_age")
+    @Column(name = "max_age", nullable = false)
     private int maxAge;
 
-    @Column(name = "fee")
+    @Column(name = "fee", nullable = false)
     private int fee;
 
-    @Column(name = "limit")
+    @Column(name = "limit", nullable = false)
     private int limit;
 
-    @Column(name = "period")
+    @Column(name = "period", nullable = false)
     private String period;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "coverage_ratio")
+    @Column(name = "coverage_ratio", nullable = false)
     private String coverageRatio;
 
 }

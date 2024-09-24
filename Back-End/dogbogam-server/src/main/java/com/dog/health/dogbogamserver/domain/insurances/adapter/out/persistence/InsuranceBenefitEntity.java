@@ -16,9 +16,9 @@ public class InsuranceBenefitEntity {
     private Long insuranceBenefitId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "insurance_id")
+    @JoinColumn(name = "insurance_id", nullable = false)
     private InsuranceEntity insurance;
 
-    @Column(name = "benefit")
+    @Column(name = "benefit", nullable = false)
     private String benefit;
 }
