@@ -1,5 +1,5 @@
-import maleIcon from "../../../assets/MaleIcon.png";
-import femaleIcon from "../../../assets/FemaleIcon.png";
+import maleIcon from "../../../assets/MyPage/MaleIcon.png";
+import femaleIcon from "../../../assets/MyPage/FemaleIcon.png";
 
 // 성별에 따른 아이콘 컴포넌트
 const GenderIcon = ({ gender, className }: { gender: string; className?: string }) => {

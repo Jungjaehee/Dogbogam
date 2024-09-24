@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import AiDiagnosisIcon from "../../../../assets/AIDiagnosisIcon.png";
+import AiDiagnosisIcon from "../../../../assets/MyPage/AIDiagnosisIcon.png";
 
 const AIDiagnosisButton = () => {
   const navigate = useNavigate();
