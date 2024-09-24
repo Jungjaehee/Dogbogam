@@ -4,5 +4,5 @@ import com.dog.health.dogbogamserver.domain.insurances.domain.Insurance;
 import com.dog.health.dogbogamserver.domain.insurances.domain.InsuranceBenefit;
 
 public interface SearchInsurancePort {
-    InsuranceBenefit searchBenefit(String cond);
+    InsuranceBenefit findByBenefit(String Benefit);
 }
