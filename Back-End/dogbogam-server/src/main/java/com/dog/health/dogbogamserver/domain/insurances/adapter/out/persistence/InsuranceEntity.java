@@ -42,4 +42,10 @@ public class InsuranceEntity {
     @Column(name = "coverage_ratio", nullable = false)
     private String coverageRatio;
 
+    @Column(name = "s3_image_name")
+    private String s3ImageName;
+
+    @Column(name = "s3_image_url")
+    private String s3ImageUrl;
+
 }
