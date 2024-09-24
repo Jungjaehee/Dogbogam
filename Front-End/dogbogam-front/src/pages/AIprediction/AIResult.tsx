@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { TopBar } from "../../components/Topbar";
 import { useState } from "react";
@@ -25,8 +25,10 @@ interface Result {
 
 export const AIResult = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { Id } = location.state;
   const [result /* setResult */] = useState<Result>({
-    reportId: 0,
+    reportId: Id,
     dogId: 0,
     diagnosisDate: "",
     imageName: "",
