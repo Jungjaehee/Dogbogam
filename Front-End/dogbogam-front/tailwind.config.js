@@ -20,6 +20,7 @@ export default {
         "blue-100": "#0e6eff",
         "blue-200": "#005eed",
         "yellow-200": "#FCB200",
+        "blue-200":"#7660FF",
       },
     },
   },
