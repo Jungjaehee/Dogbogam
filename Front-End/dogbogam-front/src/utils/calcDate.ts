@@ -1,55 +1,37 @@
-import { format } from "date-fns";
-
-export const increment = (currentDate: Date) => {
-  const newDate = new Date(currentDate);
-  newDate.setMonth(newDate.getMonth() + 1);
-  return newDate;
+// 나이 계산 함수
+export const calAge = (birthDate: Date | null): number | null => {
+  if (!birthDate) return null;
+  const today = new Date();
+  const age = today.getFullYear() - birthDate.getFullYear();
+  return age-1;
 };
 
-export const decrement = (currentDate: Date) => {
-  const newDate = new Date(currentDate);
-  newDate.setMonth(newDate.getMonth() - 1);
-  return newDate;
+// 가입일 계산하는 함수
+export const calSignUpDate = (createdTime: Date | null): number | null => {
+  if (!createdTime) return null; 
+
+  const today = new Date(); 
+  const diffTime = today.getTime() - createdTime.getTime(); 
+  const diffDay = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  return diffDay;
 };
 
-export const getDate = (currentDate: Date) => {
-  const year = currentDate.getFullYear();
-  const month = currentDate.toLocaleString("default", { month: "long" });
-  return { year, month };
-};
+// 경과 시간 확인하는 함수
+export const calRelativeTime = (date: Date): string | null => {
+  const now = new Date();
+  const diffInMs = now.getTime() - date.getTime();
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24)); 
+  const diffInWeeks = Math.floor(diffInDays / 7); 
+  const diffInMonths = Math.floor(diffInWeeks / 4); 
 
-export const getRangeDate = (currentDate: Date) => {
-  const startDate = format(
-    new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
-    "yyyyMMdd"
-  );
-  const endDate = format(
-    new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0),
-    "yyyyMMdd"
-  ); // 해당 월의 마지막 날
-
-  return { startDate, endDate };
-};
-
-export const formatName = (bankName: string, accountNumber: string) => {
-  const formattedBankName = `${bankName.slice(0, 2)}`;
-  const formattedAccountNumber = `${accountNumber.slice(
-    0,
-    4
-  )}-${accountNumber.slice(4, 8)}-${accountNumber.slice(
-    8,
-    12
-  )}-${accountNumber.slice(12)}`;
-
-  return { formattedBankName, formattedAccountNumber };
-};
-
-export const formatDate = (date: string, time: string) => {
-  const formattedDate = `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(
-    6
-  )}`;
-  const formattedTime = `${time.slice(0, 2)}:${time.slice(2, 4)}:${time.slice(
-    4
-  )}`;
-  return { formattedDate, formattedTime };
+  if (diffInMonths >= 12) {
+    return "1년 전"
+  } else if (diffInMonths >= 1  && 12 > diffInMonths) {
+    return `${diffInMonths}달 전`;
+  } else if (diffInWeeks >= 1) {
+    return `${diffInWeeks}주 전`;
+  } else {
+    return `${diffInDays}일 전`;
+  }
 };
