@@ -35,7 +35,7 @@ export const Login = () => {
     // } catch (error) {
     //   console.error("로그인 실패:", error);
     // }
-    navigate("/main", { replace: true });
+    navigate("/home", { replace: true });
   };
 
   return (
