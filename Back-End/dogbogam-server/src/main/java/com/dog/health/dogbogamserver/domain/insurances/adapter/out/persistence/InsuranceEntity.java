@@ -30,8 +30,8 @@ public class InsuranceEntity {
     @Column(name = "fee", nullable = false)
     private int fee;
 
-    @Column(name = "limit", nullable = false)
-    private int limit;
+    @Column(name = "limit_fee", nullable = false)
+    private int limitFee;
 
     @Column(name = "period", nullable = false)
     private String period;

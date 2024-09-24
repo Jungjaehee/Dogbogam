@@ -1,8 +1,6 @@
 package com.dog.health.dogbogamserver.domain.insurances.adapter.out.persistence;
 
 import com.dog.health.dogbogamserver.domain.insurances.domain.Insurance;
-import com.dog.health.dogbogamserver.domain.insurances.domain.InsuranceBenefit;
-import jakarta.persistence.GeneratedValue;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +14,7 @@ public class InsuranceMapper {
                 entity.getMinAge(),
                 entity.getMaxAge(),
                 entity.getFee(),
-                entity.getLimit(),
+                entity.getLimitFee(),
                 entity.getPeriod(),
                 entity.getDescription(),
                 entity.getCoverageRatio()
