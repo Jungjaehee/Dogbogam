@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class DogEntity extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dog_id", nullable = false)
     private int dogId;
 
