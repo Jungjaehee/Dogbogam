@@ -17,7 +17,9 @@ public class InsuranceMapper {
                 entity.getLimitFee(),
                 entity.getPeriod(),
                 entity.getDescription(),
-                entity.getCoverageRatio()
+                entity.getCoverageRatio(),
+                entity.getS3ImageName(),
+                entity.getS3ImageUrl()
         );
     }
 
