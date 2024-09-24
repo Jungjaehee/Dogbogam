@@ -1,7 +1,9 @@
 package com.dog.health.dogbogamserver.domain.insurances.application.port.in;
 
+import com.dog.health.dogbogamserver.domain.insurances.domain.InsuranceBenefit;
+
 public interface SearchInsuranceUseCase {
 
-    void search(String benefit);
+    InsuranceBenefit search(String benefit);
 
 }
