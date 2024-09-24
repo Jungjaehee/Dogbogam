@@ -24,6 +24,7 @@ export default {
         "good-text": "#60BF81",
         "bad-text": "#FF0000",
         "warning-text": "#FF8A00",
+        "blue-200": "#7660FF",
       },
     },
   },
