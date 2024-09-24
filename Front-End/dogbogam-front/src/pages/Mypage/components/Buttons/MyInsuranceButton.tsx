@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import MyInsuranceIcon from "../../../../assets/MyInsuranceIcon.png";
+import MyInsuranceIcon from "../../../../assets/MyPage/MyInsuranceIcon.png";
 
 const MyInsuranceButton = () => {
   const navigate = useNavigate();

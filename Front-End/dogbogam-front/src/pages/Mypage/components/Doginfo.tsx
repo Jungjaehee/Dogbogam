@@ -1,6 +1,6 @@
 import { calAge } from "../../../utils/calcDate";
 import GenderIcon from "./GenderIcon";
-import UpdateIcon from "../../../assets/InfoUpdateIcon.png";
+import UpdateIcon from "../../../assets/MyPage/InfoUpdateIcon.png";
 
 interface Dog {
   dogId: number;

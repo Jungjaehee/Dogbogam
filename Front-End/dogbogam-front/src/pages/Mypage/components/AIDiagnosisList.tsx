@@ -1,5 +1,5 @@
 import AIDiagnosisItem from "./AIDiagnosisItem";
-import NonMedicalRecordIcon from "../../../assets/NonMedicalRecordIcon.png";
+import NonMedicalRecordIcon from "../../../assets/MyPage/NonMedicalRecordIcon.png";
 
 interface DiagnosisList {
   diagnosisArray: {
