@@ -22,16 +22,16 @@ public class InsuranceEntity {
     private String company;
 
     @Column(name = "min_age", nullable = false)
-    private int minAge;
+    private String minAge;
 
     @Column(name = "max_age", nullable = false)
-    private int maxAge;
+    private String maxAge;
 
     @Column(name = "fee", nullable = false)
-    private int fee;
+    private String fee;
 
     @Column(name = "limit_fee", nullable = false)
-    private int limitFee;
+    private String limitFee;
 
     @Column(name = "period", nullable = false)
     private String period;
