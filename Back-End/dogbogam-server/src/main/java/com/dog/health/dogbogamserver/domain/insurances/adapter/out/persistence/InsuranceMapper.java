@@ -8,15 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class InsuranceMapper {
 
-    public InsuranceBenefit toInsuranceBenefitDomain(InsuranceBenefitEntity entity){
-        return new InsuranceBenefit(
-                entity.getInsuranceBenefitId(),
-                toInsuranceDomain(entity.getInsurance()),
-                entity.getBenefit()
-        );
-    }
-
-    public Insurance toInsuranceDomain(InsuranceEntity entity){
+    public Insurance toDomain(InsuranceEntity entity){
         return new Insurance(
                 entity.getInsuranceId(),
                 entity.getName(),

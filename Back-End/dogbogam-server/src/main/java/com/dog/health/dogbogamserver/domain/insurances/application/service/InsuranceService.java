@@ -6,6 +6,8 @@ import com.dog.health.dogbogamserver.domain.insurances.domain.InsuranceBenefit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class InsuranceService implements SearchInsuranceUseCase {
@@ -13,11 +15,8 @@ public class InsuranceService implements SearchInsuranceUseCase {
     private final SearchInsurancePort insurancePort;
 
     @Override
-    public InsuranceBenefit search(String benefit) {
-
-        InsuranceBenefit insuranceBenefit = insurancePort.findByBenefit(benefit)
-                .orElseThrow(() -> new IllegalArgumentException("해당되는 보장 혜택이 존재하지 않습니다."));
-
-        return insuranceBenefit;
+    public List<InsuranceBenefit> search(String benefit) {
+        
+        return insurancePort.findByBenefit(benefit);
     }
 }
