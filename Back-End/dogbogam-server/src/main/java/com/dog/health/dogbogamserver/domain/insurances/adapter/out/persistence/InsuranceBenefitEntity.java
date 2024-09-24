@@ -1,6 +1,5 @@
 package com.dog.health.dogbogamserver.domain.insurances.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.insurances.domain.Insurance;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
