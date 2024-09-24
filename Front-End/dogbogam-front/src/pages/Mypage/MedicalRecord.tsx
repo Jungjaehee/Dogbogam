@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../assets/BackButton.png";
 import MedicalRecordList from "./components/MedicalRecordList";
-import RegistIcon from "../../assets/RegistIcon.png"; 
+
+// const dummyData: any[] = [];
 
 const dummyData = [
   {
@@ -46,10 +47,6 @@ const MedicalRecord = () => {
     navigate(-1);
   };
 
-  const ClickRegistButton = () => {
-    navigate("/regist-record"); 
-  };
-
   return (
     <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
       {/* 뒤로가기 버튼 */}
@@ -64,7 +61,7 @@ const MedicalRecord = () => {
 
       {/* 제목 */}
       <h1 className="text-xl text-gray-700 font-semibold mb-2">
-        의료 기록 관리
+        진료 기록
       </h1>
       <p className="text-gray-500 text-sm mb-2.5">
         반려견의 진료 기록을 확인하고 등록하세요.
@@ -72,23 +69,6 @@ const MedicalRecord = () => {
 
       {/* 진료 기록 리스트 */}
       <MedicalRecordList records={dummyData} />
-
-      {/* 진료 기록 등록 버튼 */}
-      <div className="flex justify-center mt-6">
-        <button
-          onClick={ClickRegistButton}
-          className="flex items-center space-x-2"
-        >
-          <img
-            src={RegistIcon}
-            alt="Add Medical Record Icon"
-            className="w-5 h-5"
-          />
-          <span className="text-gray-500 font-semibold text-sm">
-            진료 기록 등록
-          </span>
-        </button>
-      </div>
     </div>
   );
 };
