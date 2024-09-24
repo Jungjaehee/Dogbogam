@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class HealthProblemEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "health_problem_id", nullable = false)
     private Long healthProblemId;
 

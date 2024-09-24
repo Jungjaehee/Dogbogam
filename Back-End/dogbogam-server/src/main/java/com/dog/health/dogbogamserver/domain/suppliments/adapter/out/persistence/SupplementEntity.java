@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class SupplementEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "supplement_id", nullable = false)
     private Long supplementId;
 
