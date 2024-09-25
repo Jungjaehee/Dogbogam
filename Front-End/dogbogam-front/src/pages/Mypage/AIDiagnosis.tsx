@@ -5,23 +5,29 @@ import AIDiagnosisList from "./components/AIDiagnosisList";
 import DiagnosisFilter from "./components/DiagnosisFilter"; 
 
 const AIDiagnosis = () => {
+  
   // 더미 데이터
+
+  // 데이터 없을 때
+  // const dummyData: any[] = [];
+
+  // 데이터 있을 때
   const dummyData = [
     {
       reportId: 1,
       dogId: 101,
-      createdAt: "2023-09-10T10:00:00Z", 
+      createdAt: "2023-09-10T10:00:00Z",
       imageName: "eye_test.jpg",
-      imageUrl: null, 
-      normal: true, 
-      diagnosisItem: "눈 건강 검사", 
+      imageUrl: null,
+      normal: true,
+      diagnosisItem: "눈 건강 검사",
     },
     {
       reportId: 2,
       dogId: 102,
       createdAt: "2024-06-30T14:00:00Z",
       imageName: "skin_test.jpg",
-      imageUrl: null, 
+      imageUrl: null,
       normal: false,
       diagnosisItem: "피부병 진단",
     },
@@ -36,18 +42,17 @@ const AIDiagnosis = () => {
     },
   ];
 
-  const [filteredDiag, setFilteredDiag] = useState(dummyData); 
+  const [filteredDiag, setFilteredDiag] = useState(dummyData);
   const navigate = useNavigate();
 
   const ClickBackButton = () => {
     navigate(-1);
-  }
+  };
   // 필터 변경 함수
   const FilterChange = (filter: string) => {
     if (filter === "") {
-      setFilteredDiag(dummyData); 
+      setFilteredDiag(dummyData);
     } else {
-      
       const newFilteredDiag = dummyData.filter((item) =>
         item.diagnosisItem.includes(filter)
       );
@@ -59,9 +64,11 @@ const AIDiagnosis = () => {
     <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
       {/* 뒤로가기 버튼 */}
       <button>
-        <img 
-        src={BackButton} alt="Back Button" className="w-7 h-7 mb-2.5" 
-        onClick={ClickBackButton}
+        <img
+          src={BackButton}
+          alt="Back Button"
+          className="w-7 h-7 mb-2.5"
+          onClick={ClickBackButton}
         />
       </button>
 

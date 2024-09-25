@@ -43,7 +43,7 @@ const MedicalRecordList = ({ records }: MedicalRecordList) => {
             >
               <img
                 src={RegistIcon}
-                alt="Add Medical Record Icon"
+                alt="Add Icon"
                 className="w-5 h-5"
               />
               <span className="text-gray-500 font-semibold text-sm">

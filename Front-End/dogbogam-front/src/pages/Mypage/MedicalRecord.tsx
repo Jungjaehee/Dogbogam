@@ -2,8 +2,12 @@ import { useNavigate } from "react-router-dom";
 import BackButton from "../../assets/MyPage/BackButton.png";
 import MedicalRecordList from "./components/MedicalRecordList";
 
+// 더미 데이터
+
+// 데이터 없을 때
 // const dummyData: any[] = [];
 
+// 데이터 있을 때
 const dummyData = [
   {
     medicalRecordId: 1,
