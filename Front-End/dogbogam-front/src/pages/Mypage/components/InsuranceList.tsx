@@ -30,7 +30,7 @@ const InsuranceList = ({ insurances }: MyInsuranceList) => {
     const navigate = useNavigate();
 
     const ClickRegistButton = () => {
-      navigate("/regist-record");
+      navigate("/mypage/regist-insurance");
     };
 
   return (
@@ -75,7 +75,7 @@ const InsuranceList = ({ insurances }: MyInsuranceList) => {
             onClick={ClickRegistButton}
             className="w-3/4 bg-main-color text-gray-0 font-semibold py-2.5 px-10 rounded-lg shadow-md mt-[8vh]"
           >
-            마이 펫 보험 찾기
+            마이 펫 보험 등록 하기
           </button>
         </div>
       )}
