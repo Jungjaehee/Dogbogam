@@ -38,7 +38,7 @@ export const AIResult = () => {
     diseases: [],
   });
   const confirm = () => {
-    navigate("/main");
+    navigate("/home");
   };
 
   return (
