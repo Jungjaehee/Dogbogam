@@ -5,6 +5,7 @@ import MedicalRecord from "../pages/Mypage/MedicalRecord";
 import MyInsurance from "../pages/Mypage/MyInsurance";
 import UpdateInfo from "../pages/Mypage/UpdateInfo";
 import RegistMedicalReport from "../pages/Mypage/RegistMedicalReport";
+import RegistInsurance from "../pages/Mypage/RegistInsurance";
 
 const MyPages = () => {
     return (
@@ -19,6 +20,7 @@ const MyPages = () => {
           <Route path="my-insurance" element={<MyInsurance />} />
           <Route path="update" element={<UpdateInfo />} />
           <Route path="regist-record" element={<RegistMedicalReport />} />
+          <Route path="regist-insurance" element={<RegistInsurance />} />
         </Routes>
       </div>
     );
