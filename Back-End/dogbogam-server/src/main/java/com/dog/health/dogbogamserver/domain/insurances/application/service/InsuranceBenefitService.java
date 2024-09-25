@@ -4,12 +4,12 @@ import com.dog.health.dogbogamserver.domain.insurances.application.port.in.FindA
 import com.dog.health.dogbogamserver.domain.insurances.application.port.in.SearchInsuranceUseCase;
 import com.dog.health.dogbogamserver.domain.insurances.application.port.out.FindAllInsuranceBenefitPort;
 import com.dog.health.dogbogamserver.domain.insurances.application.port.out.SearchInsurancePort;
+import com.dog.health.dogbogamserver.domain.insurances.domain.InsuranceBenefit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +30,14 @@ public class InsuranceBenefitService implements SearchInsuranceUseCase, FindAllI
 
     @Override
     public List<String> findAllBenefits(){
-        return findAllInsuranceBenefitPort.findAllBenefits();
+
+        List<InsuranceBenefit> insuranceBenefits = findAllInsuranceBenefitPort.findAllBenefits();
+        Set<String> benefitSet = new HashSet<>(insuranceBenefits.size());
+
+        for(InsuranceBenefit benefit : insuranceBenefits){
+            benefitSet.add(benefit.getBenefit());
+        }
+
+        return new ArrayList<>(benefitSet);
     }
 }
