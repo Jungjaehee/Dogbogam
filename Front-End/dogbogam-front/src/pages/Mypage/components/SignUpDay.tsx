@@ -1,5 +1,5 @@
 import { calSignUpDate } from "../../../utils/calcDate"; 
-import calendarIcon from "../../../assets/CalendarIcon.png"; 
+import calendarIcon from "../../../assets/MyPage/CalendarIcon.png"; 
 
 const SignUpDay = ({ createdTime }: { createdTime: Date }) => {
     

@@ -1,6 +1,6 @@
 import MedicalRecordItem from "./MedicalRecordItem";
-import NonMedicalRecordIcon from "../../../assets/NonMedicalRecordIcon.png";
-import RegistIcon from "../../../assets/RegistIcon.png";
+import NonMedicalRecordIcon from "../../../assets/MyPage/NonMedicalRecordIcon.png";
+import RegistIcon from "../../../assets/MyPage/RegistIcon.png";
 import { useNavigate } from "react-router-dom";
 
 interface MedicalRecordList {

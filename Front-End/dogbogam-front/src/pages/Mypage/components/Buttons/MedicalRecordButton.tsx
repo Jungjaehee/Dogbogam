@@ -1,5 +1,5 @@
 
-import MedicalRecordIcon from "../../../../assets/MedicalRecordIcon.png";
+import MedicalRecordIcon from "../../../../assets/MyPage/MedicalRecordIcon.png";
 import { useNavigate } from "react-router-dom";
 
 const MedicalRecordButton = () => {

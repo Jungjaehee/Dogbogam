@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BackButton from "../../assets/BackButton.png";
+import BackButton from "../../assets/MyPage/BackButton.png";
 import AIDiagnosisList from "./components/AIDiagnosisList";
 import DiagnosisFilter from "./components/DiagnosisFilter"; 
 

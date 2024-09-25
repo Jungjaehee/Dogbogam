@@ -2,7 +2,7 @@ import DogInfo from "./components/Doginfo";
 import AIDiagnosisButton from "./components/Buttons/AIDiagnosisButton";
 import MyInsuranceButton from "./components/Buttons/MyInsuranceButton";
 import SignUpDay from "./components/SignUpDay";
-import imageUrl from "../../assets/saewooIcon.png";
+import imageUrl from "../../assets/MyPage/saewooIcon.png";
 import MedicalRecordButton from "./components/Buttons/MedicalRecordButton";
 import { useNavigate } from "react-router-dom";
 
