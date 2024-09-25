@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DogCard } from "./components/dogCard";
 import DogSelectModal from "./components/dogSelectModal";
@@ -81,7 +81,7 @@ export const Home = () => {
           </div>
         </div>
 
-        <div className="mb-7 p-5 w-50 h-35 bg-gray-400 rounded-lg shadow-md flex items-center justify-between">
+        <div className="mb-7 p-5 w-50 h-35 bg-gray-400 rounded-lg shadow-md flex items-center justify-between" onClick={() => {navigate("/home/map")}}>
           <img src={Left} className="w-3 h-4" />
           <img src={Hospital} className="w-25 h-20" />
           <p className="text-gray-0 text-lg font-semibold">

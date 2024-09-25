@@ -3,6 +3,7 @@ import { Home } from "../pages/Home/Home";
 import { Insurance } from "../pages/Product/Insurance";
 import { Supplement } from "../pages/Product/Supplement";
 import { FindBreed } from "../pages/Breed/FindBreed";
+import { Map } from "../pages/Map/Map";
 
 const HomePages = () => {
   return (
@@ -12,6 +13,7 @@ const HomePages = () => {
         <Route path="/insurance" element={<Insurance />} />
         <Route path="/supplement" element={<Supplement/>} />
         <Route path="/breed" element={<FindBreed/>} />
+        <Route path="/map" element={<Map/>} />
       </Routes>
     </div>
   );
