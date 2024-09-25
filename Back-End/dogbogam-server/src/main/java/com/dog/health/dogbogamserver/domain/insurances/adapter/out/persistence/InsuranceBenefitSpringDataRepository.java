@@ -13,8 +13,4 @@ public interface InsuranceBenefitSpringDataRepository extends JpaRepository<Insu
 
     @Query("SELECT ib.benefit FROM InsuranceBenefitEntity ib WHERE ib.insurance.insuranceId = :insuranceId")
     List<String> findBenefitByInsuranceId(Long insuranceId);
-
-
-
-    List<InsuranceBenefitEntity> findDistinctBenefitBy();
 }
