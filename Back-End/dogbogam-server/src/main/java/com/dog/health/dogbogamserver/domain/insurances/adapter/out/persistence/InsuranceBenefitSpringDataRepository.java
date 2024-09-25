@@ -1,5 +1,6 @@
 package com.dog.health.dogbogamserver.domain.insurances.adapter.out.persistence;
 
+import com.dog.health.dogbogamserver.domain.insurances.domain.InsuranceBenefit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,5 +16,5 @@ public interface InsuranceBenefitSpringDataRepository extends JpaRepository<Insu
 
 
 
-    List<String> findDistinctBenefitBy();
+    List<InsuranceBenefitEntity> findDistinctBenefitBy();
 }
