@@ -1,6 +1,6 @@
 package com.dog.health.dogbogamserver.domain.dogs.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.members.adapter.out.persistence.MemberEntity;
+import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberEntity;
 import com.dog.health.dogbogamserver.global.baseTimeEntity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "dog")
