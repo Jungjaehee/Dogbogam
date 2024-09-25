@@ -4,6 +4,7 @@ import com.dog.health.dogbogamserver.global.web.dto.response.ExceptionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -43,8 +44,9 @@ public class ApiExceptionHandler {
     }
 
     // 존재하지 않는 URL 또는 리소스를 요청할 때 발생하는 예외를 처리
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<ExceptionResponse> notFoundExceptionHandler(NoHandlerFoundException exception) {
+    @ExceptionHandler({NoHandlerFoundException.class,
+            ChangeSetPersister.NotFoundException.class})
+    public ResponseEntity<ExceptionResponse> notFoundExceptionHandler(Exception exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(buildResponse(HttpStatus.NOT_FOUND, exception.getMessage()));
