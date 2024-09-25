@@ -31,7 +31,7 @@ public class InsuranceBenefitPersistenceAdapter implements SearchInsurancePort, 
 
     @Override
     public List<InsuranceBenefit> findAllBenefits(){
-        return insuranceBenefitMapper.entityListToDomain(insuranceBenefitRepository.findAll());
+        return insuranceBenefitMapper.entityListToDomainList(insuranceBenefitRepository.findAll());
     }
 
 }
