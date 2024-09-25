@@ -27,7 +27,7 @@ const MedicalRecordItem = ({ record }: MedicalRecord) => {
 
   return (
     <div
-      className="p-4 bg-white rounded-lg shadow-md mb-4 cursor-pointer"
+      className="p-4 bg-white rounded-lg shadow-md mb-4 py-6 cursor-pointer"
       onClick={ClickRecord}
     >
       <div className="flex justify-between items-center">

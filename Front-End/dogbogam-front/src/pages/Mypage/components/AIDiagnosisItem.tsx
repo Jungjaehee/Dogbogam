@@ -35,7 +35,7 @@ const AIDiagnosisItem = ({ diagnosis }: AIDiagnosis) => {
 
   return (
     <div
-      className="p-4 bg-white rounded-lg shadow-md mb-4 flex items-center justify-between"
+      className="p-4 bg-white rounded-lg shadow-md mb-4 py-4 flex items-center justify-between"
       onClick={ClickDiagnosis}
     >
       {/* 진단 상태 */}
