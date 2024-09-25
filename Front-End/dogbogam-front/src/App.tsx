@@ -5,6 +5,7 @@ import { Start } from "./pages/Startup/Start";
 import { Login } from "./pages/Login";
 import SignupPages from "./routes/SignupPages";
 import AIpredictionPages from "./routes/AIpredictionPages";
+import MyPages from "./routes/MyPages";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup/*" element={<SignupPages />} />
           <Route path="/AI/*" element={<AIpredictionPages />} />
+          <Route path="/mypage/*" element={<MyPages />} />
         </Routes>
       </div>
     </>
