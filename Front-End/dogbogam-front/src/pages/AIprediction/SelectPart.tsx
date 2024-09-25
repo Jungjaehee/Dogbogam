@@ -36,7 +36,7 @@ export const SelectPart = () => {
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col justify-between">
       <div className="h-full flex flex-col">
-        <TopBar pre={"/main"} title={""} skip={""} />
+        <TopBar pre={"/home"} title={""} skip={""} />
         <div className="space-y-3">
           <p className="text-xl font-semibold">
             진단을 원하는 <span className="text-main-color">신체 부위</span>를{" "}
