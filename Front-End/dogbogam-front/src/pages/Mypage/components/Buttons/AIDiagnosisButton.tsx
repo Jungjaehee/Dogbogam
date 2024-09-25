@@ -9,7 +9,7 @@ const AIDiagnosisButton = () => {
       className="w-full bg-ai-button p-4 rounded-lg shadow-md flex flex-col items-center justify-center"
       onClick={() => navigate("ai-diagnosis")}
     >
-      <img src={AiDiagnosisIcon} alt="Calendar Icon" className="w-6 h-6 mr-2" />
+      <img src={AiDiagnosisIcon} alt="Calendar Icon" className="w-6 h-6 mb-1" />
       <span className="text-lg font-semibold text-gray-700">AI 진단 기록</span>
     </button>
   );

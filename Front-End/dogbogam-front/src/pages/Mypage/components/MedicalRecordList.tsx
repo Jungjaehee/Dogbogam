@@ -21,7 +21,7 @@ const MedicalRecordList = ({ records }: MedicalRecordList) => {
   const navigate = useNavigate();
 
   const ClickRegistButton = () => {
-    navigate("/regist-record");
+    navigate("/mypage/regist-record");
   };
 
   return (
