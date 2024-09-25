@@ -1,5 +1,6 @@
 package com.dog.health.dogbogamserver.domain.insurances.adapter.in.web;
 
+import com.dog.health.dogbogamserver.domain.insurances.application.port.in.FindAllInsuranceBenefitUseCase;
 import com.dog.health.dogbogamserver.domain.insurances.application.port.in.FindAllInsuranceUseCase;
 import com.dog.health.dogbogamserver.domain.insurances.application.port.in.SearchInsuranceUseCase;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
@@ -15,6 +16,7 @@ public class InsuranceController {
 
     private final SearchInsuranceUseCase searchInsuranceUseCase;
     private final FindAllInsuranceUseCase findAllInsuranceUseCase;
+    private final FindAllInsuranceBenefitUseCase findAllInsuranceBenefitUseCase;
 
     @GetMapping("/search")
     public SuccessResponse<?> searchInsurance(@RequestParam("benefit") final List<String> benefit){
@@ -22,8 +24,13 @@ public class InsuranceController {
     }
 
     @GetMapping
-    public SuccessResponse<?> findAllInsurance(){
+    public SuccessResponse<?> findAllInsurances(){
         return SuccessResponse.ok(findAllInsuranceUseCase.findAll());
+    }
+
+    @GetMapping("/benefit")
+    public SuccessResponse<?> findAllInsuranceBenefits(){
+        return SuccessResponse.ok(findAllInsuranceBenefitUseCase.findAllBenefits());
     }
 
 }
