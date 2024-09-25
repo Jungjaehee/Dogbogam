@@ -73,7 +73,7 @@ const MyPage = () => {
   };
 
   const ClickLogout = () => {
-    navigate("/login");
+    navigate("/");
   };
 
   return (
