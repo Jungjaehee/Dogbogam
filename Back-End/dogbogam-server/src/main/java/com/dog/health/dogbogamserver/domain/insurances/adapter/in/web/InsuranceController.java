@@ -17,7 +17,7 @@ public class InsuranceController {
     private final SearchInsuranceUseCase searchInsuranceUseCase;
 
     @GetMapping("/search")
-    public SuccessResponse<List<?>> searchInsurance(@RequestParam("benefit") final List<String> benefit){
+    public SuccessResponse<?> searchInsurance(@RequestParam("benefit") final List<String> benefit){
         return SuccessResponse.ok(searchInsuranceUseCase.search(benefit));
     }
 
