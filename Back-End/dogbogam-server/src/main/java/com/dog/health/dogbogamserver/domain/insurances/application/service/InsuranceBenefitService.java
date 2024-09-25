@@ -1,6 +1,5 @@
 package com.dog.health.dogbogamserver.domain.insurances.application.service;
 
-import com.dog.health.dogbogamserver.domain.insurances.application.port.in.FindAllInsuranceUseCase;
 import com.dog.health.dogbogamserver.domain.insurances.application.port.in.SearchInsuranceUseCase;
 import com.dog.health.dogbogamserver.domain.insurances.application.port.out.SearchInsurancePort;
 import lombok.RequiredArgsConstructor;
