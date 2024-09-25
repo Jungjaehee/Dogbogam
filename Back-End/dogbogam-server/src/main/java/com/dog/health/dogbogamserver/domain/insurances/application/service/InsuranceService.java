@@ -1,8 +1,8 @@
 package com.dog.health.dogbogamserver.domain.insurances.application.service;
 
-import com.dog.health.dogbogamserver.domain.insurances.application.port.in.SearchInsuranceUseCase;
-import com.dog.health.dogbogamserver.domain.insurances.application.port.out.SearchInsurancePort;
-import com.dog.health.dogbogamserver.domain.insurances.domain.Insurance;
+import com.dog.health.dogbogamserver.domain.insurances.application.port.in.FindAllInsuranceUseCase;
+
+import com.dog.health.dogbogamserver.domain.insurances.application.port.out.FindAllInsurancePort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,16 +13,13 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class InsuranceService implements SearchInsuranceUseCase {
+public class InsuranceService implements FindAllInsuranceUseCase {
 
-    private final SearchInsurancePort insurancePort;
+    private final FindAllInsurancePort findAllInsurancePort;
 
     @Override
-    public List<Map<String, Object>> search(List<String> benefit) {
-        log.info("Insurance search started : ", benefit.toString());
-        if(benefit.size() == 0)
-            throw new IllegalArgumentException("선택된 보장 혜택이 존재하지 않습니다.");
-
-        return insurancePort.findByBenefit(benefit);
+    public List<Map<String, Object>> findAll() {
+        return findAllInsurancePort.findAll();
     }
+
 }
