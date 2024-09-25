@@ -3,9 +3,7 @@ package com.dog.health.dogbogamserver.domain.insurances.adapter.out.persistence;
 import com.dog.health.dogbogamserver.domain.insurances.application.port.out.FindAllInsurancePort;
 import com.dog.health.dogbogamserver.domain.insurances.application.port.out.FindDetailInsurancePort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.*;
 
@@ -31,12 +29,12 @@ public class InsurancePersistenceAdapter implements FindAllInsurancePort, FindDe
 
     @Override
     public Map<String, Object> findByInsuranceId(Long insuranceId){
-        InsuranceEntity insurance = insuranceRepository.findById(insuranceId)
-                .orElseThrow(() -> new ChangeSetPersister.NotFoundException("요청한 보험이 존재하지 않습니다."));
+        insuranceRepository.findByInsuranceId(insuranceId)
+                .orElseThrow(() -> new IllegalArgumentException("요청한 보험이 존재하지 않습니다."));
 
-        List<InsuranceBenefitEntity> insuranceBenefits = insuranceBenefitRepository.findByInsuranceId(insuranceId);
+        List<InsuranceBenefitEntity> insuranceBenefits = insuranceBenefitRepository.findByInsurance_InsuranceId(insuranceId);
 
-        return insuranceBenefits.insuranceBenefitEntityToDomain(insuranceBenefits);
+        return insuranceBenefitMapper.insuranceBenefitEntityListToDomain(insuranceBenefits);
     }
 
 }
