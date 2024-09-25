@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface InsuranceBenefitSpringDataRepository extends JpaRepository<InsuranceBenefitEntity, Long> {
 
-    List<InsuranceBenefitEntity> findByBenefitContains(String benefit);
+    List<InsuranceBenefitEntity> findByBenefitIn(List<String> benefit);
 }

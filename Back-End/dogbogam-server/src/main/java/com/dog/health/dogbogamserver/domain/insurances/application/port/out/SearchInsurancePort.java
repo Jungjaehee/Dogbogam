@@ -6,5 +6,5 @@ import java.util.List;
 
 
 public interface SearchInsurancePort {
-    List<InsuranceBenefit> findByBenefit(String benefit);
+    List<InsuranceBenefit> findByBenefit(List<String> benefit);
 }

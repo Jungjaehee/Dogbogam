@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface SearchInsuranceUseCase {
 
-    List<InsuranceBenefit> search(String benefit);
+    List<InsuranceBenefit> search(List<String> benefit);
 
 }

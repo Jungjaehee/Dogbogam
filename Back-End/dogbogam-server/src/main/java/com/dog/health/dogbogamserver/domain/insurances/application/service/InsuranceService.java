@@ -15,7 +15,7 @@ public class InsuranceService implements SearchInsuranceUseCase {
     private final SearchInsurancePort insurancePort;
 
     @Override
-    public List<InsuranceBenefit> search(String benefit) {
+    public List<InsuranceBenefit> search(List<String> benefit) {
         
         return insurancePort.findByBenefit(benefit);
     }

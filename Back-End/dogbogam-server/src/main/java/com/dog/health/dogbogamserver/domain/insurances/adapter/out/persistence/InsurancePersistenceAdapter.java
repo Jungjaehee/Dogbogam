@@ -15,8 +15,8 @@ public class InsurancePersistenceAdapter implements SearchInsurancePort {
     private final InsuranceBenefitSpringDataRepository insuranceBenefitRepository;
 
     @Override
-    public List<InsuranceBenefit> findByBenefit(String benefit){
-        List<InsuranceBenefitEntity> insurances = insuranceBenefitRepository.findByBenefitContains(benefit);
+    public List<InsuranceBenefit> findByBenefit(List<String> benefit){
+        List<InsuranceBenefitEntity> insurances = insuranceBenefitRepository.findByBenefitIn(benefit);
 
         return insuranceBenefitMapper.entityListToDomainList(insurances);
     }
