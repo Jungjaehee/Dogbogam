@@ -1,4 +1,4 @@
-package com.dog.health.dogbogamserver.domain.members.domain;
+package com.dog.health.dogbogamserver.domain.member.domain;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,6 +1,6 @@
-package com.dog.health.dogbogamserver.domain.members.adapter.out.persistence;
+package com.dog.health.dogbogamserver.domain.member.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.members.domain.Member;
+import com.dog.health.dogbogamserver.domain.member.domain.Member;
 
 public class MemberMapper {
 

@@ -1,4 +1,4 @@
-package com.dog.health.dogbogamserver.domain.members.adapter.out.persistence;
+package com.dog.health.dogbogamserver.domain.member.adapter.out.persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
