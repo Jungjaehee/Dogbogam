@@ -39,4 +39,13 @@ public class InsuranceBenefitMapper {
         return insuranceInfo;
     }
 
+    public List<InsuranceBenefit> entityListToDomain(List<InsuranceBenefitEntity> entityList){
+        List<InsuranceBenefit> insuranceBenefitList = new ArrayList<>();
+        for (InsuranceBenefitEntity insuranceBenefitEntity : entityList){
+            insuranceBenefitList.add(entityToDomain(insuranceBenefitEntity));
+        }
+
+        return insuranceBenefitList;
+    }
+
 }
