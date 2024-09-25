@@ -41,7 +41,7 @@ public class InsuranceBenefitMapper {
             benefits.add(insuranceBenefitEntity.getBenefit());
         }
 
-        insuranceBenfitListDomain.put("benefits", new ArrayList<>());
+        insuranceBenfitListDomain.put("benefits",benefits);
 
         return insuranceBenfitListDomain;
     }
