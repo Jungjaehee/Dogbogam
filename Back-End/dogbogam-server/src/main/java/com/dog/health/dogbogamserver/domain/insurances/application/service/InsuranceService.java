@@ -2,7 +2,9 @@ package com.dog.health.dogbogamserver.domain.insurances.application.service;
 
 import com.dog.health.dogbogamserver.domain.insurances.application.port.in.FindAllInsuranceUseCase;
 
+import com.dog.health.dogbogamserver.domain.insurances.application.port.in.FindDetailInsuranceUseCase;
 import com.dog.health.dogbogamserver.domain.insurances.application.port.out.FindAllInsurancePort;
+import com.dog.health.dogbogamserver.domain.insurances.application.port.out.FindDetailInsurancePort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,8 +15,9 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class InsuranceService implements FindAllInsuranceUseCase {
+public class InsuranceService implements FindAllInsuranceUseCase, FindDetailInsuranceUseCase {
 
+    private final FindDetailInsurancePort findDetailInsurancePort;
     private final FindAllInsurancePort findAllInsurancePort;
 
     @Override
@@ -22,4 +25,8 @@ public class InsuranceService implements FindAllInsuranceUseCase {
         return findAllInsurancePort.findAll();
     }
 
+    @Override
+    public Map<String, Object> findDetailByInsuranceId(Long insuranceId){
+        return findDetailInsurancePort.findByInsuranceId(insuranceId);
+    }
 }

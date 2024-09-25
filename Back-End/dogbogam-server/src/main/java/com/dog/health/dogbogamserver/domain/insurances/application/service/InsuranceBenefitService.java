@@ -1,8 +1,6 @@
 package com.dog.health.dogbogamserver.domain.insurances.application.service;
 
-import com.dog.health.dogbogamserver.domain.insurances.application.port.in.FindDetailInsuranceUseCase;
 import com.dog.health.dogbogamserver.domain.insurances.application.port.in.SearchInsuranceUseCase;
-import com.dog.health.dogbogamserver.domain.insurances.application.port.out.FindDetailInsurancePort;
 import com.dog.health.dogbogamserver.domain.insurances.application.port.out.SearchInsurancePort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +12,8 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class InsuranceBenefitService implements SearchInsuranceUseCase, FindDetailInsuranceUseCase {
+public class InsuranceBenefitService implements SearchInsuranceUseCase {
 
-    private final FindDetailInsurancePort findDetailInsurancePort;
     private final SearchInsurancePort insurancePort;
 
     @Override
@@ -26,10 +23,5 @@ public class InsuranceBenefitService implements SearchInsuranceUseCase, FindDeta
             throw new IllegalArgumentException("선택된 보장 혜택이 존재하지 않습니다.");
 
         return insurancePort.findByBenefit(benefit);
-    }
-
-    @Override
-    public Map<String, Object> findDetailByInsuranceId(Long insuranceId){
-        return findDetailInsurancePort.findByInsuranceId(insuranceId);
     }
 }
