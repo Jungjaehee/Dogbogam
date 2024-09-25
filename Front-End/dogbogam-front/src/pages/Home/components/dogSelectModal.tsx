@@ -72,11 +72,11 @@ const DogSelectModal: React.FC<DogSelectModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 flex items-end justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 flex items-end justify-center bg-black bg-opacity-50 z-20"
       onClick={handleModalClick}
     >
       <div className="bg-white w-[360px] h-[50vh] p-4 rounded-t-3xl shadow-lg overflow-y-auto">
-        <div className="flex items-center grid place-items-center mb-10">
+        <div className="flex items-center place-items-center mb-10">
           <img src={ModalTop} className="max-w-11 max-h-5" />
         </div>
         <div className="flex items-center mb-6 cursor-pointer">
