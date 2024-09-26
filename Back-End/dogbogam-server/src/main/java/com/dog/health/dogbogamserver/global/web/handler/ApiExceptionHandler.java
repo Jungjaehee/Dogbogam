@@ -43,7 +43,7 @@ public class ApiExceptionHandler {
     }
 
     // 존재하지 않는 URL 또는 리소스를 요청할 때 발생하는 예외를 처리
-    @ExceptionHandler(NoHandlerFoundException.class)
+    @ExceptionHandler({NoHandlerFoundException.class})
     public ResponseEntity<ExceptionResponse> notFoundExceptionHandler(NoHandlerFoundException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
