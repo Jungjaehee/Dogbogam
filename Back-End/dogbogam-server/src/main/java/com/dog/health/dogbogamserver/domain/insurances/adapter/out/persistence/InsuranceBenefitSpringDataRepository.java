@@ -1,6 +1,5 @@
 package com.dog.health.dogbogamserver.domain.insurances.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.insurances.domain.InsuranceBenefit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,4 +12,6 @@ public interface InsuranceBenefitSpringDataRepository extends JpaRepository<Insu
 
     @Query("SELECT ib.benefit FROM InsuranceBenefitEntity ib WHERE ib.insurance.insuranceId = :insuranceId")
     List<String> findBenefitByInsuranceId(Long insuranceId);
+
+    List<InsuranceBenefitEntity> findByInsurance_InsuranceId(Long insuranceId);
 }

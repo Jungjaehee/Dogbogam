@@ -48,4 +48,19 @@ public class InsuranceBenefitMapper {
         return insuranceBenefitList;
     }
 
+    public Map<String, Object> insuranceBenefitEntityListToDomain(List<InsuranceBenefitEntity> entityList){
+
+        Map<String, Object> insuranceBenfitListDomain = new HashMap<>();
+        insuranceBenfitListDomain.put("insurance", insuranceMapper.toDomain(entityList.get(0).getInsurance()));
+
+        List<String> benefits = new ArrayList<>();
+        for (InsuranceBenefitEntity insuranceBenefitEntity : entityList){
+            benefits.add(insuranceBenefitEntity.getBenefit());
+        }
+
+        insuranceBenfitListDomain.put("benefits",benefits);
+
+        return insuranceBenfitListDomain;
+    }
+
 }
