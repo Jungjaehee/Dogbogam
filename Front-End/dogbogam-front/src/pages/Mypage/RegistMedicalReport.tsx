@@ -2,35 +2,7 @@ import { useState , useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../assets/MyPage/BackButton.png";
 import addPhotoIcon from "../../assets/MyPage/addPhotoIcon.png";
-
-// 병원 진료 기록 인터페이스
-interface MedicalRecord {
-  medicalRecordId?: number;
-  dogId: number;
-  date: string;
-  content?: string | null;
-  hospital: string;
-  imageName?: string | null;
-  imageUrl?: string | null;
-  createdAt: Date;
-  modifiedAt: Date | null;
-  medicalTime: string;
-}
-
-// 예방 접종 기록 인터페이스
-interface VaccinationRecord {
-  vaccinationRecordId?: number;
-  dogId: number;
-  date: string;
-  hospital: string;
-  vaccinationRound: number;
-  vaccinationTime: string;
-  content?: string | null;
-  imageName?: string | null;
-  imageUrl?: string | null;
-  createdAt: Date;
-  modifiedAt: Date | null;
-}
+import { MedicalRecord , VaccinationRecord } from "../../models/record.model";
 
 const RegistMedicalReport = () => {
   const navigate = useNavigate();
@@ -85,9 +57,8 @@ const RegistMedicalReport = () => {
   // 병원 진료 기록 상태
   const [medicalRecord, setMedicalRecord] = useState<MedicalRecord>({
     dogId: 1,
-    date: new Date().toISOString().slice(0, 10),
+    recordTime: new Date().toISOString().slice(0, 10),
     hospital: "",
-    medicalTime: "",
     content: null,
     imageName: null,
     imageUrl: null,
@@ -99,10 +70,9 @@ const RegistMedicalReport = () => {
   const [vaccinationRecord, setVaccinationRecord] = useState<VaccinationRecord>(
     {
       dogId: 1,
-      date: new Date().toISOString().slice(0, 10),
+      recordTime: new Date().toISOString().slice(0, 10),
       hospital: "",
       vaccinationRound: 1,
-      vaccinationTime: "",
       content: null,
       imageName: null,
       imageUrl: null,
@@ -263,8 +233,8 @@ const RegistMedicalReport = () => {
             required
             value={
               currentType === "병원 진료"
-                ? medicalRecord.date
-                : vaccinationRecord.date
+                ? medicalRecord.recordTime
+                : vaccinationRecord.recordTime
             }
             onChange={(e) => {
               if (currentType === "병원 진료") {
