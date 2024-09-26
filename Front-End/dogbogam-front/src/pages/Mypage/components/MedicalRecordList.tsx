@@ -2,22 +2,13 @@ import MedicalRecordItem from "./MedicalRecordItem";
 import NonMedicalRecordIcon from "../../../assets/MyPage/NonMedicalRecordIcon.png";
 import RegistIcon from "../../../assets/MyPage/RegistIcon.png";
 import { useNavigate } from "react-router-dom";
+import { MedicalRecord, VaccinationRecord } from "../../../models/record.model";
 
-interface MedicalRecordList {
-  records: {
-    medicalRecordId: number;
-    dogId: number;
-    date: string;
-    content: string | null;
-    hospital: string;
-    imageName?: string | null;
-    imageUrl?: string | null;
-    createdAt: Date;
-    modifiedAt: Date;
-  }[];
+interface MedicalRecordListProps {
+  records: (MedicalRecord | VaccinationRecord)[];
 }
 
-const MedicalRecordList = ({ records }: MedicalRecordList) => {
+const MedicalRecordList = ({ records }: MedicalRecordListProps) => {
   const navigate = useNavigate();
 
   const ClickRegistButton = () => {
@@ -27,13 +18,9 @@ const MedicalRecordList = ({ records }: MedicalRecordList) => {
   return (
     <div>
       {records.length > 0 ? (
-        // 진료 기록이 있을 때
         <>
-          {records.map((record) => (
-            <MedicalRecordItem
-              key={record.medicalRecordId.toString()}
-              record={record}
-            />
+          {records.map((record, index) => (
+            <MedicalRecordItem key={index} record={record} />
           ))}
           {/* 진료 기록 등록 버튼 */}
           <div className="flex justify-center mt-6">
@@ -41,11 +28,7 @@ const MedicalRecordList = ({ records }: MedicalRecordList) => {
               onClick={ClickRegistButton}
               className="flex items-center space-x-2"
             >
-              <img
-                src={RegistIcon}
-                alt="Add Icon"
-                className="w-5 h-5"
-              />
+              <img src={RegistIcon} alt="Add Icon" className="w-5 h-5" />
               <span className="text-gray-500 font-semibold text-sm">
                 진료 기록 등록
               </span>
@@ -53,7 +36,6 @@ const MedicalRecordList = ({ records }: MedicalRecordList) => {
           </div>
         </>
       ) : (
-        // 진료 기록이 없을 때
         <div className="flex flex-col items-center justify-center h-[calc(100vh-200px)]">
           <img
             src={NonMedicalRecordIcon}
