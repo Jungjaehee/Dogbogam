@@ -6,7 +6,7 @@ public class MedicalRecordMapper {
     public static MedicalRecord toDomain(MedicalRecordEntity entity) {
         return new MedicalRecord(
                 entity.getId(),
-                entity.getDogId(),
+                entity.getDog(),
                 entity.getDate(),
                 entity.getContent(),
                 entity.getHospital(),
@@ -19,7 +19,7 @@ public class MedicalRecordMapper {
 
     public static MedicalRecordEntity toEntity(MedicalRecord domain) {
         MedicalRecordEntity entity = new MedicalRecordEntity();
-        entity.setDogId(domain.getDogId());
+        entity.setDog(domain.getDog());
         entity.setDate(domain.getDate());
         entity.setContent(domain.getContent());
         entity.setHospital(domain.getHospital());
