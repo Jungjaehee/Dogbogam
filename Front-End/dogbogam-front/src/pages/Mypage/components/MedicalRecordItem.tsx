@@ -21,8 +21,10 @@ const MedicalRecordItem = ({ record }: RecordItem) => {
   const ClickRecord = () => {
     // 각 레코드의 id로 상세 페이지로 이동
     if (checkRecord(record)) {
+      // 예방 접종 기록일 경우 API 호출 
       navigate(`/vaccination/${record.vaccinationRecordId}`);
     } else {
+      // 병원 진료 기록일 경우 API 호출
       navigate(`/medical/${record.medicalRecordId}`);
     }
   };
