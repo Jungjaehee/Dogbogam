@@ -1,7 +1,6 @@
 package com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
