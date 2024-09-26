@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { DogCard } from "../Home/components/dogCard";
 import DogInfo from "./components/Doginfo";
 import AIDiagnosisButton from "./components/Buttons/AIDiagnosisButton";
 import MyInsuranceButton from "./components/Buttons/MyInsuranceButton";
@@ -6,26 +8,9 @@ import selectDogButton from "../../assets/MyPage/selectDogButton.png"
 import SignUpDay from "./components/SignUpDay";
 import imageUrl from "../../assets/MyPage/saewooIcon.png";
 import MedicalRecordButton from "./components/Buttons/MedicalRecordButton";
-import { useNavigate } from "react-router-dom";
 import DogSelectModal from "../Home/components/dogSelectModal";
-import { DogCard } from "../Home/components/dogCard";
 
-// Dog 인터페이스 정의
-interface Dog {
-  dogId: number;
-  memberId: number;
-  isDeleted: boolean;
-  name: string;
-  breed: string;
-  gender: string;
-  birthDate?: Date | null;
-  weight?: number | null;
-  isNeutered?: boolean | null;
-  imageName?: string | null;
-  imageUrl?: string | null;
-  createdTime: Date;
-  modifiedTime: Date | null;
-}
+import { Dog } from "../../models/dog.model";
 
 const MyPage = () => {
   const navigate = useNavigate();
