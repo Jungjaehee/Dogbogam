@@ -36,13 +36,13 @@ public class DogController {
     }
 
     @DeleteMapping("/{dogId}")
-    public SuccessResponse<?> deleteDog(@PathVariable Long dogId) {
+    public SuccessResponse<?> deleteDog(@PathVariable("dogId") Long dogId) {
         deleteDogUseCase.deleteDog(dogId);
         return SuccessResponse.deleted();
     }
 
     @GetMapping("/{dogId}")
-    public SuccessResponse<?> getDogDetails(@PathVariable Long dogId) {
+    public SuccessResponse<?> getDogDetails(@PathVariable("dogId") Long dogId) {
         Optional<Dog> dog = findDogDetailsUseCase.findDogDetails(dogId);
         return dog.map(SuccessResponse::ok)
                 .orElseGet(() -> SuccessResponse.ok(null));  // SuccessResponse.ok()로 처리
