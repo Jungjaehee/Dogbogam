@@ -45,7 +45,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
 
             updateDogPort.update(updatedDog);
         } else {
-            throw new IllegalArgumentException("Dog with ID " + updateDogDTO.getDogId() + " not found");
+            throw new IllegalArgumentException("해당 아이디 {" + updateDogDTO.getDogId() + "}는 없습니다.");
         }
     }
 
