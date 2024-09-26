@@ -1,35 +1,42 @@
 package com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.dog.application.port.out.DogPersistencePort;
+import com.dog.health.dogbogamserver.domain.dog.application.port.out.CreateDogPort;
+import com.dog.health.dogbogamserver.domain.dog.application.port.out.UpdateDogPort;
+import com.dog.health.dogbogamserver.domain.dog.application.port.out.DeleteDogPort;
+import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogDetailsPort;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class DogPersistenceAdapter implements DogPersistencePort {
-    private final DogSpringDataRepository repository;
-    private final DogMapper mapper;
+public class DogPersistenceAdapter implements CreateDogPort, UpdateDogPort, DeleteDogPort, FindDogDetailsPort {
 
-    @Override
-    public Dog findById(Long id) {
-        return repository.findById(id)
-                .map(mapper::toDomain)
-                .orElseThrow(() -> new IllegalArgumentException("Dog not found"));
-    }
-
-    @Override
-    public List<Dog> findAll() {
-        return repository.findAll().stream()
-                .map(mapper::toDomain)
-                .collect(Collectors.toList());
-    }
+    private final DogSpringDataRepository dogSpringDataRepository;
+    private final DogMapper dogMapper;
 
     @Override
     public void save(Dog dog) {
-        repository.save(mapper.toEntity(dog));
+        DogEntity dogEntity = dogMapper.toEntity(dog);
+        dogSpringDataRepository.save(dogEntity);
+    }
+
+    @Override
+    public void update(Dog dog) {
+        DogEntity dogEntity = dogMapper.toEntity(dog);
+        dogSpringDataRepository.save(dogEntity); // JPA의 save는 업데이트도 처리
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        dogSpringDataRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Dog> findByDogId(Long Dogid) {
+        Optional<DogEntity> dogEntity = dogSpringDataRepository.findById(Dogid);
+        return dogEntity.map(dogMapper::toDomain);
     }
 }

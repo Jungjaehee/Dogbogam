@@ -1,6 +1,5 @@
 package com.dog.health.dogbogamserver.domain.dog.adapter.in.web;
 
-import com.dog.health.dogbogamserver.domain.dog.application.port.in.DogUseCase;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

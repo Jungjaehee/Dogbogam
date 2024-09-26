@@ -3,11 +3,13 @@ package com.dog.health.dogbogamserver.domain.dog.domain;
 import com.dog.health.dogbogamserver.domain.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 public class Dog {
     private Long dogId;
     private Member member;
