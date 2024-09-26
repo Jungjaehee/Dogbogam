@@ -16,6 +16,14 @@ public class InsuranceBenefitMapper {
 
     private final InsuranceMapper insuranceMapper;
 
+    public InsuranceBenefit entityToDomain(InsuranceBenefitEntity entity){
+        return new InsuranceBenefit(
+                entity.getInsuranceBenefitId(),
+                insuranceMapper.toDomain(entity.getInsurance()),
+                entity.getBenefit()
+        );
+    }
+
     public List<Map<String, Object>> insuranceEntityAndBenefitsToDomainList(List<InsuranceEntity> entityList, List<List<String>> benefits){
         List<Map<String, Object>> insuranceInfo = new ArrayList<>();
 
@@ -29,6 +37,15 @@ public class InsuranceBenefitMapper {
         }
 
         return insuranceInfo;
+    }
+
+    public List<InsuranceBenefit> entityListToDomainList(List<InsuranceBenefitEntity> entityList){
+        List<InsuranceBenefit> insuranceBenefitList = new ArrayList<>();
+        for (InsuranceBenefitEntity insuranceBenefitEntity : entityList){
+            insuranceBenefitList.add(entityToDomain(insuranceBenefitEntity));
+        }
+
+        return insuranceBenefitList;
     }
 
     public Map<String, Object> insuranceBenefitEntityListToDomain(List<InsuranceBenefitEntity> entityList){
