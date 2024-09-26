@@ -4,6 +4,7 @@ import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.CreateDogDTO;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberEntity;
 import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberMapper;
+import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberPersistenceAdapter;
 import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberSpringDataRepository;
 import com.dog.health.dogbogamserver.domain.member.domain.Member;
 import lombok.RequiredArgsConstructor;
@@ -13,15 +14,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DogMapper {
 
-    private final MemberSpringDataRepository memberSpringDataRepository;
+    private final MemberPersistenceAdapter memberPersistenceAdapter;
     private final MemberMapper memberMapper; // MemberEntity -> Member 변환을 위한 Mapper
 
     public DogEntity toEntity(CreateDogDTO createDogDTO) {
-        MemberEntity member = memberSpringDataRepository.findById(createDogDTO.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
-
+        Member member = memberPersistenceAdapter.loadMember(createDogDTO.getMemberId());
         return DogEntity.builder()
-                .member(member)
+                .member(memberMapper.toEntity(member))
                 .name(createDogDTO.getName())
                 .breed(createDogDTO.getBreed())
                 .gender(createDogDTO.getGender())
@@ -35,12 +34,11 @@ public class DogMapper {
     }
 
     public DogEntity toEntity(Dog dog) {
-        MemberEntity memberEntity = memberSpringDataRepository.findById(dog.getMember().getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        Member member = memberPersistenceAdapter.loadMember(dog.getMember().getMemberId());
 
         return DogEntity.builder()
                 .dogId(dog.getDogId())
-                .member(memberEntity)  // Dog 도메인 모델에서 Member 도메인 객체를 MemberEntity로 변환
+                .member(memberMapper.toEntity(member))  // Dog 도메인 모델에서 Member 도메인 객체를 MemberEntity로 변환
                 .name(dog.getName())
                 .breed(dog.getBreed())
                 .gender(dog.getGender())
