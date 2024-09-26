@@ -1,6 +1,6 @@
 package com.dog.health.dogbogamserver.domain.medicalRecords.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.dogs.adapter.out.persistence.DogEntity;
+import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogEntity;
 import com.dog.health.dogbogamserver.global.baseTimeEntity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,7 +8,6 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @Table(name = "medical_record")
 @AllArgsConstructor
 @Builder
@@ -19,14 +18,14 @@ public class MedicalRecordEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "medical_record_id", nullable = false)
-    private Long id;
+    private Long medicalRecordId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dog_id", nullable = false)
     private DogEntity dog;
 
     @Column(name = "date", nullable = false)
-    private LocalDateTime date;
+    private LocalDate recordDate;
 
     @Column(name = "content", columnDefinition = "TEXT", nullable = true)
     private String content;

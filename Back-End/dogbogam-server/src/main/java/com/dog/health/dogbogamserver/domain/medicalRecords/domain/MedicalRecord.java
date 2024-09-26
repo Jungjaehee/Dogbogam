@@ -1,22 +1,19 @@
 package com.dog.health.dogbogamserver.domain.medicalRecords.domain;
 
-import com.dog.health.dogbogamserver.domain.dogs.adapter.out.persistence.DogEntity;
-import com.dog.health.dogbogamserver.domain.dogs.domain.Dog;
+import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @Builder
 @Getter
 public class MedicalRecord {
     private Long medicalRecordId;
-    private Long dogId;
-    private LocalDateTime date;
+    private Dog dog;
+    private LocalDate recordDate;
     private String content;
     private String hospital;
     private String imageName;
     private String imageUrl;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
 }

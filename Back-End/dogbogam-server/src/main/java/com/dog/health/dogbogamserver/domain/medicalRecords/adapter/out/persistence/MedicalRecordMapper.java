@@ -1,36 +1,63 @@
 package com.dog.health.dogbogamserver.domain.medicalRecords.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.MedicalRecordService;
+import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogMapper;
+import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogPersistenceAdapter;
+import com.dog.health.dogbogamserver.domain.medicalRecords.adapter.in.dto.CreateReportDto;
 import com.dog.health.dogbogamserver.domain.medicalRecords.domain.MedicalRecord;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class MedicalRecordMapper {
-    private final MedicalRecordService medicalRecordService;
 
+    private final DogMapper dogMapper;
+    private final DogPersistenceAdapter dogPersistenceAdapter;
 
-    public static MedicalRecord toDomain(MedicalRecordEntity entity) {
-        return new MedicalRecord(
-                entity.getId(),
-                entity.getDog().getDogId(),
-                entity.getDate(),
-                entity.getContent(),
-                entity.getHospital(),
-                entity.getImageName(),
-                entity.getImageUrl(),
-                entity.getCreatedAt(),
-                entity.getModifiedAt()
-        );
+    public MedicalRecord toDomain(MedicalRecordEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        return MedicalRecord.builder()
+                .medicalRecordId(entity.getMedicalRecordId())
+                .dog(dogMapper.toDomain(entity.getDog()))
+                .recordDate(entity.getRecordDate())
+                .content(entity.getContent())
+                .hospital(entity.getHospital())
+                .imageName(entity.getImageName())
+                .imageUrl(entity.getImageUrl())
+                .build();
     }
 
-    public static MedicalRecordEntity toEntity(MedicalRecord domain) {
-        MedicalRecordEntity entity = new MedicalRecordEntity();
-//        entity.setDog(domain.getDogId());  // 추후 dog엔터티 생성 후 사용
-        entity.setDate(domain.getDate());
-        entity.setContent(domain.getContent());
-        entity.setHospital(domain.getHospital());
-        entity.setImageName(domain.getImageName());
-        entity.setImageUrl(domain.getImageUrl());
-        return entity;
+    public MedicalRecordEntity toEntity(MedicalRecord domain) {
+        if (domain == null) {
+            return null;
+        }
+
+        return MedicalRecordEntity.builder()
+                .medicalRecordId(domain.getMedicalRecordId())
+                .dog(dogMapper.toEntity(domain.getDog()))
+                .recordDate(domain.getRecordDate())
+                .content(domain.getContent())
+                .hospital(domain.getHospital())
+                .imageName(domain.getImageName())
+                .imageUrl(domain.getImageUrl())
+                .build();
+    }
+
+    public MedicalRecordEntity toEntity(CreateReportDto createReportDto) {
+        if (createReportDto == null) {
+            return null;
+        }
+        return MedicalRecordEntity.builder()
+                .dog(dogMapper.toEntity(dogPersistenceAdapter.findByDogId(createReportDto.getDogId()).get()))
+                .recordDate(createReportDto.getRecordDate())
+                .content(createReportDto.getContent())
+                .hospital(createReportDto.getHospital())
+                // 추후 s3 추가되면 수정
+//                .imageName(createReportDto.getImageName())
+//                .imageUrl(createReportDto.getImageUrl())
+                .build();
     }
 }
