@@ -28,8 +28,8 @@ public class MedicalRecordPersistenceAdapter implements MedicalRecordRepository 
     }
 
     @Override
-    public List<MedicalRecord> findAllByDogId(Long dogId) {
-        return jpaRepository.findAllByDogId(dogId)
+    public List<MedicalRecord> findAllByDog_DogId(Long dogId) {
+        return jpaRepository.findAllByDog_DogId(dogId)
                 .stream()
                 .map(MedicalRecordMapper::toDomain)
                 .collect(Collectors.toList());

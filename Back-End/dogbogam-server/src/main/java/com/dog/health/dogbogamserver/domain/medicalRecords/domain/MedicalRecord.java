@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 public class MedicalRecord {
     private Long medicalRecordId;
-    private DogEntity dog;
+    private Long dogId;
     private LocalDateTime date;
     private String content;
     private String hospital;

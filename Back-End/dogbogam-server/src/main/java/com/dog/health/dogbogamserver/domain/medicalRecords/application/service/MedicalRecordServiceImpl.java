@@ -29,6 +29,6 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
 
     @Override
     public List<MedicalRecord> getAllMedicalRecordsForDog(Long dogId) {
-        return medicalRecordRepository.findAllByDogId(dogId);
+        return medicalRecordRepository.findAllByDog_DogId(dogId);
     }
 }

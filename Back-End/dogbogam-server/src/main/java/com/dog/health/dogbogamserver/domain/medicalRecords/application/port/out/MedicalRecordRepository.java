@@ -8,5 +8,5 @@ import java.util.List;
 public interface MedicalRecordRepository {
     MedicalRecord save(MedicalRecord medicalRecord);
     Optional<MedicalRecord> findById(Long id);
-    List<MedicalRecord> findAllByDogId(Long dogId);
+    List<MedicalRecord> findAllByDog_DogId(Long dogId);
 }
