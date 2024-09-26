@@ -25,8 +25,6 @@ public class MedicalRecordMapper {
         entity.setHospital(domain.getHospital());
         entity.setImageName(domain.getImageName());
         entity.setImageUrl(domain.getImageUrl());
-        entity.setCreatedAt(domain.getCreatedAt());
-        entity.setModifiedAt(domain.getModifiedAt());
         return entity;
     }
 }

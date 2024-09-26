@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Getter
-@Setter
-@ToString
 public class MedicalRecord {
     private Long medicalRecordId;
     private Long dogId;
