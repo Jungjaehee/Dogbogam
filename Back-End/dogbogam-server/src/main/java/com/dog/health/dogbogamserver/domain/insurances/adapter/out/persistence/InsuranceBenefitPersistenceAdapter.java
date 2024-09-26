@@ -1,6 +1,8 @@
 package com.dog.health.dogbogamserver.domain.insurances.adapter.out.persistence;
 
+import com.dog.health.dogbogamserver.domain.insurances.application.port.out.FindAllInsuranceBenefitPort;
 import com.dog.health.dogbogamserver.domain.insurances.application.port.out.SearchInsurancePort;
+import com.dog.health.dogbogamserver.domain.insurances.domain.InsuranceBenefit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +12,7 @@ import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
-public class InsuranceBenefitPersistenceAdapter implements SearchInsurancePort {
+public class InsuranceBenefitPersistenceAdapter implements SearchInsurancePort, FindAllInsuranceBenefitPort {
 
     private final InsuranceBenefitMapper insuranceBenefitMapper;
     private final InsuranceBenefitSpringDataRepository insuranceBenefitRepository;
@@ -25,6 +27,11 @@ public class InsuranceBenefitPersistenceAdapter implements SearchInsurancePort {
         }
 
         return insuranceBenefitMapper.insuranceEntityAndBenefitsToDomainList(insurances, insuranceBenefits);
+    }
+
+    @Override
+    public List<InsuranceBenefit> findAllBenefits(){
+        return insuranceBenefitMapper.entityListToDomainList(insuranceBenefitRepository.findAll());
     }
 
 }
