@@ -1,48 +1,74 @@
 package com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence;
 
+import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.CreateDogDTO;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
+import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberEntity;
+import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberMapper;
+import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberSpringDataRepository;
+import com.dog.health.dogbogamserver.domain.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class DogMapper {
-//    private final MemberService memberService; MemberService 작성 후 사용
 
-    public DogEntity toEntity(Dog dog) {
-        // 삭제된 반려견이라면 null을 반환
-        if(dog.getIsDeleted())
-            return null;
-        else
-            return DogEntity.builder()
-                    .dogId(dog.getDogId())
-//                    .member()
-                    .name(dog.getName())
-                    .breed(dog.getBreed())
-                    .gender(dog.getGender())
-                    .birthDate(dog.getBirthDate())
-                    .weight(dog.getWeight())
-                    .isNeutered(dog.getIsNeutered())
-                    .imageName(dog.getImageName())
-                    .imageUrl(dog.getImageUrl())
-                    .build();
+    private final MemberSpringDataRepository memberSpringDataRepository;
+    private final MemberMapper memberMapper; // MemberEntity -> Member 변환을 위한 Mapper
+
+    public DogEntity toEntity(CreateDogDTO createDogDTO) {
+        MemberEntity member = memberSpringDataRepository.findById(createDogDTO.getMemberId())
+                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+
+        return DogEntity.builder()
+                .member(member)
+                .name(createDogDTO.getName())
+                .breed(createDogDTO.getBreed())
+                .gender(createDogDTO.getGender())
+                .birthDate(createDogDTO.getBirthDate())
+                .weight(createDogDTO.getWeight())
+                .isNeutered(createDogDTO.getIsNeutered())
+                .imageName(createDogDTO.getImageName())
+                .imageUrl(createDogDTO.getImageUrl())
+                .isDeleted(false)  // 새로 생성된 반려견은 삭제되지 않은 상태
+                .build();
     }
 
-    public Dog toDomain(DogEntity entity) {
-        if(entity.getIsDeleted())
-            return null;
-        else
-            return Dog.builder()
-                    .dogId(entity.getDogId())
-//                    .member()
-                    .name(entity.getName())
-                    .breed(entity.getBreed())
-                    .gender(entity.getGender())
-                    .birthDate(entity.getBirthDate())
-                    .weight(entity.getWeight())
-                    .isNeutered(entity.getIsNeutered())
-                    .imageName(entity.getImageName())
-                    .imageUrl(entity.getImageUrl())
-                    .build();
+    public DogEntity toEntity(Dog dog) {
+        MemberEntity memberEntity = memberSpringDataRepository.findById(dog.getMember().getMemberId())
+                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+
+        return DogEntity.builder()
+                .dogId(dog.getDogId())
+                .member(memberEntity)  // Dog 도메인 모델에서 Member 도메인 객체를 MemberEntity로 변환
+                .name(dog.getName())
+                .breed(dog.getBreed())
+                .gender(dog.getGender())
+                .birthDate(dog.getBirthDate())
+                .weight(dog.getWeight())
+                .isNeutered(dog.getIsNeutered())
+                .imageName(dog.getImageName())
+                .imageUrl(dog.getImageUrl())
+                .isDeleted(dog.getIsDeleted())
+                .build();
+    }
+
+    public Dog toDomain(DogEntity dogEntity) {
+        // MemberEntity를 Member로 변환
+        Member member = memberMapper.toDomain(dogEntity.getMember());
+
+        return Dog.builder()
+                .dogId(dogEntity.getDogId())
+                .member(member)  // Member 도메인 객체를 사용
+                .name(dogEntity.getName())
+                .breed(dogEntity.getBreed())
+                .gender(dogEntity.getGender())
+                .birthDate(dogEntity.getBirthDate())
+                .weight(dogEntity.getWeight())
+                .isNeutered(dogEntity.getIsNeutered())
+                .imageName(dogEntity.getImageName())
+                .imageUrl(dogEntity.getImageUrl())
+                .isDeleted(dogEntity.getIsDeleted())
+                .build();
     }
 }

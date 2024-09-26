@@ -1,5 +1,6 @@
 package com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence;
 
+import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.CreateDogDTO;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.CreateDogPort;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.UpdateDogPort;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.DeleteDogPort;
@@ -18,8 +19,8 @@ public class DogPersistenceAdapter implements CreateDogPort, UpdateDogPort, Dele
     private final DogMapper dogMapper;
 
     @Override
-    public void save(Dog dog) {
-        DogEntity dogEntity = dogMapper.toEntity(dog);
+    public void save(CreateDogDTO createDogDTO) {
+        DogEntity dogEntity = dogMapper.toEntity(createDogDTO);
         dogSpringDataRepository.save(dogEntity);
     }
 

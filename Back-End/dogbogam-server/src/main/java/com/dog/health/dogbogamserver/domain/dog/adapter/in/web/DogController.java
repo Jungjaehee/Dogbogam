@@ -1,5 +1,6 @@
 package com.dog.health.dogbogamserver.domain.dog.adapter.in.web;
 
+import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.CreateDogDTO;
 import com.dog.health.dogbogamserver.domain.dog.application.port.in.CreateDogUseCase;
 import com.dog.health.dogbogamserver.domain.dog.application.port.in.UpdateDogUseCase;
 import com.dog.health.dogbogamserver.domain.dog.application.port.in.DeleteDogUseCase;
@@ -22,26 +23,26 @@ public class DogController {
     private final FindDogDetailsUseCase findDogDetailsUseCase;
 
     @PostMapping
-    public SuccessResponse<?> createDog(@RequestBody Dog dog) {
-        createDogUseCase.createDog(dog);
+    public SuccessResponse<?> createDog(@RequestBody CreateDogDTO createDogDTO) {
+        createDogUseCase.createDog(createDogDTO);
         return SuccessResponse.created();
     }
 
-    @PutMapping("/{id}")
-    public SuccessResponse<?> updateDog(@PathVariable Long id, @RequestBody Dog dog) {
-        updateDogUseCase.updateDog(id, dog);
+    @PatchMapping
+    public SuccessResponse<?> updateDog(@RequestBody Dog dog) {
+        updateDogUseCase.updateDog(dog);
         return SuccessResponse.updated();
     }
 
-    @DeleteMapping("/{id}")
-    public SuccessResponse<?> deleteDog(@PathVariable Long id) {
-        deleteDogUseCase.deleteDog(id);
+    @DeleteMapping("/{dogId}")
+    public SuccessResponse<?> deleteDog(@PathVariable Long dogId) {
+        deleteDogUseCase.deleteDog(dogId);
         return SuccessResponse.deleted();
     }
 
-    @GetMapping("/{id}")
-    public SuccessResponse<?> getDogDetails(@PathVariable Long id) {
-        Optional<Dog> dog = findDogDetailsUseCase.findDogDetails(id);
+    @GetMapping("/{dogId}")
+    public SuccessResponse<?> getDogDetails(@PathVariable Long dogId) {
+        Optional<Dog> dog = findDogDetailsUseCase.findDogDetails(dogId);
         return dog.map(SuccessResponse::ok)
                 .orElseGet(() -> SuccessResponse.ok(null));  // SuccessResponse.ok()로 처리
     }
