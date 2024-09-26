@@ -50,15 +50,12 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
 
     @Override
     public void deleteDog(Long dogId) {
-        Optional<Dog>  deleteDog = findDogDetailsPort.findByDogId(dogId);
+        Optional<Dog> deleteDog = findDogDetailsPort.findByDogId(dogId);
         if (deleteDog.isPresent()) {
-            // 삭제되지 않은 반려견 데이터만 업데이트 가능
-            if (deleteDog.get().getIsDeleted()) {
-                throw new IllegalArgumentException("이미지 삭제된 반려견 입니다.");
-            }
-            deleteDog.get().setIsDeleted(true);
+            deleteDog.get().deleteDog();
             updateDogPort.update(deleteDog.get());
         }
+        // 이미 지워진 dog이거나 없는 dogId에 대한 예외처리 필요
     }
 
     @Override

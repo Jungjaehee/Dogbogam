@@ -41,4 +41,7 @@ public class Dog {
         this.isDeleted = isDeleted;
     }
 
+    public void deleteDog() {
+        this.isDeleted = true;
+    }
 }

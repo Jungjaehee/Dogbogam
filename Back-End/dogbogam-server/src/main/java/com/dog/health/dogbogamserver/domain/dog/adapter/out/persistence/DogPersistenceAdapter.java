@@ -31,13 +31,14 @@ public class DogPersistenceAdapter implements CreateDogPort, UpdateDogPort, Dele
     }
 
     @Override
-    public void deleteById(Long id) {
-        dogSpringDataRepository.deleteById(id);
+    public void deleteById(Long dogId) {
+//        dogSpringDataRepository.deleteById(id); // hard delete
+
     }
 
     @Override
-    public Optional<Dog> findByDogId(Long Dogid) {
-        Optional<DogEntity> dogEntity = dogSpringDataRepository.findById(Dogid);
+    public Optional<Dog> findByDogId(Long dogId) {
+        Optional<DogEntity> dogEntity = dogSpringDataRepository.findById(dogId);
         return dogEntity.map(dogMapper::toDomain);
     }
 }
