@@ -27,7 +27,7 @@ public class DogPersistenceAdapter implements CreateDogPort, UpdateDogPort, Dele
     @Override
     public void update(Dog dog) {
         DogEntity dogEntity = dogMapper.toEntity(dog);
-        dogSpringDataRepository.save(dogEntity); // JPA의 save는 업데이트도 처리
+        dogSpringDataRepository.save(dogEntity);
     }
 
     @Override

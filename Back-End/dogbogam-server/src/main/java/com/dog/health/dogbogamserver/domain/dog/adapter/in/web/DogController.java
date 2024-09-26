@@ -1,6 +1,7 @@
 package com.dog.health.dogbogamserver.domain.dog.adapter.in.web;
 
 import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.CreateDogDTO;
+import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.UpdateDogDTO;
 import com.dog.health.dogbogamserver.domain.dog.application.port.in.CreateDogUseCase;
 import com.dog.health.dogbogamserver.domain.dog.application.port.in.UpdateDogUseCase;
 import com.dog.health.dogbogamserver.domain.dog.application.port.in.DeleteDogUseCase;
@@ -29,8 +30,8 @@ public class DogController {
     }
 
     @PatchMapping
-    public SuccessResponse<?> updateDog(@RequestBody Dog dog) {
-        updateDogUseCase.updateDog(dog);
+    public SuccessResponse<?> updateDog(@RequestBody UpdateDogDTO updateDogDTO) {
+        updateDogUseCase.updateDog(updateDogDTO);
         return SuccessResponse.updated();
     }
 

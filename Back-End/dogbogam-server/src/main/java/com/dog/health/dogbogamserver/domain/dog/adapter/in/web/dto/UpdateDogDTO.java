@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class UpdateDogDTO {
+    private Long dogId;
     private String name;
     private String breed;
     private String gender;
