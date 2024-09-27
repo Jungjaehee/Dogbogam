@@ -18,22 +18,19 @@ public class MemberPrincipal implements UserDetails {
     private Long memberId;
     private String email;
     private String password;
-    private String userKey;
 
     @Builder
-    private MemberPrincipal(String email, Long memberId, String password, String userKey) {
+    private MemberPrincipal(String email, Long memberId, String password) {
         this.email = email;
         this.memberId = memberId;
         this.password = password;
-        this.userKey = userKey;
     }
 
-    public static MemberPrincipal createMemberAuthority(Member member, String userKey) {
+    public static MemberPrincipal createMemberAuthority(Member member) {
         return MemberPrincipal.builder()
                 .email(member.getEmail())
                 .memberId(member.getMemberId())
                 .password(member.getPassword())
-                .userKey(userKey)
                 .build();
     }
 

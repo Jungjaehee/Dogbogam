@@ -47,11 +47,10 @@ public class JwtFilter extends GenericFilterBean{
 
         if (StringUtils.hasText(jwt) && jwtProvider.validateToken(jwt)) {
             Long memberId = jwtProvider.getMemberId(jwt);
-            String userKey = jwtProvider.getUserKey(jwt);
 
             Member member = memberService.findByMemberId(memberId);
 
-            UserDetails userDetails = MemberPrincipal.createMemberAuthority(member, userKey);
+            UserDetails userDetails = MemberPrincipal.createMemberAuthority(member);
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);

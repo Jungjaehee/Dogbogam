@@ -26,7 +26,6 @@ public class JWTProvider implements InitializingBean {
     private static final int ACCESS_TOKEN_EXPIRATION_PERIOD  = 60 * 60 * 100;
 
     // JWT 키 값
-    private static final String USER_KEY = "userKey";
     private static final String MEMBER_ID = "memberId";
 
     // 외부 설정 파일에서 주입되는 JWT 키 값
@@ -52,12 +51,11 @@ public class JWTProvider implements InitializingBean {
     }
 
     // JWT 토큰 생성
-    public String buildAccessToken(String userKey, Long memberId){
+    public String buildAccessToken(Long memberId){
         // 현재 시각
         Instant now = clock.instant();
 
         return Jwts.builder()
-                .claim(USER_KEY, userKey)
                 .claim(MEMBER_ID, memberId)
                 .signWith(key)
                 .setIssuedAt(Date.from(now))
@@ -98,11 +96,6 @@ public class JWTProvider implements InitializingBean {
             throw new IllegalArgumentException(String.format("token에 %s가 존재하지 않습니다.", key));
         }
         return (T) raw;
-    }
-
-    public String getUserKey(String token) {
-        Claims payload = parsePayload(token);
-        return parsePayload(payload.get(USER_KEY), String.class, USER_KEY);
     }
 
     public Long getMemberId(String token) {
