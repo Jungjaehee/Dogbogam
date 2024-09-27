@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import BackButton from "../../assets/MyPage/BackButton.png";
 import AIDiagnosisList from "./components/AIDiagnosisList";
 import DiagnosisFilter from "./components/DiagnosisFilter"; 
+import type { AiDiagnosis } from "../../models/record.model";
 
 const AIDiagnosis = () => {
   
@@ -12,35 +13,44 @@ const AIDiagnosis = () => {
   // const dummyData: any[] = [];
 
   // 데이터 있을 때
-  const dummyData = [
+  const dummyData: AiDiagnosis[] = [
     {
       reportId: 1,
       dogId: 101,
-      createdAt: "2023-09-10T10:00:00Z",
+      createdAt: new Date("2023-09-10T10:00:00Z"),
       imageName: "eye_test.jpg",
-      imageUrl: null,
-      normal: true,
+      imageUrl: "",
+      normal: true, // 정상 상태이므로 diseases 배열 없음
       diagnosisItem: "눈 건강 검사",
     },
     {
       reportId: 2,
       dogId: 102,
-      createdAt: "2024-06-30T14:00:00Z",
+      createdAt: new Date("2024-06-30T14:00:00Z"),
       imageName: "skin_test.jpg",
-      imageUrl: null,
+      imageUrl: "",
       normal: false,
       diagnosisItem: "피부병 진단",
+      diseases: [
+        { name: "피부염", percentage: "60" },
+        { name: "습진", percentage: "40" },
+      ],
     },
     {
       reportId: 3,
       dogId: 103,
-      createdAt: "2024-09-17T09:00:00Z",
+      createdAt: new Date("2024-09-17T09:00:00Z"),
       imageName: "joint_test.jpg",
-      imageUrl: null,
-      normal: false,
+      imageUrl: "",
+      normal: false, 
       diagnosisItem: "관절 검사",
+      diseases: [
+        { name: "관절염", percentage: "35" },
+        { name: "퇴행성 관절염", percentage: "45" },
+      ],
     },
   ];
+
 
   const [filteredDiag, setFilteredDiag] = useState(dummyData);
   const navigate = useNavigate();
