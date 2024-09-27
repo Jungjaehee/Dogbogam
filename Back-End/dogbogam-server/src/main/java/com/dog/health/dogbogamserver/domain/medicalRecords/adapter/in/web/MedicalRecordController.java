@@ -1,9 +1,11 @@
 package com.dog.health.dogbogamserver.domain.medicalRecords.adapter.in.web;
 
+import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.FindReportUseCase;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.UpdateReportUseCase;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.CreateReportRequestDto;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.CreateReportUseCase;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.UpdateReportRequestDto;
+import com.dog.health.dogbogamserver.domain.medicalRecords.domain.MedicalRecord;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,11 +19,12 @@ public class MedicalRecordController {
 
     private final CreateReportUseCase createReportUseCase;
     private final UpdateReportUseCase updateReportUseCase;
+    private final FindReportUseCase findReportUseCase;
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<MedicalRecord> getMedicalRecordById(@PathVariable Long id) {
-//        return ResponseEntity.ok(medicalRecordService.getMedicalRecordById(id));
-//    }
+    @GetMapping("/{recordId}")
+    public SuccessResponse<MedicalRecord> getMedicalRecordById(@PathVariable("recordId") Long recordId) {
+        return SuccessResponse.ok(findReportUseCase.findMedicalRecordById(recordId));
+    }
 
     @PostMapping
     public SuccessResponse<?> createMedicalRecord(@RequestBody CreateReportRequestDto createReportRequestDto) {
