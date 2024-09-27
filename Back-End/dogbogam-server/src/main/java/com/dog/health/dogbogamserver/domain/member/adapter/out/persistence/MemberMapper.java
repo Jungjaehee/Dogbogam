@@ -1,10 +1,12 @@
 package com.dog.health.dogbogamserver.domain.member.adapter.out.persistence;
 
 import com.dog.health.dogbogamserver.domain.member.domain.Member;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MemberMapper {
 
-    public static Member toDomain(MemberEntity entity){
+    public Member toDomain(MemberEntity entity){
         return Member.builder()
                 .memberId(entity.getMemberId())
                 .email(entity.getEmail())
@@ -15,7 +17,7 @@ public class MemberMapper {
                 .build();
     }
 
-    public static MemberEntity toEntity(Member domain){
+    public MemberEntity toEntity(Member domain){
         return MemberEntity.builder()
                 .email(domain.getEmail())
                 .password(domain.getPassword())
