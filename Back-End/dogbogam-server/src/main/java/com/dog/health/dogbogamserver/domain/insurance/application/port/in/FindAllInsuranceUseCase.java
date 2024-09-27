@@ -5,6 +5,6 @@ import java.util.Map;
 
 public interface FindAllInsuranceUseCase {
 
-    List<Map<String, Object>> findAll();
+    Map<Long, Map<String, Object>> findAll();
 
 }

@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface FindDetailInsuranceUseCase {
 
-    Map<String, Object> findDetailByInsuranceId(Long insuranceId);
+    Map<Long, Map<String, Object>> findDetailByInsuranceId(Long insuranceId);
 }

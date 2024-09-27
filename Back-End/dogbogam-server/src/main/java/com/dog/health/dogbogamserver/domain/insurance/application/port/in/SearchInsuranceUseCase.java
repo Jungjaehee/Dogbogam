@@ -5,6 +5,6 @@ import java.util.Map;
 
 public interface SearchInsuranceUseCase {
 
-    List<Map<String, Object>> search(List<String> benefit);
+    Map<Long, Map<String, Object>> search(List<String> benefit);
 
 }
