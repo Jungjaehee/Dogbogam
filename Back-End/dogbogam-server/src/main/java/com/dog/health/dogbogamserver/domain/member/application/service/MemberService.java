@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService implements RegisterMemberUseCase {
@@ -32,11 +34,12 @@ public class MemberService implements RegisterMemberUseCase {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .nickname(request.getNickname())
+                .createAt(LocalDateTime.now())
+                .isDeleted(false)
                 .build();
         saveMemberPort.saveMember(member);
         String accessToken = jwtProvider.buildAccessToken(member.getMemberId());
         return LoginResponse.createLoginResponse(accessToken);
     }
-
 
 }
