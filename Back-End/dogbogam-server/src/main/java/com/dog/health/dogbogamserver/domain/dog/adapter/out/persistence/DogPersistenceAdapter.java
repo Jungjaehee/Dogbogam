@@ -6,6 +6,7 @@ import com.dog.health.dogbogamserver.domain.dog.application.port.out.UpdateDogPo
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.DeleteDogPort;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogDetailsPort;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ public class DogPersistenceAdapter implements CreateDogPort, UpdateDogPort, Dele
     private final DogMapper dogMapper;
 
     @Override
+    @Transactional
     public void save(CreateDogDTO createDogDTO) {
         DogEntity dogEntity = dogMapper.toEntity(createDogDTO);
         dogSpringDataRepository.save(dogEntity);
