@@ -2,7 +2,7 @@ package com.dog.health.dogbogamserver.domain.medicalRecords.adapter.out.persiste
 
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogMapper;
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogPersistenceAdapter;
-import com.dog.health.dogbogamserver.domain.medicalRecords.adapter.in.dto.CreateReportDto;
+import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.CreateReportRequestDto;
 import com.dog.health.dogbogamserver.domain.medicalRecords.domain.MedicalRecord;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -46,15 +46,15 @@ public class MedicalRecordMapper {
                 .build();
     }
 
-    public MedicalRecordEntity toEntity(CreateReportDto createReportDto) {
-        if (createReportDto == null) {
+    public MedicalRecordEntity toEntity(CreateReportRequestDto createReportRequestDto) {
+        if (createReportRequestDto == null) {
             return null;
         }
         return MedicalRecordEntity.builder()
-                .dog(dogMapper.toEntity(dogPersistenceAdapter.findByDogId(createReportDto.getDogId()).get()))
-                .recordDate(createReportDto.getRecordDate())
-                .content(createReportDto.getContent())
-                .hospital(createReportDto.getHospital())
+                .dog(dogMapper.toEntity(dogPersistenceAdapter.findByDogId(createReportRequestDto.getDogId()).get()))
+                .recordDate(createReportRequestDto.getRecordDate())
+                .content(createReportRequestDto.getContent())
+                .hospital(createReportRequestDto.getHospital())
                 // 추후 s3 추가되면 수정
 //                .imageName(createReportDto.getImageName())
 //                .imageUrl(createReportDto.getImageUrl())

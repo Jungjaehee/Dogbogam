@@ -1,6 +1,6 @@
 package com.dog.health.dogbogamserver.domain.medicalRecords.adapter.in.web;
 
-import com.dog.health.dogbogamserver.domain.medicalRecords.adapter.in.dto.CreateReportDto;
+import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.CreateReportRequestDto;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.CreateReportUseCase;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +21,9 @@ public class MedicalRecordController {
 //    }
 
     @PostMapping
-    public SuccessResponse<?> createMedicalRecord(@RequestBody CreateReportDto createReportDto) {
-        log.info("Controller Create medical record: {}", createReportDto);
-        createReportUseCase.createReport(createReportDto);
+    public SuccessResponse<?> createMedicalRecord(@RequestBody CreateReportRequestDto createReportRequestDto) {
+        log.info("Controller Create medical record: {}", createReportRequestDto);
+        createReportUseCase.createReport(createReportRequestDto);
         return SuccessResponse.created();
     }
 
