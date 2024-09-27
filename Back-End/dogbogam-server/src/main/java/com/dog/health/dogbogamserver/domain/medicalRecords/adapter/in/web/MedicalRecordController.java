@@ -24,7 +24,7 @@ public class MedicalRecordController {
     public SuccessResponse<?> createMedicalRecord(@RequestBody CreateReportDto createReportDto) {
         log.info("Controller Create medical record: {}", createReportDto);
         createReportUseCase.createReport(createReportDto);
-        return SuccessResponse.ok();
+        return SuccessResponse.created();
     }
 
 //    @GetMapping("/dog/{dogId}")
