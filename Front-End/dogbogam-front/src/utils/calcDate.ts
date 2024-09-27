@@ -48,3 +48,9 @@ export const calPaymentsTime = (startDate: Date): number => {
   // 납입 횟수 반환
   return Math.max(totalMonths + 1, 1);
 };
+
+// 의료 정보 디테일 페이지에서 날짜 수정 시킬 함수
+export const formatDate = (date: Date) => {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'long' };
+  return new Date(date).toLocaleDateString('ko-KR', options);
+};

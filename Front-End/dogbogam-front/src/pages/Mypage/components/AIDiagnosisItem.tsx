@@ -1,37 +1,33 @@
 import { useNavigate } from "react-router-dom";
 import { calRelativeTime } from "../../../utils/calcDate";
-import { calcAIstatus, getComment } from "../../../utils/calcStatus";
+import { calcAIstatus, getComment , getStatusColor } from "../../../utils/calcStatus";
+import type { AiDiagnosis } from "../../../models/record.model";
 
-interface AIDiagnosis {
-  diagnosis: {
-    reportId: number;
-    dogId: number;
-    createdAt: string;
-    imageName?: string | null;
-    imageUrl?: string | null;
-    normal: boolean;
-    diagnosisItem: string;
-  };
+interface AIDiagnosisItemProps {
+  diagnosis: AiDiagnosis;
 }
 
-const AIDiagnosisItem = ({ diagnosis }: AIDiagnosis) => {
+const AIDiagnosisItem = ({ diagnosis }: AIDiagnosisItemProps) => {
   const navigate = useNavigate();
-
   const ClickDiagnosis = () => {
     navigate(`${diagnosis.reportId}`);
   };
 
-  const recordDate = new Date(diagnosis.createdAt);
-  const relativeTime = calRelativeTime(recordDate);
+  const relativeTime = calRelativeTime(diagnosis.createdAt);
 
-  // 상태 계산 함수
-  const status = calcAIstatus(diagnosis.normal);
+  let status = "";
 
-  // 코멘트 함수
+  if (diagnosis.diseases) {
+    status = calcAIstatus(diagnosis.diseases);
+  } else {
+    status = "좋음";
+  }
+
+  // 상태에 따른 코멘트 함수
   const comment = getComment(status);
 
   // status에 따라 글자 색 바꿈
-  const statusClass = status === "좋음" ? "text-good-text" : "text-bad-text";
+  const statusClass = getStatusColor(status);
 
   return (
     <div

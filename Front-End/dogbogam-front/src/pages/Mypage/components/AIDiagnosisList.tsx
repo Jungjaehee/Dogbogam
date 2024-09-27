@@ -1,16 +1,9 @@
 import AIDiagnosisItem from "./AIDiagnosisItem";
 import NonMedicalRecordIcon from "../../../assets/MyPage/NonMedicalRecordIcon.png";
+import { AiDiagnosis } from "../../../models/record.model";
 
 interface DiagnosisList {
-  diagnosisArray: {
-    reportId: number;
-    dogId: number;
-    createdAt: string;
-    imageName?: string | null;
-    imageUrl?: string | null;
-    normal: boolean;
-    diagnosisItem: string;
-  }[];
+  diagnosisArray: AiDiagnosis[]; // AiDiagnosis 인터페이스로 타입 지정
 }
 
 const AIDiagnosisList = ({ diagnosisArray }: DiagnosisList) => {

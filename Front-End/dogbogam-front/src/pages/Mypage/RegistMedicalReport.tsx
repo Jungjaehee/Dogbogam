@@ -1,8 +1,8 @@
-import { useState , useRef } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../assets/MyPage/BackButton.png";
 import addPhotoIcon from "../../assets/MyPage/addPhotoIcon.png";
-import { MedicalRecord , VaccinationRecord } from "../../models/record.model";
+import { MedicalRecord, VaccinationRecord } from "../../models/record.model";
 
 const RegistMedicalReport = () => {
   const navigate = useNavigate();
@@ -54,32 +54,42 @@ const RegistMedicalReport = () => {
     setPreviewImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
+  // 날짜와 시간을 합치는 함수
+  const combineDateTime = (date: string, time: string): Date => {
+    const combined = new Date(`${date}T${time}`);
+    return combined;
+  };
+
+  // 날짜와 시간 상태 추가
+  const [date, setDate] = useState(""); // 날짜 상태 추가
+  const [time, setTime] = useState(""); // 시간 상태 추가
+
   // 병원 진료 기록 상태
   const [medicalRecord, setMedicalRecord] = useState<MedicalRecord>({
     dogId: 1,
-    recordTime: new Date().toISOString().slice(0, 10),
+    recordTime: new Date(),
     hospital: "",
     content: null,
     imageName: null,
     imageUrl: null,
     createdAt: new Date(),
     modifiedAt: null,
+    cost: 0
   });
 
   // 예방 접종 기록 상태
-  const [vaccinationRecord, setVaccinationRecord] = useState<VaccinationRecord>(
-    {
-      dogId: 1,
-      recordTime: new Date().toISOString().slice(0, 10),
-      hospital: "",
-      vaccinationRound: 1,
-      content: null,
-      imageName: null,
-      imageUrl: null,
-      createdAt: new Date(),
-      modifiedAt: null,
-    }
-  );
+  const [vaccinationRecord, setVaccinationRecord] = useState<VaccinationRecord>({
+    dogId: 1,
+    recordTime: new Date(),
+    hospital: "",
+    vaccinationRound: 1,
+    content: null,
+    imageName: null,
+    imageUrl: null,
+    createdAt: new Date(),
+    modifiedAt: null,
+    cost: 0
+  });
 
   const [currentType, setCurrentType] = useState("병원 진료");
 
@@ -90,13 +100,23 @@ const RegistMedicalReport = () => {
 
   // 병원 진료 등록 함수
   const ClickSubmitMedical = () => {
-    console.log(medicalRecord);
+    const combinedDateTime = combineDateTime(date, time);
+    setMedicalRecord((prevRecord) => ({
+      ...prevRecord,
+      recordTime: combinedDateTime,
+    }));
+    console.log("병원 진료 기록:", medicalRecord);
     // 병원 진료 관련 API 호출 로직
   };
 
   // 예방 접종 등록 함수
   const ClickSubmitVaccination = () => {
-    console.log(vaccinationRecord);
+    const combinedDateTime = combineDateTime(date, time);
+    setVaccinationRecord((prevRecord) => ({
+      ...prevRecord,
+      recordTime: combinedDateTime,
+    }));
+    console.log("예방 접종 기록:", vaccinationRecord);
     // 예방 접종 관련 API 호출 로직
   };
 
@@ -231,24 +251,8 @@ const RegistMedicalReport = () => {
             type="date"
             className="w-full py-2 px-3 border rounded-md text-gray-700"
             required
-            value={
-              currentType === "병원 진료"
-                ? medicalRecord.recordTime
-                : vaccinationRecord.recordTime
-            }
-            onChange={(e) => {
-              if (currentType === "병원 진료") {
-                setMedicalRecord((prevRecord) => ({
-                  ...prevRecord,
-                  date: e.target.value,
-                }));
-              } else {
-                setVaccinationRecord((prevRecord) => ({
-                  ...prevRecord,
-                  date: e.target.value,
-                }));
-              }
-            }}
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
           />
         </div>
 
@@ -261,21 +265,44 @@ const RegistMedicalReport = () => {
             type="time"
             className="w-full py-2 px-3 border rounded-md text-gray-700"
             required
-            onChange={(e) => {
-              if (currentType === "병원 진료") {
-                setMedicalRecord((prevRecord) => ({
-                  ...prevRecord,
-                  medicalTime: e.target.value,
-                }));
-              } else {
-                setVaccinationRecord((prevRecord) => ({
-                  ...prevRecord,
-                  vaccinationTime: e.target.value,
-                }));
-              }
-            }}
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
           />
         </div>
+      </div>
+
+      {/* 비용 선택 */}
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-semibold mb-1">
+          비용<span className="text-main-color ml-0.5">*</span>
+        </label>
+        <input
+          type="text"
+          className="w-full py-2 px-3 border rounded-md text-gray-700"
+          placeholder="비용을 입력해주세요"
+          required
+          value={
+            currentType === "병원 진료"
+              ? medicalRecord.cost?.toLocaleString("ko-KR") + " 원"
+              : vaccinationRecord.cost?.toLocaleString("ko-KR") + " 원"
+          }
+          onChange={(e) => {
+            const onlyNumbers = e.target.value.replace(/[^\d]/g, ""); // 숫자만 추출
+            const costValue = Number(onlyNumbers);
+
+            if (currentType === "병원 진료") {
+              setMedicalRecord((prevRecord) => ({
+                ...prevRecord,
+                cost: costValue,
+              }));
+            } else {
+              setVaccinationRecord((prevRecord) => ({
+                ...prevRecord,
+                cost: costValue,
+              }));
+            }
+          }}
+        />
       </div>
 
       {/* 검사 결과 및 메모 추가 */}
