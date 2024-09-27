@@ -17,8 +17,4 @@ public class MedicalRecord {
     private String hospital;
     private String imageName;
     private String imageUrl;
-
-    public void update(UpdateReportRequestDto updateReportRequestDto) {
-
-    }
 }

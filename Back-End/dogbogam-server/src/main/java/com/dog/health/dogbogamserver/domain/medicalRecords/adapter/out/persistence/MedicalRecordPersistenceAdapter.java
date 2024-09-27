@@ -29,7 +29,10 @@ public class MedicalRecordPersistenceAdapter implements CreateReportPort, Update
     @Override
     @Transactional
     public void updateReport(UpdateReportRequestDto updateReportRequestDto) {
-        MedicalRecordEntity medicalRecordEntity = medicalRecordMapper.toEntity(updateReportRequestDto);
+        log.info("Adapter requestDto 확인 : {}", updateReportRequestDto);
+        MedicalRecordEntity medicalRecordEntity = jpaRepository.findById(updateReportRequestDto.getReportId())
+                .orElse(null);
+        medicalRecordEntity.update(medicalRecordMapper.toDomain(updateReportRequestDto));
         log.info("Adapter 진료 기록 수정 : {}", medicalRecordEntity);
         jpaRepository.save(medicalRecordEntity);
     }

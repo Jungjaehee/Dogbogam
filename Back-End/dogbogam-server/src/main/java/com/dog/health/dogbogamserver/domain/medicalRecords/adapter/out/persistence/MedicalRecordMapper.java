@@ -62,13 +62,13 @@ public class MedicalRecordMapper {
                 .build();
     }
 
-    public MedicalRecordEntity toEntity(UpdateReportRequestDto updateReportRequestDto) {
+    public MedicalRecord toDomain(UpdateReportRequestDto updateReportRequestDto) {
         if (updateReportRequestDto == null) {
             return null;
         }
-        return MedicalRecordEntity.builder()
+        return MedicalRecord.builder()
                 .medicalRecordId(updateReportRequestDto.getReportId())
-                .dog(dogMapper.toEntity(dogPersistenceAdapter.findByDogId(updateReportRequestDto.getDogId()).get()))
+                .dog(dogPersistenceAdapter.findByDogId(updateReportRequestDto.getDogId()).get())
                 .content(updateReportRequestDto.getContent())
                 .recordDate(updateReportRequestDto.getRecordDate())
                 .hospital(updateReportRequestDto.getHospital())
