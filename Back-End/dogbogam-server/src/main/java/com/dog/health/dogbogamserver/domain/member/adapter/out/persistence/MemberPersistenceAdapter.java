@@ -3,8 +3,12 @@ package com.dog.health.dogbogamserver.domain.member.adapter.out.persistence;
 import com.dog.health.dogbogamserver.domain.member.application.port.out.LoadMemberPort;
 import com.dog.health.dogbogamserver.domain.member.application.port.out.SaveMemberPort;
 import com.dog.health.dogbogamserver.domain.member.domain.Member;
+import com.dog.health.dogbogamserver.global.web.exception.CustomException;
+import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -17,11 +21,17 @@ public class MemberPersistenceAdapter implements LoadMemberPort, SaveMemberPort 
     public Member loadMember(Long memberId) {
         return memberRepository.findById(memberId)
                 .map(memberMapper::toDomain)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 멤버입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Override
     public void saveMember(Member member){
         memberRepository.save(memberMapper.toEntity(member));
+    }
+
+    @Override
+    public Optional<Member> loadMemberByEmail(String email){
+        return memberRepository.findByEmail(email)
+                .map(memberMapper::toDomain);
     }
 }
