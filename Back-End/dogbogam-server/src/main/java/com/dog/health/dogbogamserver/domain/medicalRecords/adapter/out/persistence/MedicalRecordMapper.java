@@ -68,7 +68,7 @@ public class MedicalRecordMapper {
         }
         return MedicalRecordEntity.builder()
                 .medicalRecordId(updateReportRequestDto.getReportId())
-//                .dog()
+                .dog(dogMapper.toEntity(dogPersistenceAdapter.findByDogId(updateReportRequestDto.getDogId()).get()))
                 .content(updateReportRequestDto.getContent())
                 .recordDate(updateReportRequestDto.getRecordDate())
                 .hospital(updateReportRequestDto.getHospital())
