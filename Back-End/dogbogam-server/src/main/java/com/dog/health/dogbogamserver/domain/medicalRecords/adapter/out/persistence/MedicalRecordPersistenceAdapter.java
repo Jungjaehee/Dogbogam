@@ -13,6 +13,7 @@ public class MedicalRecordPersistenceAdapter implements CreateReportPort {
 
     @Override
     public void createReport(CreateReportDto createReportDto) {
-
+        MedicalRecordEntity medicalRecordEntity = medicalRecordMapper.toEntity(createReportDto);
+        jpaRepository.save(medicalRecordEntity);
     }
 }

@@ -5,6 +5,7 @@ import com.dog.health.dogbogamserver.global.baseTimeEntity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,7 +25,7 @@ public class MedicalRecordEntity extends BaseTimeEntity {
     @JoinColumn(name = "dog_id", nullable = false)
     private DogEntity dog;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "record_date", nullable = false)
     private LocalDate recordDate;
 
     @Column(name = "content", columnDefinition = "TEXT", nullable = true)
