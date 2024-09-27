@@ -9,6 +9,7 @@ export interface MedicalRecord {
   recordTime: Date;
   createdAt: Date;
   modifiedAt: Date | null;
+  cost: number;
 }
 
 
@@ -24,6 +25,7 @@ export interface VaccinationRecord {
   vaccinationRound: number;
   createdAt: Date;
   modifiedAt: Date | null;
+  cost: number;
 }
 // ai 진단 결과에 따라오는 인터페이스
 export interface Disease {
