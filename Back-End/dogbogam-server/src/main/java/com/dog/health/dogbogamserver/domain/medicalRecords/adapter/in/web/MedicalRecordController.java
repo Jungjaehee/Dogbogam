@@ -4,9 +4,11 @@ import com.dog.health.dogbogamserver.domain.medicalRecords.adapter.in.dto.Create
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.CreateReportUseCase;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
+@Slf4j
 @RestController
 @RequestMapping("/medical-records")
 public class MedicalRecordController {
@@ -20,6 +22,7 @@ public class MedicalRecordController {
 
     @PostMapping
     public SuccessResponse<?> createMedicalRecord(@RequestBody CreateReportDto createReportDto) {
+        log.info("Controller Create medical record: {}", createReportDto);
         createReportUseCase.createReport(createReportDto);
         return SuccessResponse.ok();
     }
