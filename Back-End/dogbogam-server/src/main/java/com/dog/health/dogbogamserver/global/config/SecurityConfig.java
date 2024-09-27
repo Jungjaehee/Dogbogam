@@ -3,7 +3,7 @@ package com.dog.health.dogbogamserver.global.config;
 import com.dog.health.dogbogamserver.domain.member.application.service.MemberService;
 import com.dog.health.dogbogamserver.global.auth.filter.JwtFilter;
 import com.dog.health.dogbogamserver.global.auth.utils.JWTProvider;
-import com.fav.daengnyang.global.exception.ExceptionHandlerFilter;
+import com.dog.health.dogbogamserver.global.auth.exception.ExceptionHandlerFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
