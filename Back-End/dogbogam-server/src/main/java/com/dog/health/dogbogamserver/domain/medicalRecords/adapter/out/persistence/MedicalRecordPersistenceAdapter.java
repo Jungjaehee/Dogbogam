@@ -2,14 +2,14 @@ package com.dog.health.dogbogamserver.domain.medicalRecords.adapter.out.persiste
 
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.out.FindReportPort;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.out.UpdateReportPort;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.CreateReportRequestDto;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.out.CreateReportPort;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.UpdateReportRequestDto;
 import com.dog.health.dogbogamserver.domain.medicalRecords.domain.MedicalRecord;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -20,25 +20,20 @@ public class MedicalRecordPersistenceAdapter implements CreateReportPort, Update
 
     @Override
     @Transactional
-    public void createReport(CreateReportRequestDto createReportRequestDto) {
-        MedicalRecordEntity medicalRecordEntity = medicalRecordMapper.toEntity(createReportRequestDto);
+    public void createReport(MedicalRecordEntity medicalRecordEntity) {
         log.info("Adapter 진료 기록 등록 : {}", medicalRecordEntity);
         jpaRepository.save(medicalRecordEntity);
     }
 
     @Override
     @Transactional
-    public void updateReport(UpdateReportRequestDto updateReportRequestDto) {
-        log.info("Adapter requestDto 확인 : {}", updateReportRequestDto);
-        MedicalRecordEntity medicalRecordEntity = jpaRepository.findById(updateReportRequestDto.getReportId())
-                .orElse(null);
-        medicalRecordEntity.update(medicalRecordMapper.toDomain(updateReportRequestDto));
+    public void updateReport(MedicalRecordEntity medicalRecordEntity) {
         log.info("Adapter 진료 기록 수정 : {}", medicalRecordEntity);
         jpaRepository.save(medicalRecordEntity);
     }
 
     @Override
-    public MedicalRecord findMedicalRecordById(Long recordId) {
+    public Optional<MedicalRecord> findMedicalRecordById(Long recordId) {
         MedicalRecordEntity medicalRecordEntity = jpaRepository.findById(recordId)
                 .orElse(null);
         return medicalRecordMapper.toDomain(medicalRecordEntity);

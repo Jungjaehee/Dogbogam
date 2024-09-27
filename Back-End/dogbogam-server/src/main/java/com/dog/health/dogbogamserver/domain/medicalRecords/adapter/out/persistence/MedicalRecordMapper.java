@@ -47,32 +47,5 @@ public class MedicalRecordMapper {
                 .build();
     }
 
-    public MedicalRecordEntity toEntity(CreateReportRequestDto createReportRequestDto) {
-        if (createReportRequestDto == null) {
-            return null;
-        }
-        return MedicalRecordEntity.builder()
-                .dog(dogMapper.toEntity(dogPersistenceAdapter.findByDogId(createReportRequestDto.getDogId()).get()))
-                .recordDate(createReportRequestDto.getRecordDate())
-                .content(createReportRequestDto.getContent())
-                .hospital(createReportRequestDto.getHospital())
-                // 추후 s3 추가되면 수정
-//                .imageName(createReportDto.getImageName())
-//                .imageUrl(createReportDto.getImageUrl())
-                .build();
-    }
 
-    public MedicalRecord toDomain(UpdateReportRequestDto updateReportRequestDto) {
-        if (updateReportRequestDto == null) {
-            return null;
-        }
-        return MedicalRecord.builder()
-                .medicalRecordId(updateReportRequestDto.getReportId())
-                .dog(dogPersistenceAdapter.findByDogId(updateReportRequestDto.getDogId()).get())
-                .content(updateReportRequestDto.getContent())
-                .recordDate(updateReportRequestDto.getRecordDate())
-                .hospital(updateReportRequestDto.getHospital())
-                // 이미지 파일 업로드
-                .build();
-    }
 }

@@ -43,4 +43,9 @@ public class DogPersistenceAdapter implements CreateDogPort, UpdateDogPort, Dele
         Optional<DogEntity> dogEntity = dogSpringDataRepository.findById(dogId);
         return dogEntity.map(dogMapper::toDomain);
     }
+
+    @Override
+    public Optional<DogEntity> findEntityByDogId(Long dogId) {
+        return dogSpringDataRepository.findById(dogId);
+    }
 }
