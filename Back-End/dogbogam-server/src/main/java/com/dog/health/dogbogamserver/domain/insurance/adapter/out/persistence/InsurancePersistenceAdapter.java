@@ -1,7 +1,11 @@
 package com.dog.health.dogbogamserver.domain.insurance.adapter.out.persistence;
 
+import com.dog.health.dogbogamserver.domain.insurance.application.port.out.FindAllInsuranceBenefitPort;
 import com.dog.health.dogbogamserver.domain.insurance.application.port.out.FindAllInsurancePort;
 import com.dog.health.dogbogamserver.domain.insurance.application.port.out.FindDetailInsurancePort;
+import com.dog.health.dogbogamserver.domain.insurance.application.port.out.SearchInsurancePort;
+import com.dog.health.dogbogamserver.domain.insurance.domain.Insurance;
+import com.dog.health.dogbogamserver.domain.insurance.domain.InsuranceBenefit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -9,32 +13,36 @@ import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
-public class InsurancePersistenceAdapter implements FindAllInsurancePort, FindDetailInsurancePort {
+public class InsurancePersistenceAdapter implements FindAllInsurancePort, FindDetailInsurancePort, SearchInsurancePort, FindAllInsuranceBenefitPort {
 
     private final InsuranceSpringDataRepository insuranceRepository;
-    private final InsuranceBenefitMapper insuranceBenefitMapper;
     private final InsuranceBenefitSpringDataRepository insuranceBenefitRepository;
+    private final InsuranceBenefitMapper insuranceBenefitMapper;
+    private final InsuranceMapper insuranceMapper;
 
     @Override
-    public List<Map<String, Object>> findAll(){
-        List<InsuranceEntity> insurances = insuranceRepository.findAll();
-        List<List<String>> insuranceBenefits = new ArrayList<>();
-        for (InsuranceEntity insurance : insurances) {
-            List<String> benefits = insuranceBenefitRepository.findBenefitByInsuranceId(insurance.getInsuranceId());
-            insuranceBenefits.add(benefits);
-        }
-
-        return insuranceBenefitMapper.insuranceEntityAndBenefitsToDomainList(insurances, insuranceBenefits);
+    public List<InsuranceBenefit> findAllInsurance(){
+        return insuranceBenefitMapper.entityListToDomainList(insuranceBenefitRepository.findAll());
     }
 
     @Override
-    public Map<String, Object> findByInsuranceId(Long insuranceId){
-        insuranceRepository.findByInsuranceId(insuranceId)
-                .orElseThrow(() -> new IllegalArgumentException("요청한 보험이 존재하지 않습니다."));
+    public Optional<Insurance> existInsuranceById(Long insuranceId){
+        return insuranceMapper.toOptionalDomain(insuranceRepository.findByInsuranceId(insuranceId));
+    }
 
-        List<InsuranceBenefitEntity> insuranceBenefits = insuranceBenefitRepository.findByInsurance_InsuranceId(insuranceId);
+    @Override
+    public List<InsuranceBenefit> findByInsuranceId(Long insuranceId){
+        return insuranceBenefitMapper.entityListToDomainList(insuranceBenefitRepository.findByInsurance_InsuranceId(insuranceId));
+    }
 
-        return insuranceBenefitMapper.insuranceBenefitEntityListToDomain(insuranceBenefits);
+    @Override
+    public List<InsuranceBenefit> findByBenefit(List<String> benefit){
+        return insuranceBenefitMapper.entityListToDomainList(insuranceBenefitRepository.findByBenefitIn(benefit));
+    }
+
+    @Override
+    public List<InsuranceBenefit> findAllBenefits(){
+        return insuranceBenefitMapper.entityListToDomainList(insuranceBenefitRepository.findAll());
     }
 
 }
