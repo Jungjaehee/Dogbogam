@@ -5,8 +5,10 @@ import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogPersi
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.domain.medicalRecords.adapter.out.persistence.MedicalRecordEntity;
 import com.dog.health.dogbogamserver.domain.medicalRecords.adapter.out.persistence.MedicalRecordMapper;
+import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.DeleteReportUseCase;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.FindReportUseCase;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.UpdateReportUseCase;
+import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.out.DeleteReportPort;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.out.FindReportPort;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.out.UpdateReportPort;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.CreateReportRequestDto;
@@ -22,10 +24,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class MedicalRecordService implements CreateReportUseCase, UpdateReportUseCase, FindReportUseCase {
+public class MedicalRecordService implements CreateReportUseCase, UpdateReportUseCase, FindReportUseCase, DeleteReportUseCase {
     private final CreateReportPort createReportPort;
     private final UpdateReportPort updateReportPort;
     private final FindReportPort findReportPort;
+    private final DeleteReportPort deleteReportPort;
     private final DogPersistenceAdapter dogPersistenceAdapter;
 
     @Override
@@ -60,5 +63,11 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
         log.info("Service Find record : {}", recordId);
         return findReportPort.findMedicalRecordById(recordId)
                 .orElseThrow(()-> new IllegalArgumentException("없는 리포트입니다."));
+    }
+
+    @Override
+    public void deleteReportUseCase(Long reportId) {
+        log.info("Service Delete record : {}", reportId);
+        deleteReportPort.deleteReport(reportId);
     }
 }

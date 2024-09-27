@@ -1,9 +1,6 @@
 package com.dog.health.dogbogamserver.domain.medicalRecords.adapter.out.persistence;
 
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogMapper;
-import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogPersistenceAdapter;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.CreateReportRequestDto;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.UpdateReportRequestDto;
 import com.dog.health.dogbogamserver.domain.medicalRecords.domain.MedicalRecord;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Component;
 public class MedicalRecordMapper {
 
     private final DogMapper dogMapper;
-    private final DogPersistenceAdapter dogPersistenceAdapter;
 
     public MedicalRecord toDomain(MedicalRecordEntity entity) {
         if (entity == null) {
