@@ -8,11 +8,13 @@ import com.dog.health.dogbogamserver.domain.insurance.domain.Insurance;
 import com.dog.health.dogbogamserver.domain.insurance.domain.InsuranceBenefit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class InsurancePersistenceAdapter implements FindAllInsurancePort, FindDetailInsurancePort, SearchInsurancePort, FindAllInsuranceBenefitPort {
 
     private final InsuranceSpringDataRepository insuranceRepository;
@@ -27,7 +29,8 @@ public class InsurancePersistenceAdapter implements FindAllInsurancePort, FindDe
 
     @Override
     public Optional<Insurance> existInsuranceById(Long insuranceId){
-        return insuranceMapper.toOptionalDomain(insuranceRepository.findByInsuranceId(insuranceId));
+        Optional<InsuranceEntity> insuranceEntity = insuranceRepository.findById(insuranceId);
+        return insuranceEntity.map(insuranceMapper::toDomain);
     }
 
     @Override
