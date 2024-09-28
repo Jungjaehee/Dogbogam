@@ -1,7 +1,7 @@
-package com.dog.health.dogbogamserver.domain.insuranceRecords.domain;
+package com.dog.health.dogbogamserver.domain.insuranceRecord.domain;
 
-import com.dog.health.dogbogamserver.domain.dogs.domain.Dog;
-import com.dog.health.dogbogamserver.domain.insurances.domain.Insurance;
+import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
+import com.dog.health.dogbogamserver.domain.insurance.domain.Insurance;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;

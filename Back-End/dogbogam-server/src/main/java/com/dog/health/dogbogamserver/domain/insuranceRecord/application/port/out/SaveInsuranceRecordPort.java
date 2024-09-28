@@ -1,8 +1,8 @@
-package com.dog.health.dogbogamserver.domain.insuranceRecords.application.port.out;
+package com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.out;
 
-import com.dog.health.dogbogamserver.domain.dogs.domain.Dog;
-import com.dog.health.dogbogamserver.domain.insuranceRecords.domain.InsuranceRecord;
-import com.dog.health.dogbogamserver.domain.insurances.domain.Insurance;
+import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.domain.InsuranceRecord;
+import com.dog.health.dogbogamserver.domain.insurance.domain.Insurance;
 
 import java.util.Optional;
 

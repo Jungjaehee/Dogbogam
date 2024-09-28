@@ -1,11 +1,11 @@
-package com.dog.health.dogbogamserver.domain.insuranceRecords.application.service;
+package com.dog.health.dogbogamserver.domain.insuranceRecord.application.service;
 
-import com.dog.health.dogbogamserver.domain.dogs.domain.Dog;
-import com.dog.health.dogbogamserver.domain.insuranceRecords.adapter.in.dto.RegistRequestDto;
-import com.dog.health.dogbogamserver.domain.insuranceRecords.application.port.in.RegistInsuranceRecordUseCase;
-import com.dog.health.dogbogamserver.domain.insuranceRecords.application.port.out.SaveInsuranceRecordPort;
-import com.dog.health.dogbogamserver.domain.insuranceRecords.domain.InsuranceRecord;
-import com.dog.health.dogbogamserver.domain.insurances.domain.Insurance;
+import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.RegistRequestDto;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.in.RegistInsuranceRecordUseCase;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.out.SaveInsuranceRecordPort;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.domain.InsuranceRecord;
+import com.dog.health.dogbogamserver.domain.insurance.domain.Insurance;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.dog.health.dogbogamserver.domain.insuranceRecords.adapter.out.persistence;
+package com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.out.persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

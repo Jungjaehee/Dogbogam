@@ -1,7 +1,7 @@
-package com.dog.health.dogbogamserver.domain.insuranceRecords.adapter.in.web;
+package com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.web;
 
-import com.dog.health.dogbogamserver.domain.insuranceRecords.adapter.in.dto.RegistRequestDto;
-import com.dog.health.dogbogamserver.domain.insuranceRecords.application.port.in.RegistInsuranceRecordUseCase;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.RegistRequestDto;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.in.RegistInsuranceRecordUseCase;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

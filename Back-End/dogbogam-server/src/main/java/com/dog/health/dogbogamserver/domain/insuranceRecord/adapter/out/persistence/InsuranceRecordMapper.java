@@ -1,8 +1,8 @@
-package com.dog.health.dogbogamserver.domain.insuranceRecords.adapter.out.persistence;
+package com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.dogs.adapter.out.persistence.DogMapper;
-import com.dog.health.dogbogamserver.domain.insuranceRecords.domain.InsuranceRecord;
-import com.dog.health.dogbogamserver.domain.insurances.adapter.out.persistence.InsuranceMapper;
+import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogMapper;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.domain.InsuranceRecord;
+import com.dog.health.dogbogamserver.domain.insurance.adapter.out.persistence.InsuranceMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
-package com.dog.health.dogbogamserver.domain.insuranceRecords.adapter.out.persistence;
+package com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.dogs.adapter.out.persistence.DogEntity;
-import com.dog.health.dogbogamserver.domain.insurances.adapter.out.persistence.InsuranceEntity;
+import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogEntity;
+import com.dog.health.dogbogamserver.domain.insurance.adapter.out.persistence.InsuranceEntity;
 import com.dog.health.dogbogamserver.global.baseTimeEntity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

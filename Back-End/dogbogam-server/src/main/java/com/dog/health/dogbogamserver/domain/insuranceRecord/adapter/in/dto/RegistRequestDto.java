@@ -1,4 +1,4 @@
-package com.dog.health.dogbogamserver.domain.insuranceRecords.adapter.in.dto;
+package com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
