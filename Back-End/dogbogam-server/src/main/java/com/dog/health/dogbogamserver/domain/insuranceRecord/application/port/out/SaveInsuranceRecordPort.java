@@ -10,7 +10,7 @@ public interface SaveInsuranceRecordPort {
 
     Optional<InsuranceRecord> checkExistingInsuranceRecord(Long dogId, Long insuranceRecordId);
     Optional<Insurance> checkExistingInsurance(Long insuranceId);
-    Dog checkExistingDog(Long dogId);
+    Optional<Dog> checkExistingDog(Long dogId);
     void save(InsuranceRecord insuranceRecord);
 
 }
