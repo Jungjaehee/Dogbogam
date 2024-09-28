@@ -1,6 +1,6 @@
 package com.dog.health.dogbogamserver.domain.healthProblems.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.dogs.adapter.out.persistence.DogEntity;
+import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

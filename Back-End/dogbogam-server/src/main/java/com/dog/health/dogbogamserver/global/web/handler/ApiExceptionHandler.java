@@ -1,5 +1,6 @@
 package com.dog.health.dogbogamserver.global.web.handler;
 
+import com.dog.health.dogbogamserver.global.web.exception.CustomException;
 import com.dog.health.dogbogamserver.global.web.dto.response.ExceptionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.ConversionNotSupportedException;
@@ -26,6 +27,13 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
+    // 커스텀 예외 처리
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ExceptionResponse> handleCustomException(CustomException exception) {
+        ExceptionResponse response = buildResponse(exception.getErrorCode().getHttpStatus(), exception.getMessage());
+        return new ResponseEntity<>(response, exception.getErrorCode().getHttpStatus());
+    }
+
     // 클라이언트의 잘못된 요청으로 발생하는 예외 처리
     @ExceptionHandler({
             IllegalArgumentException.class,
@@ -43,7 +51,7 @@ public class ApiExceptionHandler {
     }
 
     // 존재하지 않는 URL 또는 리소스를 요청할 때 발생하는 예외를 처리
-    @ExceptionHandler(NoHandlerFoundException.class)
+    @ExceptionHandler({NoHandlerFoundException.class})
     public ResponseEntity<ExceptionResponse> notFoundExceptionHandler(NoHandlerFoundException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
