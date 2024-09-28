@@ -3,6 +3,7 @@ package com.dog.health.dogbogamserver.domain.insuranceRecord.application.service
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.RegistRequestDto;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.UpdateRequestDto;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.in.FindInsuranceRecordUseCase;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.in.RegistInsuranceRecordUseCase;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.in.UpdateInsuranceRecordUseCase;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.out.SaveInsuranceRecordPort;
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class InsuranceRecordService implements RegistInsuranceRecordUseCase, UpdateInsuranceRecordUseCase {
+public class InsuranceRecordService implements RegistInsuranceRecordUseCase, UpdateInsuranceRecordUseCase, FindInsuranceRecordUseCase {
 
     private final SaveInsuranceRecordPort saveInsuranceRecordPort;
     private final LoadInsuranceRecordPort loadInsuranceRecordPort;
@@ -76,5 +77,13 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
                 .build();
 
         saveInsuranceRecordPort.save(insuranceRecord);
+    }
+
+    @Override
+    public InsuranceRecord findInsuranceRecordById(Long insuranceRecordId){
+        InsuranceRecord insuranceRecord = loadInsuranceRecordPort.loadInsuranceRecord(insuranceRecordId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 보험 기록이 존재하지 않습니다."));
+
+        return insuranceRecord;
     }
 }
