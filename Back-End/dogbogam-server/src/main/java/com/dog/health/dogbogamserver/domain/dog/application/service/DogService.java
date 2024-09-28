@@ -38,6 +38,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                 .birthDate(createDogDTO.getBirthDate())
                 .weight(createDogDTO.getWeight())
                 .isNeutered(createDogDTO.getIsNeutered())
+                .isDeleted(createDogDTO.isDeleted())
                 // 추후 이미지 추가
                 .build();
         createDogPort.save(createDog);
@@ -56,6 +57,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                     .isNeutered(existingDog.get().getIsNeutered())
                     .weight(existingDog.get().getWeight())
                     .gender(existingDog.get().getGender())
+                    .isDeleted(existingDog.get().getIsDeleted())
                     .build();
             updateDogPort.update(updatedDog);
         } else {
