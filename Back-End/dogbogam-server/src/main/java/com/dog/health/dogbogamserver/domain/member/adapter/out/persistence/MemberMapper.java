@@ -20,6 +20,7 @@ public class MemberMapper {
 
     public MemberEntity toEntity(Member domain){
         return MemberEntity.builder()
+                .memberId(domain.getMemberId())
                 .email(domain.getEmail())
                 .password(domain.getPassword())
                 .nickname(domain.getNickname())
