@@ -47,7 +47,7 @@ public class InsuranceRecordMapper {
                 insuranceRecord.getRegistDate(),
                 insuranceRecord.getMonthlyPayment(),
                 insuranceRecord.getExpirationDate(),
-                false
+                insuranceRecord.isDeleted()
         );
     }
 }
