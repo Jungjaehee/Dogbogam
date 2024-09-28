@@ -1,34 +1,28 @@
 package com.dog.health.dogbogamserver.domain.medicalRecords.application.service;
 
-import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogMapper;
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogPersistenceAdapter;
-import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.domain.medicalRecords.adapter.out.persistence.MedicalRecordEntity;
-import com.dog.health.dogbogamserver.domain.medicalRecords.adapter.out.persistence.MedicalRecordMapper;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.DeleteReportUseCase;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.FindReportUseCase;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.UpdateReportUseCase;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.out.DeleteReportPort;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.out.FindReportPort;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.out.UpdateReportPort;
+import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.*;
+import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.out.*;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.CreateReportRequestDto;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.CreateReportUseCase;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.out.CreateReportPort;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.UpdateReportRequestDto;
 import com.dog.health.dogbogamserver.domain.medicalRecords.domain.MedicalRecord;
-import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberPersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class MedicalRecordService implements CreateReportUseCase, UpdateReportUseCase, FindReportUseCase, DeleteReportUseCase {
+public class MedicalRecordService implements CreateReportUseCase, UpdateReportUseCase, FindReportUseCase,
+        DeleteReportUseCase, FindReportsUseCase {
     private final CreateReportPort createReportPort;
     private final UpdateReportPort updateReportPort;
     private final FindReportPort findReportPort;
     private final DeleteReportPort deleteReportPort;
+    private final FindReportsPort findReportsPort;
     private final DogPersistenceAdapter dogPersistenceAdapter;
 
     @Override
@@ -69,5 +63,12 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
     public void deleteReportUseCase(Long reportId) {
         log.info("Service Delete record : {}", reportId);
         deleteReportPort.deleteReport(reportId);
+    }
+
+    @Override
+    public List<MedicalRecord> findReportsByDogId(Long dogId) {
+        log.info("Service Find records : {}", dogId);
+        return findReportsPort.findReportsByDogId(dogId)
+                .orElseThrow(()->new IllegalArgumentException("없는 리포트입니다."));
     }
 }

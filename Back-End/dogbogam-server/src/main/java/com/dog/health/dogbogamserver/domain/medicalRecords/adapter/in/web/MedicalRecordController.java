@@ -1,16 +1,15 @@
 package com.dog.health.dogbogamserver.domain.medicalRecords.adapter.in.web;
 
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.DeleteReportUseCase;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.FindReportUseCase;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.UpdateReportUseCase;
+import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.*;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.CreateReportRequestDto;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.CreateReportUseCase;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.UpdateReportRequestDto;
 import com.dog.health.dogbogamserver.domain.medicalRecords.domain.MedicalRecord;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -22,6 +21,7 @@ public class MedicalRecordController {
     private final UpdateReportUseCase updateReportUseCase;
     private final FindReportUseCase findReportUseCase;
     private final DeleteReportUseCase deleteReportUseCase;
+    private final FindReportsUseCase findReportsUseCase;
 
     @GetMapping("/{recordId}")
     public SuccessResponse<MedicalRecord> getMedicalRecordById(@PathVariable("recordId") Long recordId) {
@@ -49,8 +49,8 @@ public class MedicalRecordController {
         return SuccessResponse.deleted();
     }
 
-//    @GetMapping("/dog/{dogId}")
-//    public ResponseEntity<List<MedicalRecord>> getAllMedicalRecordsForDog(@PathVariable Long dogId) {
-//        return ResponseEntity.ok(medicalRecordService.getAllMedicalRecordsForDog(dogId));
-//    }
+    @GetMapping("/dog/{dogId}")
+    public SuccessResponse<List<MedicalRecord>> getAllMedicalRecordsForDog(@PathVariable("dogId") Long dogId) {
+        return SuccessResponse.ok(findReportsUseCase.findReportsByDogId(dogId));
+    }
 }
