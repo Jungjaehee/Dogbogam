@@ -5,6 +5,6 @@ import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.Updat
 
 public interface UpdateInsuranceRecordUseCase {
 
-    void updateInsuranceRecord(UpdateInsuranceRecordRequestDto updateRequestDto);
+    void updateInsuranceRecord(Long memberId, UpdateInsuranceRecordRequestDto updateRequestDto);
 
 }

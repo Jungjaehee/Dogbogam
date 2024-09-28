@@ -26,7 +26,7 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     private final PageableLoadInsuranceRecordPort pageableLoadInsuranceRecordPort;
 
     @Override
-    public void registInsuranceRecord(RegistInsuranceRecordRequestDto registRequestDto){
+    public void registInsuranceRecord(Long memberId, RegistInsuranceRecordRequestDto registRequestDto){
         // 1. 이미 해당 펫이 해당 보험을 등록했었는지 검사
         Optional<InsuranceRecord> existInsuranceRecord = saveInsuranceRecordPort
                 .checkExistingInsuranceRecord(registRequestDto.getDogId(), registRequestDto.getInsuranceId());
@@ -43,7 +43,11 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
         Dog dog = saveInsuranceRecordPort.checkExistingDog(registRequestDto.getDogId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 반려견이 존재하지 않습니다."));
 
-        // 4. 해당 정보 저장
+        // 4. 해당 반려견의 보호자가 로그인한 멤버인지 확인
+        if(dog.getMember().getMemberId() != memberId)
+            throw new IllegalArgumentException("해당 반려견에 대한 접근 권한이 존재하지 않습니다.");
+
+        // 5. 해당 정보 저장
         InsuranceRecord insuranceRecord = InsuranceRecord.builder()
                 .insurance(insurance)
                 .dog(dog)
@@ -58,22 +62,20 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     }
 
     @Override
-    public void updateInsuranceRecord(UpdateInsuranceRecordRequestDto updateRequestDto){
+    public void updateInsuranceRecord(Long memberId, UpdateInsuranceRecordRequestDto updateRequestDto){
         // 1. 해당 펫이 해당 보험을 등록했는지 검사
-        loadInsuranceRecordPort.loadInsuranceRecord(updateRequestDto.getInsuranceRecordId())
+        InsuranceRecord existInsuranceRecord = loadInsuranceRecordPort.loadInsuranceRecord(updateRequestDto.getInsuranceRecordId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 보험 기록이 존재하지 않습니다."));
 
-        // 2. 펫 보험 가져오기
-        Insurance insurance = saveInsuranceRecordPort.checkExistingInsurance(updateRequestDto.getInsuranceId()).get();
+        // 2. 해당 반려견의 보호자가 로그인한 멤버인지 확인
+        if(existInsuranceRecord.getDog().getMember().getMemberId() != memberId)
+            throw new IllegalArgumentException("해당 반려견에 대한 접근 권한이 존재하지 않습니다.");
 
-        // 3. 펫 가져오기
-        Dog dog = saveInsuranceRecordPort.checkExistingDog(updateRequestDto.getDogId()).get();
-
-        // 2. 수정
+        // 3. 수정
         InsuranceRecord insuranceRecord = InsuranceRecord.builder()
                 .insuranceRecordId(updateRequestDto.getInsuranceRecordId())
-                .insurance(insurance)
-                .dog(dog)
+                .insurance(existInsuranceRecord.getInsurance())
+                .dog(existInsuranceRecord.getDog())
                 .registDate(updateRequestDto.getRegistDate())
                 .expirationDate(updateRequestDto.getExpirationDate())
                 .monthlyPayment(updateRequestDto.getMonthlyPayment())
@@ -84,10 +86,16 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     }
 
     @Override
-    public InsuranceRecordResponseDto findInsuranceRecordById(Long insuranceRecordId){
+    public InsuranceRecordResponseDto findInsuranceRecordById(Long memberId, Long insuranceRecordId){
+        // 1. 해당 정보 조회
         InsuranceRecord insuranceRecord = loadInsuranceRecordPort.loadInsuranceRecord(insuranceRecordId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 보험 기록이 존재하지 않습니다."));
-
+        
+        // 2. 접근 권한 확인
+        if(insuranceRecord.getDog().getMember().getMemberId() != memberId)
+            throw new IllegalArgumentException("해당 보험 가입 정보에 대한 접근 권한이 존재하지 않습니다.");
+        
+        // 3. 결과 처리
         InsuranceRecordResponseDto responseDto = new InsuranceRecordResponseDto(insuranceRecord.getInsuranceRecordId(),
                 insuranceRecord.getDog().getDogId(), insuranceRecord.getDog().getName(),
                 insuranceRecord.getInsurance().getInsuranceId(), insuranceRecord.getInsurance().getName(),
@@ -98,27 +106,36 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     }
 
     @Override
-    public void deleteInsuranceRecord(Long insuranceRecordId){
+    public void deleteInsuranceRecord(Long memberId, Long insuranceRecordId){
         // 1. 해당 보험 기록 존재 확인
         InsuranceRecord insuranceRecord = loadInsuranceRecordPort.loadInsuranceRecord(insuranceRecordId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 보험 기록이 존재하지 않습니다."));
+
+        // 2. 접근 권한 확인
+        if(insuranceRecord.getDog().getMember().getMemberId() != memberId)
+            throw new IllegalArgumentException("해당 보험 가입 정보에 대한 접근 권한이 존재하지 않습니다.");
         
-        // 2. 논리 삭제
+        // 3. 논리 삭제
         insuranceRecord.delete();
 
-        // 3. DB 수정
+        // 4. DB 수정
         saveInsuranceRecordPort.save(insuranceRecord);
     }
 
     @Override
-    public Map<String, Object> findAllInsuranceRecord(Long dogId, int size, int page){
+    public Map<String, Object> findAllInsuranceRecord(Long memberId, Long dogId, int size, int page){
         // 1. 반려견 존재 여부 검사
-        saveInsuranceRecordPort.checkExistingDog(dogId);
+        Dog dog = saveInsuranceRecordPort.checkExistingDog(dogId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 반려견이 존재하지 않습니다."));
 
-        // 2. 리스트 조회
+        // 2. 해당 반려견에 대한 접근 권한 확인
+        if(dog.getMember().getMemberId() != memberId)
+            throw new IllegalArgumentException("해당 반려견에 대한 접근 권한이 존재하지 않습니다.");
+
+        // 3. 리스트 조회
         Page<InsuranceRecord> insuranceRecordPage = pageableLoadInsuranceRecordPort.findAllInsuranceRecords(dogId, size, page);
 
-        // 3. 결과 처리
+        // 4. 결과 처리
         Map<String, Object> result = new HashMap<>();
 
         List<InsuranceRecordResponseDto> insuranceRecordResponseDtoList = new ArrayList<>();

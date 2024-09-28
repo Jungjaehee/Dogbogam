@@ -4,6 +4,6 @@ import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.Regis
 
 public interface RegistInsuranceRecordUseCase {
 
-    void registInsuranceRecord(RegistInsuranceRecordRequestDto registRequestDto);
+    void registInsuranceRecord(Long memberId, RegistInsuranceRecordRequestDto registRequestDto);
 
 }

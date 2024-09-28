@@ -4,6 +4,6 @@ import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.Insur
 
 public interface FindInsuranceRecordUseCase {
 
-    InsuranceRecordResponseDto findInsuranceRecordById(Long insuranceRecordId);
+    InsuranceRecordResponseDto findInsuranceRecordById(Long memberId, Long insuranceRecordId);
 
 }
