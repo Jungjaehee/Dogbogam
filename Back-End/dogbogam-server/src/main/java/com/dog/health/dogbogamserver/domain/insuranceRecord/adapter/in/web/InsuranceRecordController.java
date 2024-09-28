@@ -1,11 +1,8 @@
 package com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.web;
 
-import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.RegistRequestDto;
-import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.UpdateRequestDto;
-import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.in.DeleteInsuranceRecordUseCase;
-import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.in.FindInsuranceRecordUseCase;
-import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.in.RegistInsuranceRecordUseCase;
-import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.in.UpdateInsuranceRecordUseCase;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.RegistInsuranceRecordRequestDto;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.UpdateInsuranceRecordRequestDto;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.in.*;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,16 +16,17 @@ public class InsuranceRecordController {
     private final UpdateInsuranceRecordUseCase updateInsuranceRecordUseCase;
     private final FindInsuranceRecordUseCase findInsuranceRecordUseCase;
     private final DeleteInsuranceRecordUseCase deleteInsuranceRecordUseCase;
+    private final FindAllInsuranceRecordUseCase findAllInsuranceRecordUseCase;
 
     @PostMapping
-    public SuccessResponse<?> saveInsuranceRecord(@RequestBody final RegistRequestDto registRequestDto) {
+    public SuccessResponse<?> saveInsuranceRecord(@RequestBody final RegistInsuranceRecordRequestDto registRequestDto) {
         registInsuranceRecordUseCase.registInsuranceRecord(registRequestDto);
 
         return SuccessResponse.created();
     }
 
     @PatchMapping
-    public SuccessResponse<?> updateInsuranceRecord(@RequestBody final UpdateRequestDto updateRequestDto) {
+    public SuccessResponse<?> updateInsuranceRecord(@RequestBody final UpdateInsuranceRecordRequestDto updateRequestDto) {
         updateInsuranceRecordUseCase.updateInsuranceRecord(updateRequestDto);
 
         return SuccessResponse.updated();
@@ -40,10 +38,17 @@ public class InsuranceRecordController {
     }
 
 
-    @DeleteMapping("/{insuranceRecordId")
+    @DeleteMapping("/{insuranceRecordId}")
     public SuccessResponse<?> deleteInsuranceRecord(@PathVariable("insuranceRecordId")Long insuranceRecordId) {
         deleteInsuranceRecordUseCase.deleteInsuranceRecord(insuranceRecordId);
 
         return SuccessResponse.deleted();
+    }
+
+    @GetMapping("all/{dogId}")
+    public SuccessResponse<?> findAllInsuranceRecord(@PathVariable("dogId") Long dogId,
+                                                     @RequestParam(value = "size", defaultValue = "5") int size,
+                                                     @RequestParam(value = "page", defaultValue = "1") int page) {
+        return SuccessResponse.ok(findAllInsuranceRecordUseCase.findAllInsuranceRecord(dogId, size, page));
     }
 }
