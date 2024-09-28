@@ -16,6 +16,7 @@ public class UpdateDogDTO {
     @NotBlank(message = "견종은 필수 입니다.")
     private String breed;
     @NotBlank(message = "성별은 필수 입니다.")
+    private String gender;
     private LocalDate birthDate;
     private Double weight;
     private Boolean isNeutered;

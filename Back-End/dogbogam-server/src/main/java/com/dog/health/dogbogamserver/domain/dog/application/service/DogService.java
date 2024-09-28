@@ -50,13 +50,13 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
         if (existingDog.isPresent()) {
             Dog updatedDog = Dog.builder()
                     .member(existingDog.get().getMember())
-                    .breed(existingDog.get().getBreed())
-                    .name(existingDog.get().getName())
-                    .birthDate(existingDog.get().getBirthDate())
-                    .dogId(existingDog.get().getDogId())
-                    .isNeutered(existingDog.get().getIsNeutered())
-                    .weight(existingDog.get().getWeight())
-                    .gender(existingDog.get().getGender())
+                    .breed(updateDogDTO.getBreed())
+                    .name(updateDogDTO.getName())
+                    .birthDate(updateDogDTO.getBirthDate())
+                    .dogId(updateDogDTO.getDogId())
+                    .isNeutered(updateDogDTO.getIsNeutered())
+                    .weight(updateDogDTO.getWeight())
+                    .gender(updateDogDTO.getGender())
                     .isDeleted(existingDog.get().getIsDeleted())
                     .build();
             updateDogPort.update(updatedDog);
