@@ -1,6 +1,9 @@
 package com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,14 +11,16 @@ import java.time.LocalDate;
 
 @AllArgsConstructor
 @Getter
-public class RegistRequestDto {
+public class UpdateInsuranceRecordRequestDto {
+
+    @NotNull(message = "보험 기록 Id가 비어있습니다.")
+    private Long insuranceRecordId;
 
     @NotNull(message = "보험 Id가 비어있습니다.")
     private Long insuranceId;
 
     @NotNull(message = "반려견 Id가 비어있습니다.")
     private Long dogId;
-
 
     @NotNull(message = "보험 등록 날짜가 비어있습니다.")
     @PastOrPresent(message = "보험 등록 날짜는 오늘 이전만 가능합니다.")
