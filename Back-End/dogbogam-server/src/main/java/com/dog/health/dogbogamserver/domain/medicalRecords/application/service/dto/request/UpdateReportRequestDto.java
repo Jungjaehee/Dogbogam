@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @ToString
 public class UpdateReportRequestDto {
     @NotBlank(message = "진료 기록 아이디는 필수 입니다.")
-    Long reportId;
+    Long medicalRecordId;
 
     @NotBlank(message = "반려견 아이디는 필수 입니다.")
     Long dogId;
