@@ -2,26 +2,27 @@ package com.dog.health.dogbogamserver.domain.dog.application.service;
 
 import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.CreateDogDTO;
 import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.UpdateDogDTO;
-import com.dog.health.dogbogamserver.domain.dog.application.port.in.CreateDogUseCase;
-import com.dog.health.dogbogamserver.domain.dog.application.port.in.UpdateDogUseCase;
-import com.dog.health.dogbogamserver.domain.dog.application.port.in.DeleteDogUseCase;
-import com.dog.health.dogbogamserver.domain.dog.application.port.in.FindDogDetailsUseCase;
+import com.dog.health.dogbogamserver.domain.dog.application.port.in.*;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.CreateDogPort;
+import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogsPort;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.UpdateDogPort;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogDetailsPort;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDogUseCase, FindDogDetailsUseCase {
+public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDogUseCase, FindDogDetailsUseCase,
+        FindDogsUseCase {
 
     private final CreateDogPort createDogPort;
     private final UpdateDogPort updateDogPort;
     private final FindDogDetailsPort findDogDetailsPort;
+    private final FindDogsPort findDogsPort;
 
     @Override
     public void createDog(CreateDogDTO createDogDTO) {
@@ -61,5 +62,10 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     @Override
     public Optional<Dog> findDogDetails(Long dogId) {
         return findDogDetailsPort.findByDogId(dogId);
+    }
+
+    @Override
+    public Optional<List<Dog>> findDogsByMemberId(Long memberId) {
+        return findDogsPort.findDogsByMemberId(memberId);
     }
 }

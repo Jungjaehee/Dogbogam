@@ -10,6 +10,9 @@ import com.dog.health.dogbogamserver.domain.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class DogMapper {
@@ -68,5 +71,15 @@ public class DogMapper {
                 .imageUrl(dogEntity.getImageUrl())
                 .isDeleted(dogEntity.getIsDeleted())
                 .build();
+    }
+
+    public List<Dog> entityListToDomainList(List<DogEntity> entityList) {
+        List<Dog> dogList = new ArrayList<>();
+
+        for (DogEntity dogEntity : entityList) {
+            dogList.add(toDomain(dogEntity));
+        }
+
+        return dogList;
     }
 }
