@@ -26,5 +26,8 @@ public class UpdateVaccinationRecordRequestDto {
     @NotBlank(message = "예방 접종 차수는 필수 입니다.")
     int vaccinationRound;
 
+    @NotBlank(message = "비용은 필수 입니다.")
+    Long cost;
+
     // File
 }

@@ -35,6 +35,8 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견 입니다.")))
                 .content(createVaccinationRecordRequestDto.getContent())
                 .hospital(createVaccinationRecordRequestDto.getHospital())
+                .cost(createVaccinationRecordRequestDto.getCost())
+                .vaccinationRound(createVaccinationRecordRequestDto.getVaccinationRound())
                 .build();
         createVaccinationRecordPort.createVaccinationRecord(vaccinationRecordEntity);
     }
@@ -49,6 +51,8 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견입니다.")))
                 .content(updateVaccinationRecordRequestDto.getContent())
                 .hospital(updateVaccinationRecordRequestDto.getHospital())
+                .cost(updateVaccinationRecordRequestDto.getCost())
+                .vaccinationRound(updateVaccinationRecordRequestDto.getVaccinationRound())
                 .build();
         updateVaccinationRecordPort.updateVaccinationRecord(vaccinationRecordEntity);
     }
