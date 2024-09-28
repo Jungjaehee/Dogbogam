@@ -1,9 +1,9 @@
 package com.dog.health.dogbogamserver.domain.vaccinationRecords.adapter.in.web;
 
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.*;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.CreateReportRequestDto;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.UpdateReportRequestDto;
-import com.dog.health.dogbogamserver.domain.medicalRecords.domain.MedicalRecord;
+import com.dog.health.dogbogamserver.domain.vaccinationRecords.application.port.in.*;
+import com.dog.health.dogbogamserver.domain.vaccinationRecords.application.service.dto.request.CreateVaccinationRecordRequestDto;
+import com.dog.health.dogbogamserver.domain.vaccinationRecords.application.service.dto.request.UpdateVaccinationRecordRequestDto;
+import com.dog.health.dogbogamserver.domain.vaccinationRecords.domain.VaccinationRecord;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,40 +17,40 @@ import java.util.List;
 @RequestMapping("/vaccination-records")
 public class VaccinationRecordController {
 
-    private final CreateReportUseCase createReportUseCase;
-    private final UpdateReportUseCase updateReportUseCase;
-    private final FindReportUseCase findReportUseCase;
-    private final DeleteReportUseCase deleteReportUseCase;
-    private final FindReportsUseCase findReportsUseCase;
+    private final CreateVaccinationRecordUseCase createVaccinationRecordUseCase;
+    private final UpdateVaccinationRecordUseCase updateVaccinationRecordUseCase;
+    private final FindVaccinationRecordUseCase findVaccinationRecordUseCase;
+    private final DeleteVaccinationRecordUseCase deleteVaccinationRecordUseCase;
+    private final FindVaccinationRecordsUseCase findVaccinationRecordsUseCase;
 
     @GetMapping("/{recordId}")
-    public SuccessResponse<MedicalRecord> getMedicalRecordById(@PathVariable("recordId") Long recordId) {
-        return SuccessResponse.ok(findReportUseCase.findMedicalRecordById(recordId));
+    public SuccessResponse<VaccinationRecord> getVaccinationRecordById(@PathVariable("recordId") Long recordId) {
+        return SuccessResponse.ok(findVaccinationRecordUseCase.findVaccinationRecordById(recordId));
     }
 
     @PostMapping
-    public SuccessResponse<?> createMedicalRecord(@RequestBody CreateReportRequestDto createReportRequestDto) {
-        log.info("Controller Create medical record: {}", createReportRequestDto);
-        createReportUseCase.createReport(createReportRequestDto);
+    public SuccessResponse<?> createVaccinationRecord(@RequestBody CreateVaccinationRecordRequestDto createVaccinationRecordRequestDto) {
+        log.info("Controller Create Vaccination record: {}", createVaccinationRecordRequestDto);
+        createVaccinationRecordUseCase.createVaccinationRecord(createVaccinationRecordRequestDto);
         return SuccessResponse.created();
     }
 
     @PatchMapping
-    public SuccessResponse<?> updateMedicalRecord(@RequestBody UpdateReportRequestDto updateReportRequestDto) {
-        log.info("Controller Update medical record: {}", updateReportRequestDto);
-        updateReportUseCase.updateReport(updateReportRequestDto);
+    public SuccessResponse<?> updateVaccinationRecord(@RequestBody UpdateVaccinationRecordRequestDto updateVaccinationRecordRequestDto) {
+        log.info("Controller Update Vaccination record: {}", updateVaccinationRecordRequestDto);
+        updateVaccinationRecordUseCase.updateVaccinationRecord(updateVaccinationRecordRequestDto);
         return SuccessResponse.updated();
     }
 
     @DeleteMapping("/{recordId}")
-    public SuccessResponse<?> deleteMedicalRecord(@PathVariable("recordId") Long recordId) {
-        log.info("Controller Delete medical record: {}", recordId);
-        deleteReportUseCase.deleteReportUseCase(recordId);
+    public SuccessResponse<?> deleteVaccinationRecord(@PathVariable("recordId") Long recordId) {
+        log.info("Controller Delete Vaccination record: {}", recordId);
+        deleteVaccinationRecordUseCase.deleteVaccinationRecord(recordId);
         return SuccessResponse.deleted();
     }
 
     @GetMapping("/dog/{dogId}")
-    public SuccessResponse<List<MedicalRecord>> getAllMedicalRecordsForDog(@PathVariable("dogId") Long dogId) {
-        return SuccessResponse.ok(findReportsUseCase.findReportsByDogId(dogId));
+    public SuccessResponse<List<VaccinationRecord>> getAllVaccinationRecordsForDog(@PathVariable("dogId") Long dogId) {
+        return SuccessResponse.ok(findVaccinationRecordsUseCase.findVaccinationsByDogId(dogId));
     }
 }
