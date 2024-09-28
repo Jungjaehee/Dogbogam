@@ -42,4 +42,21 @@ public class InsuranceMapper {
         ));
     }
 
+    public InsuranceEntity toEntity(Insurance insurance){
+        return new InsuranceEntity(
+                insurance.getInsuranceId(),
+                insurance.getName(),
+                insurance.getCompany(),
+                insurance.getMinAge(),
+                insurance.getMaxAge(),
+                insurance.getFee(),
+                insurance.getLimit(),
+                insurance.getPeriod(),
+                insurance.getDescription(),
+                insurance.getCoverageRatio(),
+                insurance.getS3ImageName(),
+                insurance.getS3ImageUrl()
+        );
+    }
+
 }
