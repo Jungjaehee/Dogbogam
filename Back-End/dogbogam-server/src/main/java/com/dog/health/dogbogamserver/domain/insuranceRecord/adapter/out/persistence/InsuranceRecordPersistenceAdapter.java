@@ -5,6 +5,7 @@ import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogMappe
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogSpringDataRepository;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.domain.insurance.adapter.out.persistence.InsuranceMapper;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.out.LoadInsuranceRecordPort;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.out.SaveInsuranceRecordPort;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.domain.InsuranceRecord;
 import com.dog.health.dogbogamserver.domain.insurance.adapter.out.persistence.InsuranceSpringDataRepository;
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class InsuranceRecordPersistenceAdapter implements SaveInsuranceRecordPort {
+public class InsuranceRecordPersistenceAdapter implements SaveInsuranceRecordPort, LoadInsuranceRecordPort {
 
     private final InsuranceRecordMapper insuranceRecordMapper;
     private final InsuranceMapper insuranceMapper;
@@ -45,6 +46,11 @@ public class InsuranceRecordPersistenceAdapter implements SaveInsuranceRecordPor
     public Dog checkExistingDog(Long dogId){
         DogEntity dogEntity = dogRepository.findById(dogId).orElseThrow(() -> new IllegalArgumentException("해당 반려견이 존재하지 않습니다."));
         return dogMapper.toDomain(dogEntity);
+    }
+
+    @Override
+    public Optional<InsuranceRecord> loadInsuranceRecord(Long insuranceRecordId){
+        return insuranceRecordMapper.toOptionalDomain(insuranceRecordRepository.findById(insuranceRecordId));
     }
 
 }
