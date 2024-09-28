@@ -32,9 +32,8 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase {
                 .orElseThrow(() -> new IllegalArgumentException("해당 펫보험이 존재하지 않습니다."));
         
         // 3. 해당 펫이 존재하는지 검사
-        Dog dog = saveInsuranceRecordPort.checkExistingDog(registRequestDto.getDogId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 반려견이 존재하지 않습니다."));
-        
+        Dog dog = saveInsuranceRecordPort.checkExistingDog(registRequestDto.getDogId());
+
         // 4. 해당 정보 저장
         InsuranceRecord insuranceRecord = InsuranceRecord.builder()
                 .insurance(insurance)
