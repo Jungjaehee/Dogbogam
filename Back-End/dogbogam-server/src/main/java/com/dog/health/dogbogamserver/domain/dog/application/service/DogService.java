@@ -8,6 +8,8 @@ import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogsPor
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.UpdateDogPort;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogDetailsPort;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
+import com.dog.health.dogbogamserver.domain.member.application.service.MemberService;
+import com.dog.health.dogbogamserver.domain.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +25,22 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     private final UpdateDogPort updateDogPort;
     private final FindDogDetailsPort findDogDetailsPort;
     private final FindDogsPort findDogsPort;
+    private final MemberService memberService;
 
     @Override
     public void createDog(CreateDogDTO createDogDTO) {
-        createDogPort.save(createDogDTO);
+        Member member = memberService.findByMemberId(createDogDTO.getMemberId());
+        Dog createDog = Dog.builder()
+                .name(createDogDTO.getName())
+                .member(member)
+                .gender(createDogDTO.getGender())
+                .breed(createDogDTO.getBreed())
+                .birthDate(createDogDTO.getBirthDate())
+                .weight(createDogDTO.getWeight())
+                .isNeutered(createDogDTO.getIsNeutered())
+                // 추후 이미지 추가
+                .build();
+        createDogPort.save(createDog);
     }
 
     @Override
