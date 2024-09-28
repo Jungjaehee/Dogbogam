@@ -2,8 +2,11 @@ package com.dog.health.dogbogamserver.domain.insuranceRecord.application.service
 
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.RegistRequestDto;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.UpdateRequestDto;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.in.RegistInsuranceRecordUseCase;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.in.UpdateInsuranceRecordUseCase;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.out.SaveInsuranceRecordPort;
+import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.out.LoadInsuranceRecordPort;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.domain.InsuranceRecord;
 import com.dog.health.dogbogamserver.domain.insurance.domain.Insurance;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +16,10 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class InsuranceRecordService implements RegistInsuranceRecordUseCase {
+public class InsuranceRecordService implements RegistInsuranceRecordUseCase, UpdateInsuranceRecordUseCase {
 
     private final SaveInsuranceRecordPort saveInsuranceRecordPort;
+    private final LoadInsuranceRecordPort loadInsuranceRecordPort;
 
     @Override
     public void registInsuranceRecord(RegistRequestDto registRequestDto){
@@ -46,5 +50,31 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase {
 
         saveInsuranceRecordPort.save(insuranceRecord);
 
+    }
+
+    @Override
+    public void updateInsuranceRecord(UpdateRequestDto updateRequestDto){
+        // 1. 해당 펫이 해당 보험을 등록했는지 검사
+        loadInsuranceRecordPort.loadInsuranceRecord(updateRequestDto.getInsuranceRecordId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 보험 기록이 존재하지 않습니다."));
+
+        // 2. 펫 보험 가져오기
+        Insurance insurance = saveInsuranceRecordPort.checkExistingInsurance(updateRequestDto.getInsuranceId()).get();
+
+        // 3. 펫 가져오기
+        Dog dog = saveInsuranceRecordPort.checkExistingDog(updateRequestDto.getDogId());
+
+        // 2. 수정
+        InsuranceRecord insuranceRecord = InsuranceRecord.builder()
+                .insuranceRecordId(updateRequestDto.getInsuranceRecordId())
+                .insurance(insurance)
+                .dog(dog)
+                .registDate(updateRequestDto.getRegistDate())
+                .expirationDate(updateRequestDto.getExpirationDate())
+                .monthlyPayment(updateRequestDto.getMonthlyPayment())
+                .isDeleted(false)
+                .build();
+
+        saveInsuranceRecordPort.save(insuranceRecord);
     }
 }
