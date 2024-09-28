@@ -26,4 +26,8 @@ public class InsuranceRecord {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
+    public void delete(){
+        isDeleted = true;
+    }
+
 }
