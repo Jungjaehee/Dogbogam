@@ -43,7 +43,7 @@ public class MedicalRecordEntity extends BaseTimeEntity {
     @Column(name = "image_url", nullable = true)
     private String imageUrl;
 
-    @Column(name = "cost", nullable = true)
+    @Column(name = "cost", nullable = false)
     private Long cost;
 
     public void update(MedicalRecord medicalRecord) {

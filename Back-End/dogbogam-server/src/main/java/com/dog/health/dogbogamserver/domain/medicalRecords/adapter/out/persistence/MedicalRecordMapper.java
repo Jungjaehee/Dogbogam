@@ -22,6 +22,7 @@ public class MedicalRecordMapper {
                 .recordTime(entity.getRecordTime())
                 .content(entity.getContent())
                 .hospital(entity.getHospital())
+                .cost(entity.getCost())
                 .imageName(entity.getImageName())
                 .imageUrl(entity.getImageUrl())
                 .build();
@@ -38,6 +39,7 @@ public class MedicalRecordMapper {
                 .recordTime(domain.getRecordTime())
                 .content(domain.getContent())
                 .hospital(domain.getHospital())
+                .cost(domain.getCost())
                 .imageName(domain.getImageName())
                 .imageUrl(domain.getImageUrl())
                 .build();
