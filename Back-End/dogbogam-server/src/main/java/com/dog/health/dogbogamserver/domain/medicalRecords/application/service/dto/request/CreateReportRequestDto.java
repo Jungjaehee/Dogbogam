@@ -3,7 +3,7 @@ package com.dog.health.dogbogamserver.domain.medicalRecords.application.service.
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 public class CreateReportRequestDto {
@@ -11,10 +11,14 @@ public class CreateReportRequestDto {
     Long dogId;
 
     @NotNull(message = "진료 날짜는 필수 입니다.")
-    LocalDate recordDate;
+    LocalDateTime recordTime;
     String content;
 
     @NotNull(message = "병원 이름은 필수 입니다.")
     String hospital;
+
+    @NotNull(message = "비용은 필수 입니다.")
+    Long cost;
+
     // File
 }

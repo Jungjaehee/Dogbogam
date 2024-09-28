@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @ToString
@@ -16,7 +16,7 @@ public class UpdateReportRequestDto {
     Long dogId;
 
     @NotNull(message = "진료 날짜는 필수 입니다.")
-    LocalDate recordDate;
+    LocalDateTime recordTime;
     String content;
 
     @NotNull(message = "병원 이름은 필수 입니다.")

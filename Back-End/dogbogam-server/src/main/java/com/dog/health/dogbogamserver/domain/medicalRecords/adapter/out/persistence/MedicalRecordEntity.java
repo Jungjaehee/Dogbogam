@@ -28,8 +28,8 @@ public class MedicalRecordEntity extends BaseTimeEntity {
     @JoinColumn(name = "dog_id", nullable = false)
     private DogEntity dog;
 
-    @Column(name = "record_date", nullable = false)
-    private LocalDate recordDate;
+    @Column(name = "record_time", nullable = false)
+    private LocalDateTime recordTime;
 
     @Column(name = "content", columnDefinition = "TEXT", nullable = true)
     private String content;
@@ -43,8 +43,11 @@ public class MedicalRecordEntity extends BaseTimeEntity {
     @Column(name = "image_url", nullable = true)
     private String imageUrl;
 
+    @Column(name = "cost", nullable = true)
+    private Long cost;
+
     public void update(MedicalRecord medicalRecord) {
-        recordDate = medicalRecord.getRecordDate();
+        recordTime = medicalRecord.getRecordTime();
         content = medicalRecord.getContent();
         hospital = medicalRecord.getHospital();
     }

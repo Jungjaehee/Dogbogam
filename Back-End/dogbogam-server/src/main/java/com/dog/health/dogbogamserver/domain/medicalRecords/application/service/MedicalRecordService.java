@@ -29,7 +29,7 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
     public void createReport(CreateReportRequestDto createReportRequestDto) {
         log.info("Service Create record : {}", createReportRequestDto);
         MedicalRecordEntity medicalRecordEntity = MedicalRecordEntity.builder()
-                .recordDate(createReportRequestDto.getRecordDate())
+                .recordTime(createReportRequestDto.getRecordTime())
                 .dog(dogPersistenceAdapter.findEntityByDogId(createReportRequestDto.getDogId())
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견 입니다.")))
                 .content(createReportRequestDto.getContent())
@@ -43,7 +43,7 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
         log.info("Service Update record : {}", updateReportRequestDto);
         MedicalRecordEntity medicalRecordEntity = MedicalRecordEntity.builder()
                 .medicalRecordId(updateReportRequestDto.getReportId())
-                .recordDate(updateReportRequestDto.getRecordDate())
+                .recordTime(updateReportRequestDto.getRecordTime())
                 .dog(dogPersistenceAdapter.findEntityByDogId(updateReportRequestDto.getDogId())
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견입니다.")))
                 .content(updateReportRequestDto.getContent())
