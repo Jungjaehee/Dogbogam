@@ -1,6 +1,7 @@
 package com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence;
 
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.CreateAiDiagnosisPort;
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.FindAiDiagnosesPort;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.FindAiDiagnosisPort;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.request.CreateAiDiagnosisRequestDto;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
@@ -14,10 +15,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, FindAiDiagnosisPort {
+public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, FindAiDiagnosisPort, FindAiDiagnosesPort {
     private final AiDiagnosisMapper aiDiagnosisMapper;
     private final AiDiagnosisSpringDataRepository jpaRepository;
     private final DogPersistenceAdapter dogPersistenceAdapter;
@@ -49,5 +53,10 @@ public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, Fin
                 .orElseThrow(()->new CustomException(ErrorCode.AI_DIAGNOSIS_NOT_FOUND));
         log.info("AI diagnosis aiDiagnosisEntity: {}", aiDiagnosisEntity);
         return aiDiagnosisMapper.toDomain(aiDiagnosisEntity);
+    }
+
+    @Override
+    public List<AiDiagnosis> findAiDiagnosesByDogId(Long dogId) {
+        return Optional.empty();
     }
 }
