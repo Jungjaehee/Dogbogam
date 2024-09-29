@@ -10,6 +10,9 @@ import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogDeta
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.domain.member.application.service.MemberService;
 import com.dog.health.dogbogamserver.domain.member.domain.Member;
+import com.dog.health.dogbogamserver.global.auth.utils.JWTProvider;
+import com.dog.health.dogbogamserver.global.web.exception.CustomException;
+import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +29,11 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     private final FindDogDetailsPort findDogDetailsPort;
     private final FindDogsPort findDogsPort;
     private final MemberService memberService;
+    private final JWTProvider jwtProvider;
 
     @Override
-    public void createDog(CreateDogDTO createDogDTO) {
-        Member member = memberService.findByMemberId(createDogDTO.getMemberId());
+    public void createDog(CreateDogDTO createDogDTO, Long memberId) {
+        Member member = memberService.findByMemberId(memberId);
         Dog createDog = Dog.builder()
                 .name(createDogDTO.getName())
                 .member(member)
@@ -45,11 +49,13 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     }
 
     @Override
-    public void updateDog(UpdateDogDTO updateDogDTO) {
+    public void updateDog(UpdateDogDTO updateDogDTO, Long memberId) {
+        Member member = memberService.findByMemberId(memberId);
+
         Optional<Dog> existingDog = findDogDetailsPort.findByDogId(updateDogDTO.getDogId());
         if (existingDog.isPresent()) {
             Dog updatedDog = Dog.builder()
-                    .member(existingDog.get().getMember())
+                    .member(member)
                     .breed(updateDogDTO.getBreed())
                     .name(updateDogDTO.getName())
                     .birthDate(updateDogDTO.getBirthDate())
@@ -61,7 +67,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                     .build();
             updateDogPort.update(updatedDog);
         } else {
-            throw new IllegalArgumentException("해당 아이디 {" + updateDogDTO.getDogId() + "}는 없습니다.");
+            throw new CustomException(ErrorCode.DOG_NOT_FOUND);
         }
     }
 

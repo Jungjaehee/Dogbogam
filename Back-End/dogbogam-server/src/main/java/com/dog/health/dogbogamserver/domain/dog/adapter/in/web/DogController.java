@@ -4,9 +4,12 @@ import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.CreateDogDTO;
 import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.UpdateDogDTO;
 import com.dog.health.dogbogamserver.domain.dog.application.port.in.*;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
+import com.dog.health.dogbogamserver.domain.member.application.service.MemberService;
+import com.dog.health.dogbogamserver.global.auth.dto.MemberPrincipal;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -21,16 +24,17 @@ public class DogController {
     private final DeleteDogUseCase deleteDogUseCase;
     private final FindDogDetailsUseCase findDogDetailsUseCase;
     private final FindDogsUseCase findDogsUseCase;
+    private final MemberService memberService;
 
     @PostMapping
-    public SuccessResponse<?> createDog(@Valid @RequestBody CreateDogDTO createDogDTO) {
-        createDogUseCase.createDog(createDogDTO);
+    public SuccessResponse<?> createDog(@AuthenticationPrincipal MemberPrincipal memberPrincipal, @Valid @RequestBody CreateDogDTO createDogDTO) {
+        createDogUseCase.createDog(createDogDTO, memberPrincipal.getMemberId());
         return SuccessResponse.created();
     }
 
     @PatchMapping
-    public SuccessResponse<?> updateDog(@Valid @RequestBody UpdateDogDTO updateDogDTO) {
-        updateDogUseCase.updateDog(updateDogDTO);
+    public SuccessResponse<?> updateDog(@AuthenticationPrincipal MemberPrincipal memberPrincipal, @Valid @RequestBody UpdateDogDTO updateDogDTO) {
+        updateDogUseCase.updateDog(updateDogDTO, memberPrincipal.getMemberId());
         return SuccessResponse.updated();
     }
 
@@ -47,8 +51,8 @@ public class DogController {
                 .orElseGet(() -> SuccessResponse.ok(null)));  // SuccessResponse.ok()로 처리
     }
 
-    @GetMapping("/list/{memberId}")
-    public SuccessResponse<?> getDogList(@PathVariable("memberId") Long memberId) {
-        return SuccessResponse.ok(findDogsUseCase.findDogsByMemberId(memberId));
+    @GetMapping("/list")
+    public SuccessResponse<?> getDogList(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        return SuccessResponse.ok(findDogsUseCase.findDogsByMemberId(memberPrincipal.getMemberId()));
     }
 }
