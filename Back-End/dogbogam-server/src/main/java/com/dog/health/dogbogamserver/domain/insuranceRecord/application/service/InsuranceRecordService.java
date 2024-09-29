@@ -10,6 +10,8 @@ import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.out
 import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.out.LoadInsuranceRecordPort;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.domain.InsuranceRecord;
 import com.dog.health.dogbogamserver.domain.insurance.domain.Insurance;
+import com.dog.health.dogbogamserver.global.web.exception.CustomException;
+import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -32,20 +34,20 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
                 .checkExistingInsuranceRecord(registRequestDto.getDogId(), registRequestDto.getInsuranceId());
 
         if(existInsuranceRecord.isPresent()){
-            throw new IllegalArgumentException("이미 등록된 보험입니다.");
+            throw new CustomException(ErrorCode.ALREADY_EXIST_INSURANCE_RECORD);
         }
 
         // 2. 해당 펫 보험이 존재하는지 검사
         Insurance insurance = saveInsuranceRecordPort.checkExistingInsurance(registRequestDto.getInsuranceId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 펫보험이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_INSURANCE));
         
         // 3. 해당 펫이 존재하는지 검사
         Dog dog = saveInsuranceRecordPort.checkExistingDog(registRequestDto.getDogId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 반려견이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_DOG));
 
         // 4. 해당 반려견의 보호자가 로그인한 멤버인지 확인
         if(dog.getMember().getMemberId() != memberId)
-            throw new IllegalArgumentException("해당 반려견에 대한 접근 권한이 존재하지 않습니다.");
+            throw new CustomException(ErrorCode.NO_ACCESS_DOG);
 
         // 5. 해당 정보 저장
         InsuranceRecord insuranceRecord = InsuranceRecord.builder()
@@ -65,11 +67,11 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     public void updateInsuranceRecord(Long memberId, UpdateInsuranceRecordRequestDto updateRequestDto){
         // 1. 해당 펫이 해당 보험을 등록했는지 검사
         InsuranceRecord existInsuranceRecord = loadInsuranceRecordPort.loadInsuranceRecord(updateRequestDto.getInsuranceRecordId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 보험 기록이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_INSURANCE_RECORD));
 
         // 2. 해당 반려견의 보호자가 로그인한 멤버인지 확인
         if(existInsuranceRecord.getDog().getMember().getMemberId() != memberId)
-            throw new IllegalArgumentException("해당 반려견에 대한 접근 권한이 존재하지 않습니다.");
+            throw new CustomException(ErrorCode.NO_ACCESS_DOG);
 
         // 3. 수정
         InsuranceRecord insuranceRecord = InsuranceRecord.builder()
@@ -89,11 +91,11 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     public InsuranceRecordResponseDto findInsuranceRecordById(Long memberId, Long insuranceRecordId){
         // 1. 해당 정보 조회
         InsuranceRecord insuranceRecord = loadInsuranceRecordPort.loadInsuranceRecord(insuranceRecordId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 보험 기록이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_INSURANCE_RECORD));
         
         // 2. 접근 권한 확인
         if(insuranceRecord.getDog().getMember().getMemberId() != memberId)
-            throw new IllegalArgumentException("해당 보험 가입 정보에 대한 접근 권한이 존재하지 않습니다.");
+            throw new CustomException(ErrorCode.NO_ACCESS_INSURANCE_RECORD);
         
         // 3. 결과 처리
         InsuranceRecordResponseDto responseDto = new InsuranceRecordResponseDto(insuranceRecord.getInsuranceRecordId(),
@@ -109,11 +111,11 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     public void deleteInsuranceRecord(Long memberId, Long insuranceRecordId){
         // 1. 해당 보험 기록 존재 확인
         InsuranceRecord insuranceRecord = loadInsuranceRecordPort.loadInsuranceRecord(insuranceRecordId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 보험 기록이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_INSURANCE_RECORD));
 
         // 2. 접근 권한 확인
         if(insuranceRecord.getDog().getMember().getMemberId() != memberId)
-            throw new IllegalArgumentException("해당 보험 가입 정보에 대한 접근 권한이 존재하지 않습니다.");
+            throw new CustomException(ErrorCode.NO_ACCESS_INSURANCE_RECORD);
         
         // 3. 논리 삭제
         insuranceRecord.delete();
@@ -126,11 +128,11 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     public Map<String, Object> findAllInsuranceRecord(Long memberId, Long dogId, int size, int page){
         // 1. 반려견 존재 여부 검사
         Dog dog = saveInsuranceRecordPort.checkExistingDog(dogId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 반려견이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_DOG));
 
         // 2. 해당 반려견에 대한 접근 권한 확인
         if(dog.getMember().getMemberId() != memberId)
-            throw new IllegalArgumentException("해당 반려견에 대한 접근 권한이 존재하지 않습니다.");
+            throw new CustomException(ErrorCode.NO_ACCESS_DOG);
 
         // 3. 리스트 조회
         Page<InsuranceRecord> insuranceRecordPage = pageableLoadInsuranceRecordPort.findAllInsuranceRecords(dogId, size, page);
