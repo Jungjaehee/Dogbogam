@@ -1,6 +1,7 @@
 package com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence;
 
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.CreateAiDiagnosisPort;
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.DeleteAiDiagnosisPort;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.FindAiDiagnosesPort;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.FindAiDiagnosisPort;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.request.CreateAiDiagnosisRequestDto;
@@ -25,7 +26,8 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, FindAiDiagnosisPort, FindAiDiagnosesPort {
+public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, FindAiDiagnosisPort, FindAiDiagnosesPort
+, DeleteAiDiagnosisPort {
     private final AiDiagnosisMapper aiDiagnosisMapper;
     private final AiDiagnosisSpringDataRepository jpaRepository;
     private final DogPersistenceAdapter dogPersistenceAdapter;
@@ -68,5 +70,11 @@ public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, Fin
         Page<AiDiagnosisEntity> aiDiagnosesPage = jpaRepository.findByDog(dogEntity, pageable);
 
         return aiDiagnosisMapper.entityListToDomainList(aiDiagnosesPage.getContent());
+    }
+
+    @Override
+    @Transactional
+    public void deleteAiDiagnosis(Long AiDiagnosisId) {
+        jpaRepository.deleteById(AiDiagnosisId);
     }
 }
