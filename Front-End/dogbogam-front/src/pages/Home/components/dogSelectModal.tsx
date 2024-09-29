@@ -1,35 +1,21 @@
 import React, { useState } from "react";
+import { DogInfo } from "../../../store/UseDogStore";
 import Setting from "../../../assets/icons/setting.png";
 import Plus from "../../../assets/icons/plus.png";
 import ModalTop from "../../../assets/icons/modalTop.png";
 
-// 강아지 선택하면 마이페이지에서 다시 정보 렌더링 해야해서 인터페이스 타입 맞췄어요
-interface Dog {
-  dogId: number;
-  memberId: number;
-  isDeleted: boolean;
-  name: string;
-  breed: string;
-  gender: string;
-  birthDate?: Date | null;
-  weight?: number | null;
-  isNeutered?: boolean | null;
-  imageName?: string | null;
-  imageUrl?: string | null;
-  createdTime: Date;
-  modifiedTime: Date | null;
-}
 
 interface DogSelectModalProps {
   onClose: () => void; 
-  onConfirm: (dog: Dog) => void;
+  onConfirm: (dog: Partial<DogInfo>) => void;
 }
 
 const DogSelectModal: React.FC<DogSelectModalProps> = ({
   onClose,
   onConfirm,
 }) => {
-  const [dogs] = useState<Dog[]>([
+  //api 연결 후에 store에서 불러오기
+  const [dogs] = useState<DogInfo[]>([
     {
       dogId: 1,
       memberId: 1,
@@ -72,18 +58,18 @@ const DogSelectModal: React.FC<DogSelectModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 flex items-end justify-center bg-black bg-opacity-50 z-20"
-      onClick={handleModalClick}
-    >
-      <div className="bg-white w-[360px] h-[50vh] p-4 rounded-t-3xl shadow-lg overflow-y-auto">
-        <div className="flex items-center place-items-center mb-10">
+  className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20"
+  onClick={handleModalClick}
+>
+  <div className="bg-white w-[360px] h-[53vh] p-5 rounded-t-3xl shadow-lg transform translate-y-40">
+        <div className="flex items-center justify-center place-items-center mb-10">
           <img src={ModalTop} className="max-w-11 max-h-5" />
         </div>
-        <div className="flex items-center mb-6 cursor-pointer">
-          <p className="text-lg font-bold mr-32"> 반려동물을 선택해주세요!</p>
-          <img src={Setting} className="max-w-3 max-h-3 " />
+        <div className="flex items-center mb-10 cursor-pointer mt-10 space-x-28">
+          <p className="text-lg font-bold">반려동물을 선택해주세요!</p>
+          <img src={Setting} className="w-3 h-3" />
         </div>
-        <div className="mt-2 space-y-2 flex-grow overflow-y-auto mb-10">
+        <div className="mt-2 space-y-2 flex-grow overflow-y-auto">
           {dogs.length > 0 ? (
             dogs.map((dog) => (
               <div
@@ -104,7 +90,7 @@ const DogSelectModal: React.FC<DogSelectModalProps> = ({
           )}
         </div>
         <div
-          className="flex items-center justify-center mt-6 cursor-pointer"
+          className="flex items-center justify-center cursor-pointer mt-10"
           onClick={() => console.log("새로운 아이 등록")}
         >
           <img src={Plus} className="w-5 h-5 mr-2" />
