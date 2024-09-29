@@ -51,7 +51,9 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     @Override
     public void updateDog(UpdateDogDTO updateDogDTO, Long memberId) {
         Member member = memberService.findByMemberId(memberId);
-
+        if(member.getMemberId() != updateDogDTO.getMemberId()){
+            throw new CustomException(ErrorCode.USER_VALIDATION_ERROR);
+        }
         Optional<Dog> existingDog = findDogDetailsPort.findByDogId(updateDogDTO.getDogId());
         if (existingDog.isPresent()) {
             Dog updatedDog = Dog.builder()
