@@ -25,21 +25,21 @@ public class InsuranceMapper {
         );
     }
 
-    public Optional<Insurance> toOptionalDomain(Optional<InsuranceEntity> entity){
-        return entity.map(e -> new Insurance(
-                e.getInsuranceId(),
-                e.getName(),
-                e.getCompany(),
-                e.getMinAge(),
-                e.getMaxAge(),
-                e.getFee(),
-                e.getLimitFee(),
-                e.getPeriod(),
-                e.getDescription(),
-                e.getCoverageRatio(),
-                e.getS3ImageName(),
-                e.getS3ImageUrl()
-        ));
+    public InsuranceEntity toEntity(Insurance insurance){
+        return new InsuranceEntity(
+                insurance.getInsuranceId(),
+                insurance.getName(),
+                insurance.getCompany(),
+                insurance.getMinAge(),
+                insurance.getMaxAge(),
+                insurance.getFee(),
+                insurance.getLimit(),
+                insurance.getPeriod(),
+                insurance.getDescription(),
+                insurance.getCoverageRatio(),
+                insurance.getS3ImageName(),
+                insurance.getS3ImageUrl()
+        );
     }
 
 }

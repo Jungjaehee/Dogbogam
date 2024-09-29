@@ -1,6 +1,7 @@
 package com.dog.health.dogbogamserver.domain.insurance.adapter.out.persistence;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "insurance")
 @NoArgsConstructor
 @Getter
+@AllArgsConstructor
 public class InsuranceEntity {
 
     @Id
