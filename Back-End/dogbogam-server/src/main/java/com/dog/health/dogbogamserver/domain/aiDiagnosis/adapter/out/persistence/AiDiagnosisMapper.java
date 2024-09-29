@@ -21,13 +21,13 @@ public class AiDiagnosisMapper {
                 .build();
     }
 
-    public AiDiagnosisEntity toEntity(AiDiagnosis diagnosis) {
-        if(diagnosis == null) return null;
+    public AiDiagnosisEntity toEntity(AiDiagnosis domain) {
+        if(domain == null) return null;
         return AiDiagnosisEntity.builder()
-                .aiDiagnosisId(diagnosis.getAiDiagnosisId())
-                .diagnosisItem(diagnosis.getDiagnosisItem())
-                .dog(dogMapper.toEntity(diagnosis.getDog()))
-                .normal(diagnosis.getNormal())
+                .aiDiagnosisId(domain.getAiDiagnosisId())
+                .diagnosisItem(domain.getDiagnosisItem())
+                .dog(dogMapper.toEntity(domain.getDog()))
+                .normal(domain.getNormal())
                 // 이미지
                 .build();
     }
