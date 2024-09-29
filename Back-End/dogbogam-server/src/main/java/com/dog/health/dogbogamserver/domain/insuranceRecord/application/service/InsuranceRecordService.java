@@ -40,20 +40,20 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
                 .checkExistingInsuranceRecord(registRequestDto.getDogId(), registRequestDto.getInsuranceId());
 
         if(existInsuranceRecord.isPresent()){
-            throw new CustomException(ErrorCode.ALREADY_EXIST_INSURANCE_RECORD);
+            throw new CustomException(ErrorCode.INSURANCE_RECORD_ALREADY_EXIST);
         }
 
         // 2. 해당 펫 보험이 존재하는지 검사
         Insurance insurance = findDetailInsurancePort.existInsuranceById(registRequestDto.getInsuranceId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_INSURANCE));
+                .orElseThrow(() -> new CustomException(ErrorCode.INSURANCE_NOT_FOUND));
         
         // 3. 해당 펫이 존재하는지 검사
         Dog dog = findDogDetailsPort.findByDogId(registRequestDto.getDogId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_DOG));
+                .orElseThrow(() -> new CustomException(ErrorCode.DOG_NOT_FOUND));
 
         // 4. 해당 반려견의 보호자가 로그인한 멤버인지 확인
         if(dog.getMember().getMemberId() != memberId)
-            throw new CustomException(ErrorCode.NO_ACCESS_DOG);
+            throw new CustomException(ErrorCode.DOG_NO_ACCESS);
 
         // 5. 해당 정보 저장
         InsuranceRecord insuranceRecord = InsuranceRecord.builder()
@@ -73,20 +73,20 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     public void updateInsuranceRecord(Long memberId, UpdateInsuranceRecordRequestDto updateRequestDto){
         // 1. 해당 펫이 해당 보험을 등록했는지 검사
         InsuranceRecord existInsuranceRecord = loadInsuranceRecordPort.loadInsuranceRecord(updateRequestDto.getInsuranceRecordId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_INSURANCE_RECORD));
+                .orElseThrow(() -> new CustomException(ErrorCode.INSURANCE_RECORD_NOT_FOUND));
 
 
         // 2. 반려견과 해당 보험이 있는지 검사
         Insurance insurance = findDetailInsurancePort.existInsuranceById(updateRequestDto.getInsuranceId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_INSURANCE));
+                .orElseThrow(() -> new CustomException(ErrorCode.INSURANCE_NOT_FOUND));
 
         Dog dog = findDogDetailsPort.findByDogId(updateRequestDto.getDogId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_DOG));
+                .orElseThrow(() -> new CustomException(ErrorCode.DOG_NOT_FOUND));
 
 
         // 3. 해당 반려견의 보호자가 로그인한 멤버인지 확인
         if(dog.getMember().getMemberId() != memberId)
-            throw new CustomException(ErrorCode.NO_ACCESS_DOG);
+            throw new CustomException(ErrorCode.DOG_NO_ACCESS);
 
 
         // 4. 수정
@@ -107,11 +107,11 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     public InsuranceRecordResponseDto findInsuranceRecordById(Long memberId, Long insuranceRecordId){
         // 1. 해당 정보 조회
         InsuranceRecord insuranceRecord = loadInsuranceRecordPort.loadInsuranceRecord(insuranceRecordId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_INSURANCE_RECORD));
+                .orElseThrow(() -> new CustomException(ErrorCode.INSURANCE_RECORD_NOT_FOUND));
         
         // 2. 접근 권한 확인
         if(insuranceRecord.getDog().getMember().getMemberId() != memberId)
-            throw new CustomException(ErrorCode.NO_ACCESS_INSURANCE_RECORD);
+            throw new CustomException(ErrorCode.INSURANCE_RECORD_NO_ACCESS);
         
         // 3. 결과 처리
         InsuranceRecordResponseDto responseDto = new InsuranceRecordResponseDto(insuranceRecord.getInsuranceRecordId(),
@@ -127,11 +127,11 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     public void deleteInsuranceRecord(Long memberId, Long insuranceRecordId){
         // 1. 해당 보험 기록 존재 확인
         InsuranceRecord insuranceRecord = loadInsuranceRecordPort.loadInsuranceRecord(insuranceRecordId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_INSURANCE_RECORD));
+                .orElseThrow(() -> new CustomException(ErrorCode.INSURANCE_RECORD_NOT_FOUND));
 
         // 2. 접근 권한 확인
         if(insuranceRecord.getDog().getMember().getMemberId() != memberId)
-            throw new CustomException(ErrorCode.NO_ACCESS_INSURANCE_RECORD);
+            throw new CustomException(ErrorCode.INSURANCE_RECORD_NO_ACCESS);
         
         // 3. 논리 삭제
         insuranceRecord.delete();
@@ -144,11 +144,11 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     public Map<String, Object> findAllInsuranceRecord(Long memberId, Long dogId, int size, int page){
         // 1. 반려견 존재 여부 검사
         Dog dog = findDogDetailsPort.findByDogId(dogId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_DOG));
+                .orElseThrow(() -> new CustomException(ErrorCode.DOG_NOT_FOUND));
 
         // 2. 해당 반려견에 대한 접근 권한 확인
         if(dog.getMember().getMemberId() != memberId)
-            throw new CustomException(ErrorCode.NO_ACCESS_DOG);
+            throw new CustomException(ErrorCode.DOG_NO_ACCESS);
 
         // 3. 리스트 조회
         Page<InsuranceRecord> insuranceRecordPage = pageableLoadInsuranceRecordPort.findAllInsuranceRecords(dogId, size, page);
