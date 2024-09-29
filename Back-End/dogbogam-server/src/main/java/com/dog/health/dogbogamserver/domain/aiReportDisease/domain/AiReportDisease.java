@@ -12,6 +12,6 @@ public class AiReportDisease {
     private Long aiReportDiseaseId;
     private AiDiagnosis aiDiagnosis;
     private String name;
-    private String percentage;
+    private Float percentage;
     private String diagnosisItem;
 }
