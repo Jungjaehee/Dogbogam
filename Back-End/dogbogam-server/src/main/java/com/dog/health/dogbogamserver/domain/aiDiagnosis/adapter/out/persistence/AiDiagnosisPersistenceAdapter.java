@@ -7,16 +7,16 @@ import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogMapper;
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogPersistenceAdapter;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
-import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberPersistenceAdapter;
-import com.dog.health.dogbogamserver.domain.member.domain.Member;
 import com.dog.health.dogbogamserver.global.web.exception.CustomException;
 import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, FindAiDiagnosisPort {
     private final AiDiagnosisMapper aiDiagnosisMapper;
     private final AiDiagnosisSpringDataRepository jpaRepository;
@@ -44,8 +44,10 @@ public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, Fin
 
     @Override
     public AiDiagnosis findAiDiagnosisByAiDiagnosisId(Long aiDiagnosisId) {
+        log.info("AI diagnosis aiDiagnosisId: {}", aiDiagnosisId);
         AiDiagnosisEntity aiDiagnosisEntity = jpaRepository.findById(aiDiagnosisId)
                 .orElseThrow(()->new CustomException(ErrorCode.AI_DIAGNOSIS_NOT_FOUND));
+        log.info("AI diagnosis aiDiagnosisEntity: {}", aiDiagnosisEntity);
         return aiDiagnosisMapper.toDomain(aiDiagnosisEntity);
     }
 }

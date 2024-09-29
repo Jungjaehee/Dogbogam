@@ -8,11 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AiDiagnosisMapper {
-    private DogMapper dogMapper;
+    private final DogMapper dogMapper;
 
     public AiDiagnosis toDomain(AiDiagnosisEntity entity) {
         if(entity == null) return null;
         return AiDiagnosis.builder()
+                .dog(dogMapper.toDomain(entity.getDog()))
                 .aiDiagnosisId(entity.getAiDiagnosisId())
                 .diagnosisItem(entity.getDiagnosisItem())
                 .dog(dogMapper.toDomain(entity.getDog()))
@@ -24,6 +25,7 @@ public class AiDiagnosisMapper {
     public AiDiagnosisEntity toEntity(AiDiagnosis domain) {
         if(domain == null) return null;
         return AiDiagnosisEntity.builder()
+                .dog(dogMapper.toEntity(domain.getDog()))
                 .aiDiagnosisId(domain.getAiDiagnosisId())
                 .diagnosisItem(domain.getDiagnosisItem())
                 .dog(dogMapper.toEntity(domain.getDog()))
