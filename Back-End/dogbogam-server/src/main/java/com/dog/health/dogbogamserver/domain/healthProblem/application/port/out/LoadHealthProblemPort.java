@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface LoadHealthProblemPort {
     List<HealthProblem> loadHealthProblemsByDogId(Long dogId);
+    Optional<HealthProblem> loadHealthProblemById(Long healthProblemId);
     Optional<Dog> loadDogById(Long dogId);  // 반려견 정보를 로드하기 위한 포트
 }
