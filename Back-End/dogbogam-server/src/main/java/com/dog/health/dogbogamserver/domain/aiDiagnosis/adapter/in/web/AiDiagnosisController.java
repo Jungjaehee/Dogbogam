@@ -1,6 +1,7 @@
 package com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.in.web;
 
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.in.CreateAiDiagnosisUseCase;
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.in.DeleteAiDiagnosisUseCase;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.in.FindAiDiagnosesUseCase;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.in.FindAiDiagnosisUseCase;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.request.CreateAiDiagnosisRequestDto;
@@ -20,6 +21,7 @@ public class AiDiagnosisController {
     private final CreateAiDiagnosisUseCase createAiDiagnosisUseCase;
     private final FindAiDiagnosisUseCase findAiDiagnosisUseCase;
     private final FindAiDiagnosesUseCase findAiDiagnosesUseCase;
+    private final DeleteAiDiagnosisUseCase deleteAiDiagnosisUseCase;
 
     @PostMapping
     public SuccessResponse<?> createDiagnosis(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
@@ -39,5 +41,11 @@ public class AiDiagnosisController {
                                                 @RequestParam(value = "page", defaultValue = "0") int page,
                                                 @RequestParam(value = "size", defaultValue = "10") int size) {
         return SuccessResponse.created(findAiDiagnosesUseCase.findAiDiagnosesByDogId(dogId, page, size));
+    }
+
+    @DeleteMapping("/report/{aiDiagnosisId}")
+    public SuccessResponse<?> deleteDiagnosisById(@PathVariable("aiDiagnosisId") Long aiDiagnosisId) {
+        deleteAiDiagnosisUseCase.deleteAiDiagnosis(aiDiagnosisId);
+        return SuccessResponse.deleted();
     }
 }
