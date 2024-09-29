@@ -8,5 +8,7 @@ public interface InsuranceBenefitSpringDataRepository extends JpaRepository<Insu
 
     List<InsuranceBenefitEntity> findByBenefitIn(List<String> benefits);
 
+    List<InsuranceBenefitEntity> findByBenefit(String benefit);
+
     List<InsuranceBenefitEntity> findByInsurance_InsuranceId(Long insuranceId);
 }
