@@ -1,6 +1,8 @@
 package com.dog.health.dogbogamserver.domain.insuranceRecord.application.service;
 
+import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogDetailsPort;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
+import com.dog.health.dogbogamserver.domain.insurance.application.port.out.FindDetailInsurancePort;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.InsuranceRecordResponseDto;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.RegistInsuranceRecordRequestDto;
 import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.UpdateInsuranceRecordRequestDto;
@@ -28,6 +30,8 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     private final SaveInsuranceRecordPort saveInsuranceRecordPort;
     private final LoadInsuranceRecordPort loadInsuranceRecordPort;
     private final PageableLoadInsuranceRecordPort pageableLoadInsuranceRecordPort;
+    private final FindDetailInsurancePort findDetailInsurancePort;
+    private final FindDogDetailsPort findDogDetailsPort;
 
     @Override
     public void registInsuranceRecord(Long memberId, RegistInsuranceRecordRequestDto registRequestDto){
@@ -40,11 +44,11 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
         }
 
         // 2. 해당 펫 보험이 존재하는지 검사
-        Insurance insurance = saveInsuranceRecordPort.checkExistingInsurance(registRequestDto.getInsuranceId())
+        Insurance insurance = findDetailInsurancePort.existInsuranceById(registRequestDto.getInsuranceId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_INSURANCE));
         
         // 3. 해당 펫이 존재하는지 검사
-        Dog dog = saveInsuranceRecordPort.checkExistingDog(registRequestDto.getDogId())
+        Dog dog = findDogDetailsPort.findByDogId(registRequestDto.getDogId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_DOG));
 
         // 4. 해당 반려견의 보호자가 로그인한 멤버인지 확인
@@ -73,10 +77,10 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
 
 
         // 2. 반려견과 해당 보험이 있는지 검사
-        Insurance insurance = saveInsuranceRecordPort.checkExistingInsurance(updateRequestDto.getInsuranceId())
+        Insurance insurance = findDetailInsurancePort.existInsuranceById(updateRequestDto.getInsuranceId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_INSURANCE));
 
-        Dog dog = saveInsuranceRecordPort.checkExistingDog(updateRequestDto.getDogId())
+        Dog dog = findDogDetailsPort.findByDogId(updateRequestDto.getDogId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_DOG));
 
 
@@ -139,7 +143,7 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
     @Override
     public Map<String, Object> findAllInsuranceRecord(Long memberId, Long dogId, int size, int page){
         // 1. 반려견 존재 여부 검사
-        Dog dog = saveInsuranceRecordPort.checkExistingDog(dogId)
+        Dog dog = findDogDetailsPort.findByDogId(dogId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_DOG));
 
         // 2. 해당 반려견에 대한 접근 권한 확인

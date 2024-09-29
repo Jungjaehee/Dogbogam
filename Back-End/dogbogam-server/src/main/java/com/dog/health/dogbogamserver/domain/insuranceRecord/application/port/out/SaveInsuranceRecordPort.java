@@ -9,8 +9,6 @@ import java.util.Optional;
 public interface SaveInsuranceRecordPort {
 
     Optional<InsuranceRecord> checkExistingInsuranceRecord(Long dogId, Long insuranceRecordId);
-    Optional<Insurance> checkExistingInsurance(Long insuranceId);
-    Optional<Dog> checkExistingDog(Long dogId);
     void save(InsuranceRecord insuranceRecord);
 
 }
