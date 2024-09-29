@@ -27,7 +27,7 @@ public class AiDiagnosisController {
         return SuccessResponse.created();
     }
 
-    @GetMapping("/{aiDiagnosisId}")
+    @GetMapping("/report/{aiDiagnosisId}")
     public SuccessResponse<?> findDiagnosisById(@PathVariable("aiDiagnosisId") Long aiDiagnosisId) {
         return SuccessResponse.created(findAiDiagnosisUseCase.findAiDiagnosisByAiDiagnosisId(aiDiagnosisId));
     }
