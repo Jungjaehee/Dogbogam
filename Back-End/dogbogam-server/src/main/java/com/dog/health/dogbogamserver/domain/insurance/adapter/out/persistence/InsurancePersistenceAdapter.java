@@ -1,9 +1,6 @@
 package com.dog.health.dogbogamserver.domain.insurance.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.insurance.application.port.out.FindAllInsuranceBenefitPort;
-import com.dog.health.dogbogamserver.domain.insurance.application.port.out.FindAllInsurancePort;
-import com.dog.health.dogbogamserver.domain.insurance.application.port.out.FindDetailInsurancePort;
-import com.dog.health.dogbogamserver.domain.insurance.application.port.out.SearchInsurancePort;
+import com.dog.health.dogbogamserver.domain.insurance.application.port.out.*;
 import com.dog.health.dogbogamserver.domain.insurance.domain.Insurance;
 import com.dog.health.dogbogamserver.domain.insurance.domain.InsuranceBenefit;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +12,8 @@ import java.util.*;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class InsurancePersistenceAdapter implements FindAllInsurancePort, FindDetailInsurancePort, SearchInsurancePort, FindAllInsuranceBenefitPort {
+public class InsurancePersistenceAdapter implements FindAllInsurancePort, FindDetailInsurancePort, SearchInsurancePort,
+        FindAllInsuranceBenefitPort, RecommendInsurancePort {
 
     private final InsuranceSpringDataRepository insuranceRepository;
     private final InsuranceBenefitSpringDataRepository insuranceBenefitRepository;
@@ -46,6 +44,12 @@ public class InsurancePersistenceAdapter implements FindAllInsurancePort, FindDe
     @Override
     public List<InsuranceBenefit> findAllBenefits(){
         return insuranceBenefitMapper.entityListToDomainList(insuranceBenefitRepository.findAll());
+    }
+
+    @Override
+    public List<InsuranceBenefit> findByBenefitAndAscFee(String benefit){
+        return insuranceBenefitMapper.entityListToDomainList(insuranceBenefitRepository.findByBenefit(benefit));
+
     }
 
 }

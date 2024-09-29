@@ -28,8 +28,8 @@ public class AiReportDiseaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "percentage", nullable = false)
-    private String percentage;
+    @Column(name = "percentage", columnDefinition = "DECIMAL(3, 2)",nullable = false)
+    private Float percentage;
 
     @Column(name = "diagnosis_item", nullable = false)
     private String diagnosisItem;

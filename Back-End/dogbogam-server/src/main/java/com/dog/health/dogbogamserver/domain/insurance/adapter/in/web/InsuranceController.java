@@ -1,9 +1,7 @@
 package com.dog.health.dogbogamserver.domain.insurance.adapter.in.web;
 
-import com.dog.health.dogbogamserver.domain.insurance.application.port.in.FindAllInsuranceBenefitUseCase;
-import com.dog.health.dogbogamserver.domain.insurance.application.port.in.FindAllInsuranceUseCase;
-import com.dog.health.dogbogamserver.domain.insurance.application.port.in.FindDetailInsuranceUseCase;
-import com.dog.health.dogbogamserver.domain.insurance.application.port.in.SearchInsuranceUseCase;
+import com.dog.health.dogbogamserver.domain.insurance.adapter.in.dto.DiagnosisItem;
+import com.dog.health.dogbogamserver.domain.insurance.application.port.in.*;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +17,7 @@ public class InsuranceController {
     private final FindAllInsuranceUseCase findAllInsuranceUseCase;
     private final FindAllInsuranceBenefitUseCase findAllInsuranceBenefitUseCase;
     private final FindDetailInsuranceUseCase findDetailInsuranceUseCase;
+    private final RecommendInsuranceUseCase recommendInsuranceUseCase;
 
     @GetMapping("/search")
     public SuccessResponse<?> searchInsurance(@RequestParam("benefit") final List<String> benefit){
@@ -38,5 +37,10 @@ public class InsuranceController {
     @GetMapping("/{insuranceId}")
     public SuccessResponse<?> findDetailInsuranceById(@PathVariable("insuranceId") final Long insuranceId){
         return SuccessResponse.ok(findDetailInsuranceUseCase.findDetailByInsuranceId(insuranceId));
+    }
+
+    @GetMapping("/recommend")
+    public SuccessResponse<?> recommendBydiagonosis(@RequestParam("diagnosisItem") final DiagnosisItem diagnosisItem){
+        return SuccessResponse.ok(recommendInsuranceUseCase.recommendInsurance(diagnosisItem));
     }
 }

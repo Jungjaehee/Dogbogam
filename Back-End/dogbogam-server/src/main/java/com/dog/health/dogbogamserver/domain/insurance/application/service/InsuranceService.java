@@ -1,16 +1,14 @@
 package com.dog.health.dogbogamserver.domain.insurance.application.service;
 
-import com.dog.health.dogbogamserver.domain.insurance.application.port.in.FindAllInsuranceBenefitUseCase;
-import com.dog.health.dogbogamserver.domain.insurance.application.port.in.FindAllInsuranceUseCase;
+import com.dog.health.dogbogamserver.domain.insurance.adapter.in.dto.DiagnosisItem;
+import com.dog.health.dogbogamserver.domain.insurance.adapter.in.dto.RecommendInsuranceResponseDto;
+import com.dog.health.dogbogamserver.domain.insurance.application.port.in.*;
 
-import com.dog.health.dogbogamserver.domain.insurance.application.port.in.FindDetailInsuranceUseCase;
-import com.dog.health.dogbogamserver.domain.insurance.application.port.in.SearchInsuranceUseCase;
-import com.dog.health.dogbogamserver.domain.insurance.application.port.out.FindAllInsuranceBenefitPort;
-import com.dog.health.dogbogamserver.domain.insurance.application.port.out.FindAllInsurancePort;
-import com.dog.health.dogbogamserver.domain.insurance.application.port.out.FindDetailInsurancePort;
-import com.dog.health.dogbogamserver.domain.insurance.application.port.out.SearchInsurancePort;
+import com.dog.health.dogbogamserver.domain.insurance.application.port.out.*;
 import com.dog.health.dogbogamserver.domain.insurance.domain.Insurance;
 import com.dog.health.dogbogamserver.domain.insurance.domain.InsuranceBenefit;
+import com.dog.health.dogbogamserver.global.web.exception.CustomException;
+import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,12 +18,14 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class InsuranceService implements FindAllInsuranceUseCase, FindDetailInsuranceUseCase, SearchInsuranceUseCase, FindAllInsuranceBenefitUseCase {
+public class InsuranceService implements FindAllInsuranceUseCase, FindDetailInsuranceUseCase, SearchInsuranceUseCase,
+        FindAllInsuranceBenefitUseCase, RecommendInsuranceUseCase {
 
     private final FindDetailInsurancePort findDetailInsurancePort;
     private final FindAllInsurancePort findAllInsurancePort;
     private final SearchInsurancePort searchInsurancePort;
     private final FindAllInsuranceBenefitPort findAllInsuranceBenefitPort;
+    private final RecommendInsurancePort recommendInsurancePort;
 
     @Override
     public Map<Long, Map<String, Object>> findAll() {
@@ -37,7 +37,7 @@ public class InsuranceService implements FindAllInsuranceUseCase, FindDetailInsu
     @Override
     public Map<Long, Map<String, Object>> findDetailByInsuranceId(Long insuranceId){
         findDetailInsurancePort.existInsuranceById(insuranceId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 보험이 존재하지 않습니다."));
+                .orElseThrow(()-> new CustomException(ErrorCode.INSURANCE_NOT_FOUND));
 
         List<InsuranceBenefit> insuranceBenefits = findDetailInsurancePort.findByInsuranceId(insuranceId);
         return benefitListToInsuranceInfoList(insuranceBenefits);
@@ -45,8 +45,8 @@ public class InsuranceService implements FindAllInsuranceUseCase, FindDetailInsu
 
     @Override
     public Map<Long, Map<String, Object>> search(List<String> benefit) {
-        if(benefit.size() == 0)
-            throw new IllegalArgumentException("선택된 보장 혜택이 존재하지 않습니다.");
+        if(benefit.isEmpty())
+            throw new CustomException(ErrorCode.INSURANCE_BENEFIT_NOT_FOUND);
 
         List<InsuranceBenefit> insuranceBenefits = searchInsurancePort.findByBenefit(benefit);
 
@@ -63,6 +63,27 @@ public class InsuranceService implements FindAllInsuranceUseCase, FindDetailInsu
         }
 
         return new ArrayList<>(benefitSet);
+    }
+
+    @Override
+    public RecommendInsuranceResponseDto recommendInsurance(DiagnosisItem diagnosisItem){
+
+        List<InsuranceBenefit> insurances = recommendInsurancePort.findByBenefitAndAscFee(diagnosisItem.getBenefitCategory());
+
+        if(insurances.isEmpty()) throw new CustomException(ErrorCode.INSURANCE_RECOMMEND_NOT_FOUND);
+
+        int randomInt = (int) (Math.random() * insurances.size());
+        Insurance bestInsurance = insurances.get(randomInt).getInsurance();
+
+        RecommendInsuranceResponseDto responseDto = new RecommendInsuranceResponseDto(
+                bestInsurance.getInsuranceId(),
+                bestInsurance.getName(),
+                bestInsurance.getCompany(),
+                bestInsurance.getS3ImageUrl(),
+                bestInsurance.getFee()
+        );
+
+        return responseDto;
     }
 
     private Map<Long, Map<String, Object>> benefitListToInsuranceInfoList(List<InsuranceBenefit> insuranceBenefitList){

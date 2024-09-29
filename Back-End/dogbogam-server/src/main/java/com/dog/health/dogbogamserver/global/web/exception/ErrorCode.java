@@ -15,13 +15,15 @@ public enum ErrorCode {
     USER_VALIDATION_ERROR("유저 검증 오류가 발생했습니다.", HttpStatus.UNAUTHORIZED),
 
     DOG_NO_ACCESS("해당 반려견에 대한 접근 권한이 존재하지 않습니다.", HttpStatus.UNAUTHORIZED),
-    INSURANCE_NOT_FOUND("해당 보험을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
-    INSURANCE_RECORD_NOT_FOUND("해당 보험 기록을 찾을 수 없습니다.",HttpStatus.FOUND),
+    INSURANCE_NOT_FOUND("존재하지 않는 보험입니다.", HttpStatus.NOT_FOUND),
+    INSURANCE_RECORD_NOT_FOUND("존재하지 않는 보험 기록입니다.",HttpStatus.FOUND),
     INSURANCE_RECORD_ALREADY_EXIST("이미 등록된 보험입니다.", HttpStatus.CONFLICT),
     INSURANCE_RECORD_NO_ACCESS("해당 보험 기록에 대한 접근 권한이 존재하지 않습니다.", HttpStatus.UNAUTHORIZED),
 
-    AI_DIAGNOSIS_NOT_FOUND("해당 AI 예측 기록이 없습니다.", HttpStatus.NOT_FOUND);
+    INSURANCE_RECOMMEND_NOT_FOUND("추천 보험을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    INSURANCE_BENEFIT_NOT_FOUND("존재하지 않는 보장 혜택입니다.", HttpStatus.NOT_FOUND),
 
+    AI_DIAGNOSIS_NOT_FOUND("해당 AI 예측 기록이 없습니다.", HttpStatus.NOT_FOUND);
 
     private final String message;
     private final HttpStatus httpStatus;
