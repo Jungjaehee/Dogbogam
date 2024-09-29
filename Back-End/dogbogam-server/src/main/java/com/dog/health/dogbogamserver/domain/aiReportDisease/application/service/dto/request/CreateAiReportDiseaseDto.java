@@ -1,7 +1,8 @@
 package com.dog.health.dogbogamserver.domain.aiReportDisease.application.service.dto.request;
 
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
+import lombok.Getter;
 
+@Getter
 public class CreateAiReportDiseaseDto {
     private Long aiDiagnosisId;
     private String name;
