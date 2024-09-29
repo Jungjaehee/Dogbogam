@@ -1,8 +1,10 @@
 package com.dog.health.dogbogamserver.domain.healthProblem.application.service;
 
 import com.dog.health.dogbogamserver.domain.healthProblem.application.port.in.CreateHealthProblemUseCase;
+import com.dog.health.dogbogamserver.domain.healthProblem.application.port.in.FindHealthProblemsUseCase;
 import com.dog.health.dogbogamserver.domain.healthProblem.application.port.out.LoadHealthProblemPort;
 import com.dog.health.dogbogamserver.domain.healthProblem.application.port.out.SaveHealthProblemPort;
+import com.dog.health.dogbogamserver.domain.healthProblem.application.service.dto.response.HealthProblemResponse;
 import com.dog.health.dogbogamserver.domain.healthProblem.domain.HealthProblem;
 import com.dog.health.dogbogamserver.domain.healthProblem.domain.ProblemType;
 import com.dog.health.dogbogamserver.global.web.exception.CustomException;
@@ -12,10 +14,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class HealthProblemService implements CreateHealthProblemUseCase {
+public class HealthProblemService implements CreateHealthProblemUseCase, FindHealthProblemsUseCase {
 
     private final SaveHealthProblemPort saveHealthProblemPort;
     private final LoadHealthProblemPort loadHealthProblemPort;
@@ -58,5 +61,19 @@ public class HealthProblemService implements CreateHealthProblemUseCase {
 
             saveHealthProblemPort.saveHealthProblem(healthProblem);
         }
+    }
+
+    // 반려견의 건강 고민 리스트 조회
+    @Override
+    public List<HealthProblemResponse> findHealthProblems(Long dogId) {
+        List<HealthProblem> healthProblems = loadHealthProblemPort.loadHealthProblemsByDogId(dogId);
+
+        // HealthProblem을 HealthProblemResponse로 변환
+        return healthProblems.stream()
+                .map(healthProblem -> HealthProblemResponse.builder()
+                        .healthProblemId(healthProblem.getHealthProblemId())
+                        .problem(healthProblem.getProblem())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
