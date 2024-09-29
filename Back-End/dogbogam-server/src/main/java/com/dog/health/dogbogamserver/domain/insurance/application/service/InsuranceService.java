@@ -1,7 +1,7 @@
 package com.dog.health.dogbogamserver.domain.insurance.application.service;
 
 import com.dog.health.dogbogamserver.domain.insurance.adapter.in.dto.DiagnosisItem;
-import com.dog.health.dogbogamserver.domain.insurance.adapter.in.dto.RecommandInsuranceResponseDto;
+import com.dog.health.dogbogamserver.domain.insurance.adapter.in.dto.RecommendInsuranceResponseDto;
 import com.dog.health.dogbogamserver.domain.insurance.application.port.in.*;
 
 import com.dog.health.dogbogamserver.domain.insurance.application.port.out.*;
@@ -19,13 +19,13 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 public class InsuranceService implements FindAllInsuranceUseCase, FindDetailInsuranceUseCase, SearchInsuranceUseCase,
-        FindAllInsuranceBenefitUseCase, RecommandInsuranceUseCase {
+        FindAllInsuranceBenefitUseCase, RecommendInsuranceUseCase {
 
     private final FindDetailInsurancePort findDetailInsurancePort;
     private final FindAllInsurancePort findAllInsurancePort;
     private final SearchInsurancePort searchInsurancePort;
     private final FindAllInsuranceBenefitPort findAllInsuranceBenefitPort;
-    private final RecommandInsurancePort recommandInsurancePort;
+    private final RecommendInsurancePort recommendInsurancePort;
 
     @Override
     public Map<Long, Map<String, Object>> findAll() {
@@ -66,16 +66,16 @@ public class InsuranceService implements FindAllInsuranceUseCase, FindDetailInsu
     }
 
     @Override
-    public RecommandInsuranceResponseDto recommandInsurance(DiagnosisItem diagnosisItem){
+    public RecommendInsuranceResponseDto recommendInsurance(DiagnosisItem diagnosisItem){
 
-        List<InsuranceBenefit> insurances = recommandInsurancePort.findByBenefitAndAscFee(diagnosisItem.getBenefitCategory());
+        List<InsuranceBenefit> insurances = recommendInsurancePort.findByBenefitAndAscFee(diagnosisItem.getBenefitCategory());
 
-        if(insurances.isEmpty()) throw new CustomException(ErrorCode.INSURANCE_RECOMMAND_NOT_FOUND);
+        if(insurances.isEmpty()) throw new CustomException(ErrorCode.INSURANCE_RECOMMEND_NOT_FOUND);
 
         int randomInt = (int) (Math.random() * insurances.size());
         Insurance bestInsurance = insurances.get(randomInt).getInsurance();
 
-        RecommandInsuranceResponseDto responseDto = new RecommandInsuranceResponseDto(
+        RecommendInsuranceResponseDto responseDto = new RecommendInsuranceResponseDto(
                 bestInsurance.getInsuranceId(),
                 bestInsurance.getName(),
                 bestInsurance.getCompany(),

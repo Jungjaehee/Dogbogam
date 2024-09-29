@@ -20,7 +20,7 @@ public enum ErrorCode {
     INSURANCE_RECORD_ALREADY_EXIST("이미 등록된 보험입니다.", HttpStatus.CONFLICT),
     INSURANCE_RECORD_NO_ACCESS("해당 보험 기록에 대한 접근 권한이 존재하지 않습니다.", HttpStatus.UNAUTHORIZED),
 
-    INSURANCE_RECOMMAND_NOT_FOUND("추천 보험을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    INSURANCE_RECOMMEND_NOT_FOUND("추천 보험을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     INSURANCE_BENEFIT_NOT_FOUND("존재하지 않는 보장 혜택입니다.", HttpStatus.NOT_FOUND);
 
     private final String message;

@@ -17,7 +17,7 @@ public class InsuranceController {
     private final FindAllInsuranceUseCase findAllInsuranceUseCase;
     private final FindAllInsuranceBenefitUseCase findAllInsuranceBenefitUseCase;
     private final FindDetailInsuranceUseCase findDetailInsuranceUseCase;
-    private final RecommandInsuranceUseCase recommandInsuranceUseCase;
+    private final RecommendInsuranceUseCase recommendInsuranceUseCase;
 
     @GetMapping("/search")
     public SuccessResponse<?> searchInsurance(@RequestParam("benefit") final List<String> benefit){
@@ -39,8 +39,8 @@ public class InsuranceController {
         return SuccessResponse.ok(findDetailInsuranceUseCase.findDetailByInsuranceId(insuranceId));
     }
 
-    @GetMapping("/recommand")
-    public SuccessResponse<?> recommandBydiagonosis(@RequestParam("diagnosisItem") final DiagnosisItem diagnosisItem){
-        return SuccessResponse.ok(recommandInsuranceUseCase.recommandInsurance(diagnosisItem));
+    @GetMapping("/recommend")
+    public SuccessResponse<?> recommendBydiagonosis(@RequestParam("diagnosisItem") final DiagnosisItem diagnosisItem){
+        return SuccessResponse.ok(recommendInsuranceUseCase.recommendInsurance(diagnosisItem));
     }
 }

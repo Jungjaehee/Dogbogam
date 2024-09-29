@@ -13,7 +13,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class InsurancePersistenceAdapter implements FindAllInsurancePort, FindDetailInsurancePort, SearchInsurancePort,
-        FindAllInsuranceBenefitPort, RecommandInsurancePort {
+        FindAllInsuranceBenefitPort, RecommendInsurancePort {
 
     private final InsuranceSpringDataRepository insuranceRepository;
     private final InsuranceBenefitSpringDataRepository insuranceBenefitRepository;

@@ -4,7 +4,7 @@ import com.dog.health.dogbogamserver.domain.insurance.domain.InsuranceBenefit;
 
 import java.util.List;
 
-public interface RecommandInsurancePort {
+public interface RecommendInsurancePort {
 
     List<InsuranceBenefit> findByBenefitAndAscFee(String benefit);
 
