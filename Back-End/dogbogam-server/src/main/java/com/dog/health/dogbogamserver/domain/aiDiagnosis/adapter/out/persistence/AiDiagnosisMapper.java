@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public class AiDiagnosisMapper {
     }
 
     public List<AiDiagnosis> entityListToDomainList(List<AiDiagnosisEntity> entityList) {
-        if(entityList.isEmpty()) return null;
+        if(entityList.isEmpty()) return Collections.emptyList();
 
         List<AiDiagnosis> aiDiagnosisList = new ArrayList<>();
 
@@ -51,4 +52,5 @@ public class AiDiagnosisMapper {
 
         return aiDiagnosisList;
     }
+
 }

@@ -14,6 +14,9 @@ import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -57,10 +60,13 @@ public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, Fin
     }
 
     @Override
-    public List<AiDiagnosis> findAiDiagnosesByDogId(Long dogId) {
+    public List<AiDiagnosis> findAiDiagnosesByDogId(Long dogId, int page, int size) {
         DogEntity dogEntity = dogPersistenceAdapter.findEntityByDogId(dogId)
-                .orElseThrow(()->new CustomException(ErrorCode.DOG_NOT_FOUND));
-        List<AiDiagnosisEntity> aiDiagnoses = jpaRepository.findByDog(dogEntity);
-        return aiDiagnosisMapper.entityListToDomainList(aiDiagnoses);
+                .orElseThrow(() -> new CustomException(ErrorCode.DOG_NOT_FOUND));
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<AiDiagnosisEntity> aiDiagnosesPage = jpaRepository.findByDog(dogEntity, pageable);
+
+        return aiDiagnosisMapper.entityListToDomainList(aiDiagnosesPage.getContent());
     }
 }

@@ -33,7 +33,7 @@ public class AiDiagnosisService implements CreateAiDiagnosisUseCase, FindAiDiagn
     }
 
     @Override
-    public List<AiDiagnosis> findAiDiagnosesByDogId(Long dogId) {
-        return findAiDiagnosesPort.findAiDiagnosesByDogId(dogId);
+    public List<AiDiagnosis> findAiDiagnosesByDogId(Long dogId, int page, int size) {
+        return findAiDiagnosesPort.findAiDiagnosesByDogId(dogId, page, size);
     }
 }

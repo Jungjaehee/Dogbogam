@@ -35,7 +35,9 @@ public class AiDiagnosisController {
     }
 
     @GetMapping("/report/list/{dogId}")
-    public SuccessResponse<?> findDiagnosesById(@PathVariable("dogId") Long dogId) {
-        return SuccessResponse.created(findAiDiagnosesUseCase.findAiDiagnosesByDogId(dogId));
+    public SuccessResponse<?> findDiagnosesById(@PathVariable("dogId") Long dogId,
+                                                @RequestParam(value = "page", defaultValue = "0") int page,
+                                                @RequestParam(value = "size", defaultValue = "10") int size) {
+        return SuccessResponse.created(findAiDiagnosesUseCase.findAiDiagnosesByDogId(dogId, page, size));
     }
 }
