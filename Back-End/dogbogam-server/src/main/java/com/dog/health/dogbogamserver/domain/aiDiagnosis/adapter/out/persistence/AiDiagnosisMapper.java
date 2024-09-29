@@ -1,9 +1,15 @@
 package com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence;
 
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
+import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogEntity;
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogMapper;
+import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -32,5 +38,17 @@ public class AiDiagnosisMapper {
                 .normal(domain.getNormal())
                 // 이미지
                 .build();
+    }
+
+    public List<AiDiagnosis> entityListToDomainList(List<AiDiagnosisEntity> entityList) {
+        if(entityList.isEmpty()) return null;
+
+        List<AiDiagnosis> aiDiagnosisList = new ArrayList<>();
+
+        for (AiDiagnosisEntity aiDiagnosisEntity : entityList) {
+            aiDiagnosisList.add(toDomain(aiDiagnosisEntity));
+        }
+
+        return aiDiagnosisList;
     }
 }
