@@ -2,13 +2,14 @@ package com.dog.health.dogbogamserver.domain.dog.adapter.in.web;
 
 import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.CreateDogDTO;
 import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.UpdateDogDTO;
-import com.dog.health.dogbogamserver.domain.dog.application.port.in.CreateDogUseCase;
-import com.dog.health.dogbogamserver.domain.dog.application.port.in.UpdateDogUseCase;
-import com.dog.health.dogbogamserver.domain.dog.application.port.in.DeleteDogUseCase;
-import com.dog.health.dogbogamserver.domain.dog.application.port.in.FindDogDetailsUseCase;
+import com.dog.health.dogbogamserver.domain.dog.application.port.in.*;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
+import com.dog.health.dogbogamserver.domain.member.application.service.MemberService;
+import com.dog.health.dogbogamserver.global.auth.dto.MemberPrincipal;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -22,16 +23,18 @@ public class DogController {
     private final UpdateDogUseCase updateDogUseCase;
     private final DeleteDogUseCase deleteDogUseCase;
     private final FindDogDetailsUseCase findDogDetailsUseCase;
+    private final FindDogsUseCase findDogsUseCase;
+    private final MemberService memberService;
 
     @PostMapping
-    public SuccessResponse<?> createDog(@RequestBody CreateDogDTO createDogDTO) {
-        createDogUseCase.createDog(createDogDTO);
+    public SuccessResponse<?> createDog(@AuthenticationPrincipal MemberPrincipal memberPrincipal, @Valid @RequestBody CreateDogDTO createDogDTO) {
+        createDogUseCase.createDog(createDogDTO, memberPrincipal.getMemberId());
         return SuccessResponse.created();
     }
 
     @PatchMapping
-    public SuccessResponse<?> updateDog(@RequestBody UpdateDogDTO updateDogDTO) {
-        updateDogUseCase.updateDog(updateDogDTO);
+    public SuccessResponse<?> updateDog(@AuthenticationPrincipal MemberPrincipal memberPrincipal, @Valid @RequestBody UpdateDogDTO updateDogDTO) {
+        updateDogUseCase.updateDog(updateDogDTO, memberPrincipal.getMemberId());
         return SuccessResponse.updated();
     }
 
@@ -44,7 +47,12 @@ public class DogController {
     @GetMapping("/{dogId}")
     public SuccessResponse<?> getDogDetails(@PathVariable("dogId") Long dogId) {
         Optional<Dog> dog = findDogDetailsUseCase.findDogDetails(dogId);
-        return dog.map(SuccessResponse::ok)
-                .orElseGet(() -> SuccessResponse.ok(null));  // SuccessResponse.ok()로 처리
+        return SuccessResponse.created(dog.map(SuccessResponse::ok)
+                .orElseGet(() -> SuccessResponse.ok(null)));  // SuccessResponse.ok()로 처리
+    }
+
+    @GetMapping("/list")
+    public SuccessResponse<?> getDogList(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        return SuccessResponse.ok(findDogsUseCase.findDogsByMemberId(memberPrincipal.getMemberId()));
     }
 }
