@@ -1,7 +1,9 @@
 package com.dog.health.dogbogamserver.domain.healthProblem.application.service;
 
 import com.dog.health.dogbogamserver.domain.healthProblem.application.port.in.CreateHealthProblemUseCase;
+import com.dog.health.dogbogamserver.domain.healthProblem.application.port.in.DeleteHealthProblemUseCase;
 import com.dog.health.dogbogamserver.domain.healthProblem.application.port.in.FindHealthProblemsUseCase;
+import com.dog.health.dogbogamserver.domain.healthProblem.application.port.out.DeleteHealthProblemPort;
 import com.dog.health.dogbogamserver.domain.healthProblem.application.port.out.LoadHealthProblemPort;
 import com.dog.health.dogbogamserver.domain.healthProblem.application.port.out.SaveHealthProblemPort;
 import com.dog.health.dogbogamserver.domain.healthProblem.application.service.dto.response.HealthProblemResponse;
@@ -18,10 +20,11 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class HealthProblemService implements CreateHealthProblemUseCase, FindHealthProblemsUseCase {
+public class HealthProblemService implements CreateHealthProblemUseCase, FindHealthProblemsUseCase, DeleteHealthProblemUseCase {
 
     private final SaveHealthProblemPort saveHealthProblemPort;
     private final LoadHealthProblemPort loadHealthProblemPort;
+    private final DeleteHealthProblemPort deleteHealthProblemPort;
 
     @Override
     public void createHealthProblems(Long dogId, String problems) {
@@ -75,5 +78,16 @@ public class HealthProblemService implements CreateHealthProblemUseCase, FindHea
                         .problem(healthProblem.getProblem())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    // 건강 고민 삭제
+    @Override
+    public void deleteHealthProblem(Long healthProblemId) {
+        // healthProblem 존재 여부 확인
+        loadHealthProblemPort.loadHealthProblemById(healthProblemId)
+                .orElseThrow(() -> new CustomException(ErrorCode.HEALTH_PROBLEM_NOT_FOUND));
+
+        // healthProblem 삭제
+        deleteHealthProblemPort.deleteHealthProblem(healthProblemId);
     }
 }
