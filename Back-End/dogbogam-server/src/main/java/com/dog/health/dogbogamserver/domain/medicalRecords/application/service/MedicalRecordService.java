@@ -1,6 +1,6 @@
 package com.dog.health.dogbogamserver.domain.medicalRecords.application.service;
 
-import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogPersistenceAdapter;
+import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogDetailsPort;
 import com.dog.health.dogbogamserver.domain.medicalRecords.adapter.out.persistence.MedicalRecordEntity;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.*;
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.out.*;
@@ -23,14 +23,14 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
     private final FindReportPort findReportPort;
     private final DeleteReportPort deleteReportPort;
     private final FindReportsPort findReportsPort;
-    private final DogPersistenceAdapter dogPersistenceAdapter;
+    private final FindDogDetailsPort dogDetailsPort;
 
     @Override
     public void createReport(CreateReportRequestDto createReportRequestDto) {
         log.info("Service Create record : {}", createReportRequestDto);
         MedicalRecordEntity medicalRecordEntity = MedicalRecordEntity.builder()
                 .recordTime(createReportRequestDto.getRecordTime())
-                .dog(dogPersistenceAdapter.findEntityByDogId(createReportRequestDto.getDogId())
+                .dog(dogDetailsPort.findEntityByDogId(createReportRequestDto.getDogId())
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견 입니다.")))
                 .content(createReportRequestDto.getContent())
                 .hospital(createReportRequestDto.getHospital())
@@ -42,9 +42,9 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
     public void updateReport(UpdateReportRequestDto updateReportRequestDto) {
         log.info("Service Update record : {}", updateReportRequestDto);
         MedicalRecordEntity medicalRecordEntity = MedicalRecordEntity.builder()
-                .medicalRecordId(updateReportRequestDto.getReportId())
+                .medicalRecordId(updateReportRequestDto.getMedicalRecordId())
                 .recordTime(updateReportRequestDto.getRecordTime())
-                .dog(dogPersistenceAdapter.findEntityByDogId(updateReportRequestDto.getDogId())
+                .dog(dogDetailsPort.findEntityByDogId(updateReportRequestDto.getDogId())
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견입니다.")))
                 .content(updateReportRequestDto.getContent())
                 .hospital(updateReportRequestDto.getHospital())
