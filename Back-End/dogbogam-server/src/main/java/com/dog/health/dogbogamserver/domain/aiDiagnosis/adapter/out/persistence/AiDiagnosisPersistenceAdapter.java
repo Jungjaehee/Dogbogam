@@ -5,6 +5,7 @@ import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.Fin
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.FindAiDiagnosisPort;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.request.CreateAiDiagnosisRequestDto;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
+import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogEntity;
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogMapper;
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogPersistenceAdapter;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
@@ -57,6 +58,9 @@ public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, Fin
 
     @Override
     public List<AiDiagnosis> findAiDiagnosesByDogId(Long dogId) {
-        return Optional.empty();
+        DogEntity dogEntity = dogPersistenceAdapter.findEntityByDogId(dogId)
+                .orElseThrow(()->new CustomException(ErrorCode.DOG_NOT_FOUND));
+        List<AiDiagnosisEntity> aiDiagnoses = jpaRepository.findByDog(dogEntity);
+        return aiDiagnosisMapper.entityListToDomainList(aiDiagnoses);
     }
 }
