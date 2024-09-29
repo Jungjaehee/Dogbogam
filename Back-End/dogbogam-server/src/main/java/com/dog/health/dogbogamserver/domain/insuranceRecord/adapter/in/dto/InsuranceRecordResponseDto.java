@@ -1,10 +1,12 @@
 package com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
 @AllArgsConstructor
+@Getter
 public class InsuranceRecordResponseDto {
 
     private Long insuranceRecordId;
