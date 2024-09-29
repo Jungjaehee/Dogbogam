@@ -43,8 +43,8 @@ public class DogController {
     @GetMapping("/{dogId}")
     public SuccessResponse<?> getDogDetails(@PathVariable("dogId") Long dogId) {
         Optional<Dog> dog = findDogDetailsUseCase.findDogDetails(dogId);
-        return dog.map(SuccessResponse::ok)
-                .orElseGet(() -> SuccessResponse.ok(null));  // SuccessResponse.ok()로 처리
+        return SuccessResponse.created(dog.map(SuccessResponse::ok)
+                .orElseGet(() -> SuccessResponse.ok(null)));  // SuccessResponse.ok()로 처리
     }
 
     @GetMapping("/list/{memberId}")
