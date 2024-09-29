@@ -5,6 +5,7 @@ import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.UpdateDogDTO;
 import com.dog.health.dogbogamserver.domain.dog.application.port.in.*;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +23,13 @@ public class DogController {
     private final FindDogsUseCase findDogsUseCase;
 
     @PostMapping
-    public SuccessResponse<?> createDog(@RequestBody CreateDogDTO createDogDTO) {
+    public SuccessResponse<?> createDog(@Valid @RequestBody CreateDogDTO createDogDTO) {
         createDogUseCase.createDog(createDogDTO);
         return SuccessResponse.created();
     }
 
     @PatchMapping
-    public SuccessResponse<?> updateDog(@RequestBody UpdateDogDTO updateDogDTO) {
+    public SuccessResponse<?> updateDog(@Valid @RequestBody UpdateDogDTO updateDogDTO) {
         updateDogUseCase.updateDog(updateDogDTO);
         return SuccessResponse.updated();
     }

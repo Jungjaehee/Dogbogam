@@ -38,7 +38,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                 .birthDate(createDogDTO.getBirthDate())
                 .weight(createDogDTO.getWeight())
                 .isNeutered(createDogDTO.getIsNeutered())
-                .isDeleted(createDogDTO.isDeleted())
+                .isDeleted(createDogDTO.getIsDeleted())
                 // 추후 이미지 추가
                 .build();
         createDogPort.save(createDog);
