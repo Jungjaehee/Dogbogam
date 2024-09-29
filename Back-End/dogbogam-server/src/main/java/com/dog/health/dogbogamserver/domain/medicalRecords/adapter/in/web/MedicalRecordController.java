@@ -23,9 +23,9 @@ public class MedicalRecordController {
     private final DeleteReportUseCase deleteReportUseCase;
     private final FindReportsUseCase findReportsUseCase;
 
-    @GetMapping("/{recordId}")
-    public SuccessResponse<MedicalRecord> getMedicalRecordById(@PathVariable("recordId") Long recordId) {
-        return SuccessResponse.ok(findReportUseCase.findMedicalRecordById(recordId));
+    @GetMapping("/{medicalRecordId}")
+    public SuccessResponse<MedicalRecord> getMedicalRecordById(@PathVariable("medicalRecordId") Long medicalRecordId) {
+        return SuccessResponse.ok(findReportUseCase.findMedicalRecordById(medicalRecordId));
     }
 
     @PostMapping
@@ -42,10 +42,10 @@ public class MedicalRecordController {
         return SuccessResponse.updated();
     }
 
-    @DeleteMapping("/{recordId}")
-    public SuccessResponse<?> deleteMedicalRecord(@PathVariable("recordId") Long recordId) {
-        log.info("Controller Delete medical record: {}", recordId);
-        deleteReportUseCase.deleteReportUseCase(recordId);
+    @DeleteMapping("/{medicalRecordId}")
+    public SuccessResponse<?> deleteMedicalRecord(@PathVariable("medicalRecordId") Long medicalRecordId) {
+        log.info("Controller Delete medical record: {}", medicalRecordId);
+        deleteReportUseCase.deleteReportUseCase(medicalRecordId);
         return SuccessResponse.deleted();
     }
 
