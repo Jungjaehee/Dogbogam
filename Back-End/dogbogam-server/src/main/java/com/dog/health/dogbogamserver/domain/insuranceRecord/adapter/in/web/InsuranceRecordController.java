@@ -5,6 +5,7 @@ import com.dog.health.dogbogamserver.domain.insuranceRecord.adapter.in.dto.Updat
 import com.dog.health.dogbogamserver.domain.insuranceRecord.application.port.in.*;
 import com.dog.health.dogbogamserver.global.auth.dto.MemberPrincipal;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class InsuranceRecordController {
 
     @PostMapping
     public SuccessResponse<?> saveInsuranceRecord(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                  @RequestBody final RegistInsuranceRecordRequestDto registRequestDto) {
+                                                  @Valid @RequestBody final RegistInsuranceRecordRequestDto registRequestDto) {
         registInsuranceRecordUseCase.registInsuranceRecord(memberPrincipal.getMemberId(), registRequestDto);
 
         return SuccessResponse.created();
@@ -30,7 +31,7 @@ public class InsuranceRecordController {
 
     @PatchMapping
     public SuccessResponse<?> updateInsuranceRecord(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                    @RequestBody final UpdateInsuranceRecordRequestDto updateRequestDto) {
+                                                    @Valid @RequestBody final UpdateInsuranceRecordRequestDto updateRequestDto) {
         updateInsuranceRecordUseCase.updateInsuranceRecord(memberPrincipal.getMemberId(), updateRequestDto);
 
         return SuccessResponse.updated();
