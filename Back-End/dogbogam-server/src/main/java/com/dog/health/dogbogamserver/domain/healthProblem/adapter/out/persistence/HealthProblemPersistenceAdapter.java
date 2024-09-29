@@ -1,5 +1,6 @@
 package com.dog.health.dogbogamserver.domain.healthProblem.adapter.out.persistence;
 
+import com.dog.health.dogbogamserver.domain.healthProblem.application.port.out.DeleteHealthProblemPort;
 import com.dog.health.dogbogamserver.domain.healthProblem.application.port.out.LoadHealthProblemPort;
 import com.dog.health.dogbogamserver.domain.healthProblem.application.port.out.SaveHealthProblemPort;
 import com.dog.health.dogbogamserver.domain.healthProblem.domain.HealthProblem;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class HealthProblemPersistenceAdapter implements LoadHealthProblemPort, SaveHealthProblemPort {
+public class HealthProblemPersistenceAdapter implements LoadHealthProblemPort, SaveHealthProblemPort, DeleteHealthProblemPort {
 
     private final HealthProblemSpringDataRepository repository;
     private final HealthProblemMapper mapper;
@@ -28,6 +29,12 @@ public class HealthProblemPersistenceAdapter implements LoadHealthProblemPort, S
     }
 
     @Override
+    public Optional<HealthProblem> loadHealthProblemById(Long healthProblemId) {
+        return repository.findById(healthProblemId)
+                .map(mapper::toDomain);
+    }
+
+    @Override
     public void saveHealthProblem(HealthProblem healthProblem) {
         repository.save(mapper.toEntity(healthProblem));
     }
@@ -35,5 +42,10 @@ public class HealthProblemPersistenceAdapter implements LoadHealthProblemPort, S
     @Override
     public Optional<Dog> loadDogById(Long dogId) {
         return findDogDetailsPort.findByDogId(dogId);
+    }
+
+    @Override
+    public void deleteHealthProblem(Long healthProblemId) {
+        repository.deleteById(healthProblemId);
     }
 }
