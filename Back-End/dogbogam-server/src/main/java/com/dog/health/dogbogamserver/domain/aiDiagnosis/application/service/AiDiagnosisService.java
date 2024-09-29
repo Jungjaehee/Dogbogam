@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AiDiagnosisService implements CreateAiDiagnosisUseCase {
 
-    private static CreateAiDiagnosisPort createAiDiagnosisPort;
+    private final CreateAiDiagnosisPort createAiDiagnosisPort;
 
     @Override
     public void createAiDiagnosis(CreateAiDiagnosisRequestDto requestDto) {

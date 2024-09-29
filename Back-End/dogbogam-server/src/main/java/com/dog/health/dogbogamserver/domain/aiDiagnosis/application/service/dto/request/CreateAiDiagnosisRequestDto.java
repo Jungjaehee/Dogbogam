@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class CreateAiDiagnosisRequestDto {
     @NotEmpty(message = "강아지는 필수입니다.")
-    private Dog dog;
+    private Long dogId;
 
     @NotEmpty(message = "정상 상태 여부는 필수입니다.")
     private Boolean normal;
