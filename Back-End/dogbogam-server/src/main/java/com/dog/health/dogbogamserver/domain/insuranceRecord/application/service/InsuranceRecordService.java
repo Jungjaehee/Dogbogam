@@ -13,6 +13,7 @@ import com.dog.health.dogbogamserver.domain.insurance.domain.Insurance;
 import com.dog.health.dogbogamserver.global.web.exception.CustomException;
 import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class InsuranceRecordService implements RegistInsuranceRecordUseCase, UpdateInsuranceRecordUseCase
         , FindInsuranceRecordUseCase, DeleteInsuranceRecordUseCase, FindAllInsuranceRecordUseCase {
 
@@ -69,15 +71,25 @@ public class InsuranceRecordService implements RegistInsuranceRecordUseCase, Upd
         InsuranceRecord existInsuranceRecord = loadInsuranceRecordPort.loadInsuranceRecord(updateRequestDto.getInsuranceRecordId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_INSURANCE_RECORD));
 
-        // 2. 해당 반려견의 보호자가 로그인한 멤버인지 확인
-        if(existInsuranceRecord.getDog().getMember().getMemberId() != memberId)
+
+        // 2. 반려견과 해당 보험이 있는지 검사
+        Insurance insurance = saveInsuranceRecordPort.checkExistingInsurance(updateRequestDto.getInsuranceId())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_INSURANCE));
+
+        Dog dog = saveInsuranceRecordPort.checkExistingDog(updateRequestDto.getDogId())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_DOG));
+
+
+        // 3. 해당 반려견의 보호자가 로그인한 멤버인지 확인
+        if(dog.getMember().getMemberId() != memberId)
             throw new CustomException(ErrorCode.NO_ACCESS_DOG);
 
-        // 3. 수정
+
+        // 4. 수정
         InsuranceRecord insuranceRecord = InsuranceRecord.builder()
                 .insuranceRecordId(updateRequestDto.getInsuranceRecordId())
-                .insurance(existInsuranceRecord.getInsurance())
-                .dog(existInsuranceRecord.getDog())
+                .insurance(insurance)
+                .dog(dog)
                 .registDate(updateRequestDto.getRegistDate())
                 .expirationDate(updateRequestDto.getExpirationDate())
                 .monthlyPayment(updateRequestDto.getMonthlyPayment())
