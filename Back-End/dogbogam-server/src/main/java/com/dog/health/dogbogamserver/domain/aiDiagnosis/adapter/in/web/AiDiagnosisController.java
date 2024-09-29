@@ -1,6 +1,7 @@
 package com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.in.web;
 
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.in.CreateAiDiagnosisUseCase;
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.in.FindAiDiagnosisUseCase;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.request.CreateAiDiagnosisRequestDto;
 import com.dog.health.dogbogamserver.global.auth.dto.MemberPrincipal;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AiDiagnosisController {
     private final CreateAiDiagnosisUseCase createAiDiagnosisUseCase;
+    private final FindAiDiagnosisUseCase findAiDiagnosisUseCase;
 
     @PostMapping
     public SuccessResponse<?> createDiagnosis(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
@@ -23,5 +25,10 @@ public class AiDiagnosisController {
                                               createAiDiagnosisRequestDto) {
         createAiDiagnosisUseCase.createAiDiagnosis(memberPrincipal.getMemberId(), createAiDiagnosisRequestDto);
         return SuccessResponse.created();
+    }
+
+    @GetMapping("/{aiDiagnosisId}")
+    public SuccessResponse<?> findDiagnosisById(@PathVariable("aiDiagnosisId") Long aiDiagnosisId) {
+        return SuccessResponse.created(findAiDiagnosisUseCase.findAiDiagnosisByAiDiagnosisId(aiDiagnosisId));
     }
 }
