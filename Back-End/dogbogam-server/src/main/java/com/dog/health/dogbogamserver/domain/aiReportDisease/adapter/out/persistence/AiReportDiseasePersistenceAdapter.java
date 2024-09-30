@@ -1,10 +1,8 @@
 package com.dog.health.dogbogamserver.domain.aiReportDisease.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence.AiDiagnosisEntity;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence.AiDiagnosisMapper;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence.AiDiagnosisPersistenceAdapter;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
-import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.in.FindAiReportDiseasesUseCase;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out.CreateAiReportDiseasePort;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out.FindAiReportDiseasePort;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out.FindAiReportDiseasesPort;
@@ -17,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -54,8 +51,8 @@ public class AiReportDiseasePersistenceAdapter implements CreateAiReportDiseaseP
     }
 
     @Override
-    public List<AiReportDisease> findAiReportDiseasesByDiagnosisId(Long diagnosisId) {
-        AiDiagnosis aiDiagnosis = diagnosisAdapter.findAiDiagnosisByAiDiagnosisId(diagnosisId);
+    public List<AiReportDisease> findAiReportDiseaseByAiReportDiseaseId(Long aiReportDiseaseId) {
+        AiDiagnosis aiDiagnosis = diagnosisAdapter.findAiDiagnosisByAiDiagnosisId(aiReportDiseaseId);
 
         if(aiDiagnosis == null) {
             throw new CustomException(ErrorCode.AI_DIAGNOSIS_NOT_FOUND);

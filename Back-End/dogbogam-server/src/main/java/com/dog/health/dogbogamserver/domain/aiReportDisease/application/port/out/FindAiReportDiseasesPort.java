@@ -5,5 +5,5 @@ import com.dog.health.dogbogamserver.domain.aiReportDisease.domain.AiReportDisea
 import java.util.List;
 
 public interface FindAiReportDiseasesPort {
-    List<AiReportDisease> findAiReportDiseasesByDiagnosisId(Long diagnosisId);
+    List<AiReportDisease> findAiReportDiseaseByAiReportDiseaseId(Long aiReportDiseaseId);
 }

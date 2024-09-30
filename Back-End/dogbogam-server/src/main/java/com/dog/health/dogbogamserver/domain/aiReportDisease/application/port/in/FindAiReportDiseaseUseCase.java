@@ -3,5 +3,5 @@ package com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.in
 import com.dog.health.dogbogamserver.domain.aiReportDisease.domain.AiReportDisease;
 
 public interface FindAiReportDiseaseUseCase {
-    AiReportDisease findAiReportDiseaseById(Long id);
+    AiReportDisease findAiReportDiseaseByAiReportDiseaseId(Long aiReportDiseaseId);
 }

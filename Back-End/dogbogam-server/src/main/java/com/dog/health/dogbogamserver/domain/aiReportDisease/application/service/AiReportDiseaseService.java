@@ -28,12 +28,12 @@ public class AiReportDiseaseService implements CreateAiReportDiseaseUseCase, Fin
     }
 
     @Override
-    public AiReportDisease findAiReportDiseaseById(Long id) {
-        return findAiReportDiseasePort.findAiReportDiseaseById(id);
+    public AiReportDisease findAiReportDiseaseByAiReportDiseaseId(Long aiReportDiseaseId) {
+        return findAiReportDiseasePort.findAiReportDiseaseById(aiReportDiseaseId);
     }
 
     @Override
     public List<AiReportDisease> findAiReportsByDiagnosisId(Long diagnosisId) {
-        return findAiReportDiseasesPort.findAiReportDiseasesByDiagnosisId(diagnosisId);
+        return findAiReportDiseasesPort.findAiReportDiseaseByAiReportDiseaseId(diagnosisId);
     }
 }
