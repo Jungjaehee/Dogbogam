@@ -4,7 +4,7 @@ import { DogCard } from "../Home/components/dogCard";
 import DogInfo from "./components/Doginfo";
 import AIDiagnosisButton from "./components/Buttons/AIDiagnosisButton";
 import MyInsuranceButton from "./components/Buttons/MyInsuranceButton";
-import selectDogButton from "../../assets/MyPage/selectDogButton.png"
+import selectDogButton from "../../assets/MyPage/selectDogButton.png";
 import SignUpDay from "./components/SignUpDay";
 import imageUrl from "../../assets/MyPage/saewooIcon.png";
 import MedicalRecordButton from "./components/Buttons/MedicalRecordButton";
@@ -54,7 +54,7 @@ const MyPage = () => {
 
   const handleDogSelect = (dog: Dog) => {
     setCurrentDog(dog);
-    setOpenModal(false); 
+    setOpenModal(false);
   };
 
   const ClickLogout = () => {

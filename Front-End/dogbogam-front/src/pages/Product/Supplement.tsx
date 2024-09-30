@@ -1,4 +1,3 @@
-import React from "react";
 import { TopBar } from "../../components/Topbar/index";
 import SearchBar from "../../components/SearchBar/index";
 
@@ -14,21 +13,20 @@ interface Insurance {
 }
 
 export const Supplement = () => {
-
   const dog: Dog = {
     dogId: 1,
     dogName: "새우",
-  }
+  };
 
-  const insurance: Insurance = ({
+  const insurance: Insurance = {
     insuranceId: 1,
     name: "삼성화재 반려견 보험",
     fee: "13,332",
-  })  
+  };
 
   const handleSearch = (query: string) => {
     console.log("검색어", query);
-  }
+  };
 
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col justify-between">
@@ -44,9 +42,9 @@ export const Supplement = () => {
           <SearchBar onSearch={handleSearch} />
         </div>
         <label htmlFor="disease" className="block font-medium text-sm mb-2">
-            질병유무 <span className="text-main-color">*</span>
-          </label>
-        <div className=" flex gap-2 justify-center mb-6 flex space-x-2 ">
+          질병유무 <span className="text-main-color">*</span>
+        </label>
+        <div className=" flex gap-2 justify-center mb-6 space-x-2 ">
           <div className=" bg-main-color rounded-lg shadow-lg p-2 w-[160px] h-[43px]">
             <p className="font-medium text-center text-gray-0">없음</p>
           </div>
@@ -66,4 +64,5 @@ export const Supplement = () => {
         </div>
       </div>
     </div>
-  )}
+  );
+};

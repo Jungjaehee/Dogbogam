@@ -1,28 +1,28 @@
 import { useNavigate } from "react-router-dom";
-import BackButton from "../../assets/MyPage/BackButton.png"
+import BackButton from "../../assets/MyPage/BackButton.png";
 
-interface MyInsurance {
-  insurances: {
-    insuranceRecord: {
-      insuranceRecordId: number;
-      insuranceId: number;
-      dogId: number;
-      registDate: string;
-      monthlyPayment: number;
-      expirationDate: string;
-      isDeleted: boolean;
-      createdAt: Date;
-      modifiedAt?: Date | null;
-    };
-    insuranceDetails: {
-      name: string;
-      premium: number;
-      description: string;
-      coveragePeriod: string;
-      insuranceCompany: string;
-    };
-  }[];
-}
+// interface MyInsurance {
+//   insurances: {
+//     insuranceRecord: {
+//       insuranceRecordId: number;
+//       insuranceId: number;
+//       dogId: number;
+//       registDate: string;
+//       monthlyPayment: number;
+//       expirationDate: string;
+//       isDeleted: boolean;
+//       createdAt: Date;
+//       modifiedAt?: Date | null;
+//     };
+//     insuranceDetails: {
+//       name: string;
+//       premium: number;
+//       description: string;
+//       coveragePeriod: string;
+//       insuranceCompany: string;
+//     };
+//   }[];
+// }
 
 const RegistInsurance = () => {
   const navigate = useNavigate();

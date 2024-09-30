@@ -1,4 +1,3 @@
-import React from "react";
 import Kakao from "../../components/kakao";
 import { TopBar } from "../../components/Topbar";
 
@@ -7,12 +6,11 @@ interface Dog {
   dogName: string;
 }
 
-
 export const Map = () => {
   const dog: Dog = {
     dogId: 1,
     dogName: "새우",
-  }
+  };
 
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col justify-between">
@@ -27,4 +25,5 @@ export const Map = () => {
         <Kakao />
       </div>
     </div>
-  );}
+  );
+};

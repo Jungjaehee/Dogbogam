@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../assets/MyPage/BackButton.png";
 import MedicalRecordList from "./components/MedicalRecordList";
-import type { MedicalRecord, VaccinationRecord } from "../../models/record.model";
+import type {
+  MedicalRecord,
+  VaccinationRecord,
+} from "../../models/record.model";
 
 // 병원 진료 더미 데이터
 const medicalRecords: MedicalRecord[] = [
@@ -15,6 +18,7 @@ const medicalRecords: MedicalRecord[] = [
     imageUrl: null,
     createdAt: new Date("2023-09-10T14:00:00Z"),
     modifiedAt: new Date("2023-09-12T10:00:00Z"),
+    cost: 0,
   },
   {
     medicalRecordId: 3,
@@ -26,6 +30,7 @@ const medicalRecords: MedicalRecord[] = [
     imageUrl: null,
     createdAt: new Date("2020-07-15T09:00:00Z"),
     modifiedAt: new Date("2023-07-16T11:00:00Z"),
+    cost: 0,
   },
 ];
 
@@ -42,6 +47,7 @@ const vaccinationRecords: VaccinationRecord[] = [
     imageUrl: null,
     createdAt: new Date("2023-08-25T10:30:00Z"),
     modifiedAt: new Date("2023-08-26T09:00:00Z"),
+    cost: 0,
   },
   {
     vaccinationRecordId: 4,
@@ -54,6 +60,7 @@ const vaccinationRecords: VaccinationRecord[] = [
     imageUrl: null,
     createdAt: new Date("2023-06-20T14:00:00Z"),
     modifiedAt: new Date("2023-06-21T10:00:00Z"),
+    cost: 0,
   },
 ];
 
