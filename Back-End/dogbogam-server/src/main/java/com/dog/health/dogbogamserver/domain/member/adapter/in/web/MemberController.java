@@ -10,6 +10,7 @@ import com.dog.health.dogbogamserver.domain.member.application.service.dto.respo
 import com.dog.health.dogbogamserver.domain.member.application.service.dto.response.LoginResponse;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +44,7 @@ public class MemberController {
 
     // 이메일 중복 체크
     @PostMapping("/check")
-    public SuccessResponse<?> checkDuplicateEmail(@RequestBody CheckRequest checkRequest) throws JsonProcessingException {
+    public SuccessResponse<?> checkDuplicateEmail(@Valid @RequestBody CheckRequest checkRequest) throws JsonProcessingException {
         CheckResponse checkResponse = checkMemberUseCase.checkDuplicateEmail(checkRequest);
         return SuccessResponse.ok(checkResponse);
     }
