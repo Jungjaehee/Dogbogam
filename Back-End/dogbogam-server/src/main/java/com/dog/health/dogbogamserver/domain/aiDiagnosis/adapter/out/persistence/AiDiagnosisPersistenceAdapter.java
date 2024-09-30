@@ -21,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -63,11 +62,8 @@ public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, Fin
 
     @Override
     public List<AiDiagnosis> findAiDiagnosesByDogId(Long dogId, int page, int size) {
-        DogEntity dogEntity = dogPersistenceAdapter.findEntityByDogId(dogId)
-                .orElseThrow(() -> new CustomException(ErrorCode.DOG_NOT_FOUND));
-
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<AiDiagnosisEntity> aiDiagnosesPage = jpaRepository.findByDog(dogEntity, pageable);
+        Page<AiDiagnosisEntity> aiDiagnosesPage = jpaRepository.findByDog_DogId(dogId, pageable);
 
         return aiDiagnosisMapper.entityListToDomainList(aiDiagnosesPage.getContent());
     }
