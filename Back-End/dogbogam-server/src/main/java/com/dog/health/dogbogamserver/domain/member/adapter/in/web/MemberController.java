@@ -48,6 +48,7 @@ public class MemberController {
     public SuccessResponse<?> checkDuplicateEmail(@Valid @RequestBody CheckRequest checkRequest) throws JsonProcessingException {
         CheckResponse checkResponse = checkMemberUseCase.checkDuplicateEmail(checkRequest);
         return SuccessResponse.ok(checkResponse);
+    }
 
     // 유저 정보 가져오기
     @GetMapping("/info")
