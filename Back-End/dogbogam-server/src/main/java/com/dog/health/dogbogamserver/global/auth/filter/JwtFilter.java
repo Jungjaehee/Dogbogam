@@ -35,7 +35,7 @@ public class JwtFilter extends GenericFilterBean{
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         logger.info("[JwtFilter] : " + request.getRequestURL().toString());
 
-        // 로그인, 회원가입은 필터를 적용하지 않음
+        // 로그인, 회원가입, 이메일 체크는 필터를 적용하지 않음
         String requestURI = request.getRequestURI();
         logger.info("requestURI : " + requestURI);
         if (requestURI.equals("/members") || requestURI.equals("/members/login") || requestURI.equals("/members/check")) {
