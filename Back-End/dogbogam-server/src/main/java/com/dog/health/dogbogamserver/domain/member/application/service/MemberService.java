@@ -1,6 +1,7 @@
 package com.dog.health.dogbogamserver.domain.member.application.service;
 
 import com.dog.health.dogbogamserver.domain.member.application.port.in.CheckMemberUseCase;
+import com.dog.health.dogbogamserver.domain.member.application.port.in.FindMemberUseCase;
 import com.dog.health.dogbogamserver.domain.member.application.port.in.RegisterMemberUseCase;
 import com.dog.health.dogbogamserver.domain.member.application.port.out.LoadMemberPort;
 import com.dog.health.dogbogamserver.domain.member.application.port.out.SaveMemberPort;
@@ -8,6 +9,7 @@ import com.dog.health.dogbogamserver.domain.member.application.service.dto.reque
 import com.dog.health.dogbogamserver.domain.member.application.service.dto.request.CreateRequest;
 import com.dog.health.dogbogamserver.domain.member.application.service.dto.response.CheckResponse;
 import com.dog.health.dogbogamserver.domain.member.application.service.dto.response.LoginResponse;
+import com.dog.health.dogbogamserver.domain.member.application.service.dto.response.MemberResponse;
 import com.dog.health.dogbogamserver.domain.member.domain.Member;
 import com.dog.health.dogbogamserver.global.auth.utils.JWTProvider;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService implements RegisterMemberUseCase, CheckMemberUseCase {
+public class MemberService implements RegisterMemberUseCase, FindMemberUseCase, CheckMemberUseCase {
 
     private final LoadMemberPort loadMemberPort;
     private final SaveMemberPort saveMemberPort;
@@ -45,7 +47,6 @@ public class MemberService implements RegisterMemberUseCase, CheckMemberUseCase 
         return LoginResponse.createLoginResponse(accessToken);
     }
 
-
     @Override
     public CheckResponse checkDuplicateEmail(CheckRequest request) {
         boolean isDuplicate = loadMemberPort.loadMemberByEmail(request.getEmail()).isPresent();
@@ -57,5 +58,14 @@ public class MemberService implements RegisterMemberUseCase, CheckMemberUseCase 
         }
     }
     
-
+    @Override
+    public MemberResponse findMember(Long memberId) {
+        Member member = loadMemberPort.loadMember(memberId);
+        MemberResponse memberResponse = MemberResponse.builder()
+                .memberId(member.getMemberId())
+                .email(member.getEmail())
+                .nickname(member.getNickname())
+                .build();
+        return memberResponse;
+    }
 }
