@@ -33,14 +33,14 @@ public class AiDiagnosisController {
 
     @GetMapping("/report/{aiDiagnosisId}")
     public SuccessResponse<?> findDiagnosisById(@PathVariable("aiDiagnosisId") Long aiDiagnosisId) {
-        return SuccessResponse.created(findAiDiagnosisUseCase.findAiDiagnosisByAiDiagnosisId(aiDiagnosisId));
+        return SuccessResponse.ok(findAiDiagnosisUseCase.findAiDiagnosisByAiDiagnosisId(aiDiagnosisId));
     }
 
     @GetMapping("/report/list/{dogId}")
     public SuccessResponse<?> findDiagnosesById(@PathVariable("dogId") Long dogId,
-                                                @RequestParam(value = "page", defaultValue = "0") int page,
+                                                @RequestParam(value = "page", defaultValue = "1") int page,
                                                 @RequestParam(value = "size", defaultValue = "10") int size) {
-        return SuccessResponse.created(findAiDiagnosesUseCase.findAiDiagnosesByDogId(dogId, page, size));
+        return SuccessResponse.ok(findAiDiagnosesUseCase.findAiDiagnosesByDogId(dogId, page, size));
     }
 
     @DeleteMapping("/report/{aiDiagnosisId}")

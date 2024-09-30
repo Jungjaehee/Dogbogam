@@ -1,9 +1,7 @@
 package com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out;
 
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
-
-import java.util.List;
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.response.CreateAiDiagnosisResponseDto;
 
 public interface FindAiDiagnosesPort {
-    List<AiDiagnosis> findAiDiagnosesByDogId(Long dogId, int page, int size);
+    CreateAiDiagnosisResponseDto findAiDiagnosesByDogId(Long dogId, int page, int size);
 }
