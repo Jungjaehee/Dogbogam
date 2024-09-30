@@ -19,8 +19,8 @@ public class CreateDogDTO {
     private String gender;
     private LocalDate birthDate;
     private Double weight;
-    private Boolean isNeutered;
     @NotNull(message = "중성화 여부는 필수 입니다.")
+    private Boolean isNeutered;
     private Boolean isDeleted;
     private String imageName;
     private String imageUrl;
