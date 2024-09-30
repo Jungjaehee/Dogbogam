@@ -38,7 +38,7 @@ public class AiDiagnosisController {
 
     @GetMapping("/report/list/{dogId}")
     public SuccessResponse<?> findDiagnosesById(@PathVariable("dogId") Long dogId,
-                                                @RequestParam(value = "page", defaultValue = "0") int page,
+                                                @RequestParam(value = "page", defaultValue = "1") int page,
                                                 @RequestParam(value = "size", defaultValue = "10") int size) {
         return SuccessResponse.ok(findAiDiagnosesUseCase.findAiDiagnosesByDogId(dogId, page, size));
     }
