@@ -1,10 +1,13 @@
 package com.dog.health.dogbogamserver.domain.member.application.service;
 
+import com.dog.health.dogbogamserver.domain.member.application.port.in.CheckMemberUseCase;
 import com.dog.health.dogbogamserver.domain.member.application.port.in.FindMemberUseCase;
 import com.dog.health.dogbogamserver.domain.member.application.port.in.RegisterMemberUseCase;
 import com.dog.health.dogbogamserver.domain.member.application.port.out.LoadMemberPort;
 import com.dog.health.dogbogamserver.domain.member.application.port.out.SaveMemberPort;
+import com.dog.health.dogbogamserver.domain.member.application.service.dto.request.CheckRequest;
 import com.dog.health.dogbogamserver.domain.member.application.service.dto.request.CreateRequest;
+import com.dog.health.dogbogamserver.domain.member.application.service.dto.response.CheckResponse;
 import com.dog.health.dogbogamserver.domain.member.application.service.dto.response.LoginResponse;
 import com.dog.health.dogbogamserver.domain.member.application.service.dto.response.MemberResponse;
 import com.dog.health.dogbogamserver.domain.member.domain.Member;
@@ -17,7 +20,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService implements RegisterMemberUseCase, FindMemberUseCase {
+public class MemberService implements RegisterMemberUseCase, FindMemberUseCase, CheckMemberUseCase {
 
     private final LoadMemberPort loadMemberPort;
     private final SaveMemberPort saveMemberPort;
@@ -45,6 +48,17 @@ public class MemberService implements RegisterMemberUseCase, FindMemberUseCase {
     }
 
     @Override
+    public CheckResponse checkDuplicateEmail(CheckRequest request) {
+        boolean isDuplicate = loadMemberPort.loadMemberByEmail(request.getEmail()).isPresent();
+
+        if (isDuplicate) {
+            return CheckResponse.createCheckResponse(true,"이미 사용 중인 이메일입니다.");
+        } else {
+            return CheckResponse.createCheckResponse(false,"사용 가능한 이메일입니다.");
+        }
+    }
+    
+    @Override
     public MemberResponse findMember(Long memberId) {
         Member member = loadMemberPort.loadMember(memberId);
         MemberResponse memberResponse = MemberResponse.builder()
@@ -54,5 +68,4 @@ public class MemberService implements RegisterMemberUseCase, FindMemberUseCase {
                 .build();
         return memberResponse;
     }
-
 }
