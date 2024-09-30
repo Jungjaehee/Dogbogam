@@ -5,8 +5,8 @@ import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.Del
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.FindAiDiagnosesPort;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.FindAiDiagnosisPort;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.request.CreateAiDiagnosisRequestDto;
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.response.CreateAiDiagnosisResponseDto;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
-import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogEntity;
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogMapper;
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogPersistenceAdapter;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
@@ -61,11 +61,19 @@ public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, Fin
     }
 
     @Override
-    public List<AiDiagnosis> findAiDiagnosesByDogId(Long dogId, int page, int size) {
+    public CreateAiDiagnosisResponseDto findAiDiagnosesByDogId(Long dogId, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<AiDiagnosisEntity> aiDiagnosesPage = jpaRepository.findByDog_DogId(dogId, pageable);
 
-        return aiDiagnosisMapper.entityListToDomainList(aiDiagnosesPage.getContent());
+        List<AiDiagnosis> diagnoses = aiDiagnosisMapper.entityListToDomainList(aiDiagnosesPage.getContent());
+
+        return CreateAiDiagnosisResponseDto.builder()
+                .currantPage(aiDiagnosesPage.getNumber()+1)
+                .size(aiDiagnosesPage.getSize())
+                .totalElements(aiDiagnosesPage.getTotalElements())
+                .totalPages(aiDiagnosesPage.getTotalPages())
+                .diagnoses(diagnoses)
+                .build();
     }
 
     @Override
