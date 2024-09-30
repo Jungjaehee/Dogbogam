@@ -2,10 +2,17 @@ package com.dog.health.dogbogamserver.domain.healthProblem.application.service.d
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
+@NoArgsConstructor
 public class HealthProblemResponse {
     private Long healthProblemId;
     private String problem;
+
+    @Builder
+    public HealthProblemResponse(Long healthProblemId, String problem) {
+        this.healthProblemId = healthProblemId;
+        this.problem = problem;
+    }
 }
