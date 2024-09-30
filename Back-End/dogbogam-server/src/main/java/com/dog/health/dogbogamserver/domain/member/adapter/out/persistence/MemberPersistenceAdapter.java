@@ -25,8 +25,11 @@ public class MemberPersistenceAdapter implements LoadMemberPort, SaveMemberPort 
     }
 
     @Override
-    public void saveMember(Member member){
-        memberRepository.save(memberMapper.toEntity(member));
+    public Long saveMember(Member member){
+        MemberEntity memberEntity = memberMapper.toEntity(member);
+        memberRepository.save(memberEntity);
+        return memberEntity.getMemberId();
+
     }
 
     @Override

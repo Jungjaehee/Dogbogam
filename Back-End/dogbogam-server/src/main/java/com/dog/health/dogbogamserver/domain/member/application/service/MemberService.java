@@ -42,8 +42,8 @@ public class MemberService implements RegisterMemberUseCase, FindMemberUseCase, 
                 .createAt(LocalDateTime.now())
                 .isDeleted(false)
                 .build();
-        saveMemberPort.saveMember(member);
-        String accessToken = jwtProvider.buildAccessToken(member.getMemberId());
+        Long memberId = saveMemberPort.saveMember(member);
+        String accessToken = jwtProvider.buildAccessToken(memberId);
         return LoginResponse.createLoginResponse(accessToken);
     }
 
