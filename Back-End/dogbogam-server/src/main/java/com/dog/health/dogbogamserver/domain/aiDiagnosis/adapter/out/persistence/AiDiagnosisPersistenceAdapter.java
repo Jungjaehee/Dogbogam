@@ -74,7 +74,7 @@ public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, Fin
 
     @Override
     @Transactional
-    public void deleteAiDiagnosis(Long AiDiagnosisId) {
-        jpaRepository.deleteById(AiDiagnosisId);
+    public void deleteAiDiagnosis(Long aiDiagnosisId) {
+        jpaRepository.deleteById(aiDiagnosisId);
     }
 }
