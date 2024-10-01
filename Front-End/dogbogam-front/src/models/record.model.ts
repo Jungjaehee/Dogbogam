@@ -43,3 +43,24 @@ export interface AiDiagnosis {
   diagnosisItem: string;
   diseases?: Disease[];
 }
+
+// 등록 하는 예방 접종 기록
+export interface myVaccinationRecord {
+  dogId: number;
+  recordTime: Date;
+  content: string;
+  hospital: string;
+  cost: number;
+  vaccinationRound: number;
+  // 사진 필드 추가해야됨
+}
+
+// 등록 하는 진료 기록
+export interface myMedicalRecord {
+  dogId: number;
+  recordTime: Date;
+  content: string;
+  hospital: string;
+  cost: number;
+  // 사진 필드 추가해야됨
+}
