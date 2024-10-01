@@ -21,6 +21,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +48,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                 .member(member)
                 .gender(createDogRequestDTO.getGender())
                 .breed(createDogRequestDTO.getBreed())
-//                .birthDate(createDogRequestDTO.getBirthDate())
+                .birthDate(strToLocalDate(createDogRequestDTO.getBirthDate()))
                 .weight(createDogRequestDTO.getWeight())
                 .isNeutered(createDogRequestDTO.getIsNeutered())
                 .isDeleted(false)
@@ -67,7 +69,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                     .member(member)
                     .breed(updateDogRequestDTO.getBreed())
                     .name(updateDogRequestDTO.getName())
-//                    .birthDate(updateDogRequestDTO.getBirthDate())
+                    .birthDate(strToLocalDate(updateDogRequestDTO.getBirthDate()))
                     .dogId(updateDogRequestDTO.getDogId())
                     .isNeutered(updateDogRequestDTO.getIsNeutered())
                     .weight(updateDogRequestDTO.getWeight())
@@ -125,4 +127,18 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                 .build());
     }
 
+    public LocalDate strToLocalDate(String str) {
+// 입력된 6자리 문자열(YYMMDD)로부터 연도, 월, 일을 추출하여 LocalDate로 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
+
+        // LocalDate로 변환
+        LocalDate date = LocalDate.parse(str, formatter);
+
+        // 만약 연도를 2000년 이후로 판단하고 싶다면, 추가로 다음과 같은 조건을 적용
+        if (date.getYear() < 2000) {
+            date = date.plusYears(100);
+        }
+
+        return date;
+    }
 }
