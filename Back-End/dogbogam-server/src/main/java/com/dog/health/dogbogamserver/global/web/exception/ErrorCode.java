@@ -26,7 +26,7 @@ public enum ErrorCode {
     HEALTH_PROBLEM_LIMIT_EXCEEDED("반려견의 건강 고민은 최대 3개까지만 등록할 수 있습니다.", HttpStatus.BAD_REQUEST),
     INVALID_HEALTH_PROBLEM("등록할 수 없는 건강 고민입니다.", HttpStatus.BAD_REQUEST),
     DUPLICATE_HEALTH_PROBLEM("이미 등록된 건강 고민입니다.", HttpStatus.CONFLICT),
-    HEALTH_PROBLEM_NOT_FOUND("존재하지 않는 건강 고민입니다.", HttpStatus.NOT_FOUND);
+    HEALTH_PROBLEM_NOT_FOUND("존재하지 않는 건강 고민입니다.", HttpStatus.NOT_FOUND),
 
     // AI 진단
     AI_DIAGNOSIS_NOT_FOUND("해당 AI 예측 기록이 없습니다.", HttpStatus.NOT_FOUND);
