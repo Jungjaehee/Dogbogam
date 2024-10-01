@@ -17,7 +17,7 @@ public class CreateDogRequestDTO {
     private String breed;
     @NotBlank(message = "성별은 필수 입니다.")
     private String gender;
-    private LocalDate birthDate;
+    private String birthDate;
     private Double weight;
     @NotNull(message = "중성화 여부는 필수 입니다.")
     private Boolean isNeutered;

@@ -36,8 +36,8 @@ public class DogController {
     @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public SuccessResponse<?> createDog(
             @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @RequestPart @Valid CreateDogRequestDTO createDogRequestDTO,
-            @RequestPart MultipartFile dogImage) {
+            @RequestBody @Valid CreateDogRequestDTO createDogRequestDTO,
+            @RequestPart("image") MultipartFile dogImage) {
         createDogUseCase.createDog(createDogRequestDTO, memberPrincipal.getMemberId(), dogImage);
         return SuccessResponse.created();
     }
