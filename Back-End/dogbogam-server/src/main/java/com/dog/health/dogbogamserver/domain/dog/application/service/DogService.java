@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +39,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     private final JWTProvider jwtProvider;
 
     @Override
-    public void createDog(CreateDogRequestDTO createDogRequestDTO, Long memberId) {
+    public void createDog(CreateDogRequestDTO createDogRequestDTO, Long memberId, MultipartFile image) {
         Member member = memberService.findByMemberId(memberId);
         Dog createDog = Dog.builder()
                 .name(createDogRequestDTO.getName())
@@ -55,7 +56,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     }
 
     @Override
-    public void updateDog(UpdateDogRequestDTO updateDogRequestDTO, Long memberId) {
+    public void updateDog(UpdateDogRequestDTO updateDogRequestDTO, Long memberId, MultipartFile image) {
         Member member = memberService.findByMemberId(memberId);
         if(member.getMemberId() != updateDogRequestDTO.getMemberId()){
             throw new CustomException(ErrorCode.USER_VALIDATION_ERROR);
