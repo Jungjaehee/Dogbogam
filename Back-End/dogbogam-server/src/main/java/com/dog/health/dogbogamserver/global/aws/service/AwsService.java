@@ -17,6 +17,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 
 @RequiredArgsConstructor
@@ -66,7 +67,9 @@ public class AwsService {
             for (byte b : hash) {
                 hexString.append(String.format("%02x", b));
             }
-            return hexString.toString() + extension;
+            // UUID 추가
+            String uniqueId = UUID.randomUUID().toString();
+            return hexString.toString() + "-" + uniqueId + extension;
         } catch (NoSuchAlgorithmException e) {
             throw new CustomException(ErrorCode.FAILED_CONVERT_FILE);
         }
