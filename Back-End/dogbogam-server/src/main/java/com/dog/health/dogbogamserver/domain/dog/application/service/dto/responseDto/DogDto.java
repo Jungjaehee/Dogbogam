@@ -4,16 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 @AllArgsConstructor
 @Builder
-public class FindDogsResponseDto {
-    int size;
-    Long totalElements;
-    Long currentPage;
-    Long totalPages;
-    List<DogDto> dogList;
+public class DogDto {
+    Long dogId;
+    String dogName;
+    String dogUrl;
 }
-
