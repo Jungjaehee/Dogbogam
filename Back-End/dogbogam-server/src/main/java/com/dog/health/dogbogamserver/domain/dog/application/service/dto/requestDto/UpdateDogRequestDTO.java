@@ -1,14 +1,14 @@
-package com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto;
+package com.dog.health.dogbogamserver.domain.dog.application.service.dto.requestDto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
 @Getter
-public class UpdateDogDTO {
+public class UpdateDogRequestDTO {
     @NotNull(message = "반려견은 필수 입니다.")
     private Long dogId;
     @NotNull(message = "멤버는 필수 입니다.")
@@ -21,9 +21,7 @@ public class UpdateDogDTO {
     private String gender;
     private LocalDate birthDate;
     private Double weight;
-    private Boolean isNeutered;
     @NotNull(message = "중성화 여부는 필수 입니다.")
-    private Boolean isDeleted;
-    private String imageName;
-    private String imageUrl;
+    private Boolean isNeutered;
+    private MultipartFile image;
 }

@@ -1,12 +1,7 @@
 package com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.CreateDogDTO;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
-import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberEntity;
 import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberMapper;
-import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberPersistenceAdapter;
-import com.dog.health.dogbogamserver.domain.member.adapter.out.persistence.MemberSpringDataRepository;
-import com.dog.health.dogbogamserver.domain.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
