@@ -20,6 +20,7 @@ public class HealthProblemMapper {
 
     public HealthProblem toDomain(HealthProblemEntity entity) {
         return HealthProblem.builder()
+                .healthProblemId(entity.getHealthProblemId())
                 .dog(dogMapper.toDomain(entity.getDog()))  // Dog 변환
                 .problem(entity.getProblem())
                 .build();
