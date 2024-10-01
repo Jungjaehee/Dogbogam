@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,5 +17,5 @@ public class HealthProblemRequest {
     private Long dogId;
 
     @NotBlank(message = "건강 고민은 필수입니다.")
-    private String problem;
+    private List<String> problem;
 }

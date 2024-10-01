@@ -41,7 +41,7 @@ public class HealthProblemController {
     @DeleteMapping("/{healthProblemId}")
     public SuccessResponse<?> deleteHealthProblem(@AuthenticationPrincipal MemberPrincipal memberPrincipal, @PathVariable Long healthProblemId) {
         deleteHealthProblemUseCase.deleteHealthProblem(healthProblemId);
-        return SuccessResponse.ok();
+        return SuccessResponse.deleted();
     }
 
 
