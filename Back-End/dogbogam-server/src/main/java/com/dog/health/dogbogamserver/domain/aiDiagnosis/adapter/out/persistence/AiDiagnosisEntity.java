@@ -3,10 +3,7 @@ package com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogEntity;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "ai_diagnosis")
@@ -14,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Getter
+@ToString
 public class AiDiagnosisEntity {
 
     @Id
