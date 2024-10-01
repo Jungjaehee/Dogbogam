@@ -21,5 +21,4 @@ public class CreateDogRequestDTO {
     private Double weight;
     @NotNull(message = "중성화 여부는 필수 입니다.")
     private Boolean isNeutered;
-    private MultipartFile image;
 }
