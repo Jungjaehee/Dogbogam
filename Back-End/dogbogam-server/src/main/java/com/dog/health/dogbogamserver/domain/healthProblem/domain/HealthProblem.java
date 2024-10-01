@@ -1,4 +1,4 @@
-package com.dog.health.dogbogamserver.domain.healthProblems.domain;
+package com.dog.health.dogbogamserver.domain.healthProblem.domain;
 
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import lombok.Builder;

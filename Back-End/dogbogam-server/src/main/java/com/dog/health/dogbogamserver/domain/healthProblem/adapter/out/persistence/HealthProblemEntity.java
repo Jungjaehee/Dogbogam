@@ -1,4 +1,4 @@
-package com.dog.health.dogbogamserver.domain.healthProblems.adapter.out.persistence;
+package com.dog.health.dogbogamserver.domain.healthProblem.adapter.out.persistence;
 
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogEntity;
 import jakarta.persistence.*;
