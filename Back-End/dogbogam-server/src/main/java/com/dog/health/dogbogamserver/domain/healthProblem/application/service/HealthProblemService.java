@@ -27,35 +27,27 @@ public class HealthProblemService implements CreateHealthProblemUseCase, FindHea
     private final DeleteHealthProblemPort deleteHealthProblemPort;
 
     @Override
-    public void createHealthProblems(Long dogId, String problems) {
-        // 입력받은 문제들을 쉼표로 구분
-        List<String> problemList = Arrays.asList(problems.split("\\s*,\\s*"));
-
+    public void createHealthProblems(Long dogId, List<String> problems) {
         // 유효성 검사: 문제의 개수 확인
-        if (problemList.size() > 3) {
+        if (problems.size() > 3) {
             throw new CustomException(ErrorCode.HEALTH_PROBLEM_LIMIT_EXCEEDED);
         }
 
         // 해당 반려견의 기존 건강 고민 조회
         List<HealthProblem> existingProblems = loadHealthProblemPort.loadHealthProblemsByDogId(dogId);
 
-        // 1. 기존 문제 + 새로운 문제의 총 개수가 3개를 넘는지 확인
-        if (existingProblems.size() + problemList.size() > 3) {
-            throw new CustomException(ErrorCode.HEALTH_PROBLEM_LIMIT_EXCEEDED);
+        // 해당 반려견의 기존 건강 고민 삭제
+        for(HealthProblem problem : existingProblems) {
+            deleteHealthProblem(problem.getHealthProblemId());
         }
 
-        for (String problem : problemList) {
-            // 2. Enum으로 유효성 검사
+        for (String problem : problems) {
+            // Enum으로 유효성 검사
             if (!ProblemType.isValid(problem)) {
                 throw new CustomException(ErrorCode.INVALID_HEALTH_PROBLEM);
             }
 
-            // 3. 이미 등록된 건강 고민인지 확인
-            if (existingProblems.stream().anyMatch(p -> p.getProblem().equals(problem))) {
-                throw new CustomException(ErrorCode.DUPLICATE_HEALTH_PROBLEM);
-            }
-
-            // 4. 각 건강 고민 저장
+            // 각 건강 고민 저장
             HealthProblem healthProblem = HealthProblem.builder()
                     .dog(loadHealthProblemPort.loadDogById(dogId)
                             .orElseThrow(() -> new CustomException(ErrorCode.DOG_NOT_FOUND)))
