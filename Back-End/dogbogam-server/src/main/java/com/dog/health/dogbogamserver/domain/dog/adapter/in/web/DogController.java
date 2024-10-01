@@ -1,7 +1,7 @@
 package com.dog.health.dogbogamserver.domain.dog.adapter.in.web;
 
-import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.CreateDogDTO;
-import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.UpdateDogDTO;
+import com.dog.health.dogbogamserver.domain.dog.application.service.dto.requestDto.CreateDogRequestDTO;
+import com.dog.health.dogbogamserver.domain.dog.application.service.dto.requestDto.UpdateDogRequestDTO;
 import com.dog.health.dogbogamserver.domain.dog.application.port.in.*;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.domain.member.application.service.MemberService;
@@ -34,8 +34,8 @@ public class DogController {
     @PostMapping
     public SuccessResponse<?> createDog(
             @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @Valid @RequestBody CreateDogDTO createDogDTO) {
-        createDogUseCase.createDog(createDogDTO, memberPrincipal.getMemberId());
+            @Valid @RequestBody CreateDogRequestDTO createDogRequestDTO) {
+        createDogUseCase.createDog(createDogRequestDTO, memberPrincipal.getMemberId());
         return SuccessResponse.created();
     }
 
@@ -43,8 +43,8 @@ public class DogController {
     @PatchMapping
     public SuccessResponse<?> updateDog(
             @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @Valid @RequestBody UpdateDogDTO updateDogDTO) {
-        updateDogUseCase.updateDog(updateDogDTO, memberPrincipal.getMemberId());
+            @Valid @RequestBody UpdateDogRequestDTO updateDogRequestDTO) {
+        updateDogUseCase.updateDog(updateDogRequestDTO, memberPrincipal.getMemberId());
         return SuccessResponse.updated();
     }
 
@@ -68,7 +68,11 @@ public class DogController {
     @Operation(summary = "반려견 목록 조회", description = "사용자의 반려견 목록을 조회합니다.")
     @GetMapping("/list")
     public SuccessResponse<?> getDogList(
-            @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-        return SuccessResponse.ok(findDogsUseCase.findDogsByMemberId(memberPrincipal.getMemberId()));
+            @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
+            @Parameter(description = "페이지 번호", required = true)
+            @RequestParam(defaultValue = "1") int page,
+            @Parameter(description = "페이지 크기", required = true)
+            @RequestParam(defaultValue = "5") int size) {
+        return SuccessResponse.ok(findDogsUseCase.findDogsByMemberId(memberPrincipal.getMemberId(), page, size));
     }
 }

@@ -1,12 +1,14 @@
 package com.dog.health.dogbogamserver.domain.dog.application.service;
 
-import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.CreateDogDTO;
-import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.UpdateDogDTO;
+import com.dog.health.dogbogamserver.domain.dog.application.service.dto.requestDto.CreateDogRequestDTO;
+import com.dog.health.dogbogamserver.domain.dog.application.service.dto.requestDto.UpdateDogRequestDTO;
 import com.dog.health.dogbogamserver.domain.dog.application.port.in.*;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.CreateDogPort;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogsPort;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.UpdateDogPort;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogDetailsPort;
+import com.dog.health.dogbogamserver.domain.dog.application.service.dto.responseDto.DogDto;
+import com.dog.health.dogbogamserver.domain.dog.application.service.dto.responseDto.FindDogsResponseDto;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.domain.member.application.service.MemberService;
 import com.dog.health.dogbogamserver.domain.member.domain.Member;
@@ -14,10 +16,14 @@ import com.dog.health.dogbogamserver.global.auth.utils.JWTProvider;
 import com.dog.health.dogbogamserver.global.web.exception.CustomException;
 import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,16 +38,16 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     private final JWTProvider jwtProvider;
 
     @Override
-    public void createDog(CreateDogDTO createDogDTO, Long memberId) {
+    public void createDog(CreateDogRequestDTO createDogRequestDTO, Long memberId) {
         Member member = memberService.findByMemberId(memberId);
         Dog createDog = Dog.builder()
-                .name(createDogDTO.getName())
+                .name(createDogRequestDTO.getName())
                 .member(member)
-                .gender(createDogDTO.getGender())
-                .breed(createDogDTO.getBreed())
-                .birthDate(createDogDTO.getBirthDate())
-                .weight(createDogDTO.getWeight())
-                .isNeutered(createDogDTO.getIsNeutered())
+                .gender(createDogRequestDTO.getGender())
+                .breed(createDogRequestDTO.getBreed())
+                .birthDate(createDogRequestDTO.getBirthDate())
+                .weight(createDogRequestDTO.getWeight())
+                .isNeutered(createDogRequestDTO.getIsNeutered())
                 .isDeleted(false)
                 // 추후 이미지 추가
                 .build();
@@ -49,22 +55,22 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     }
 
     @Override
-    public void updateDog(UpdateDogDTO updateDogDTO, Long memberId) {
+    public void updateDog(UpdateDogRequestDTO updateDogRequestDTO, Long memberId) {
         Member member = memberService.findByMemberId(memberId);
-        if(member.getMemberId() != updateDogDTO.getMemberId()){
+        if(member.getMemberId() != updateDogRequestDTO.getMemberId()){
             throw new CustomException(ErrorCode.USER_VALIDATION_ERROR);
         }
-        Optional<Dog> existingDog = findDogDetailsPort.findByDogId(updateDogDTO.getDogId());
+        Optional<Dog> existingDog = findDogDetailsPort.findByDogId(updateDogRequestDTO.getDogId());
         if (existingDog.isPresent()) {
             Dog updatedDog = Dog.builder()
                     .member(member)
-                    .breed(updateDogDTO.getBreed())
-                    .name(updateDogDTO.getName())
-                    .birthDate(updateDogDTO.getBirthDate())
-                    .dogId(updateDogDTO.getDogId())
-                    .isNeutered(updateDogDTO.getIsNeutered())
-                    .weight(updateDogDTO.getWeight())
-                    .gender(updateDogDTO.getGender())
+                    .breed(updateDogRequestDTO.getBreed())
+                    .name(updateDogRequestDTO.getName())
+                    .birthDate(updateDogRequestDTO.getBirthDate())
+                    .dogId(updateDogRequestDTO.getDogId())
+                    .isNeutered(updateDogRequestDTO.getIsNeutered())
+                    .weight(updateDogRequestDTO.getWeight())
+                    .gender(updateDogRequestDTO.getGender())
                     .isDeleted(existingDog.get().getIsDeleted())
                     .build();
             updateDogPort.update(updatedDog);
@@ -89,7 +95,33 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     }
 
     @Override
-    public Optional<List<Dog>> findDogsByMemberId(Long memberId) {
-        return findDogsPort.findDogsByMemberId(memberId);
+    public Optional<FindDogsResponseDto> findDogsByMemberId(Long memberId, int page, int size) {
+        List<Dog> dogs = findDogsPort.findDogsByMemberId(memberId).orElse(Collections.emptyList());
+
+        Long totalElements = (long) dogs.size();
+        Long totalPages = (totalElements + size - 1) / size;
+
+        // Pageable 객체 생성
+        Pageable pageable = PageRequest.of(page, size); // page는 0부터 시작함
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), dogs.size());
+        List<Dog> filteredDogs = dogs.subList(start, end);
+
+        List<DogDto> dogDtos = filteredDogs.stream()
+                .map(dog -> DogDto.builder()
+                        .dogId(dog.getDogId())
+                        .dogName(dog.getName())
+                        .dogUrl(dog.getImageUrl())
+                        .build())
+                .collect(Collectors.toList());
+
+        return Optional.of(FindDogsResponseDto.builder()
+                .size(filteredDogs.size())
+                .totalElements(totalElements)
+                .currentPage((long) page + 1) // 클라이언트에 반환할 때는 1부터 시작
+                .totalPages(totalPages)
+                .dogList(dogDtos)
+                .build());
     }
+
 }
