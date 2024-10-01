@@ -36,7 +36,7 @@ public class DogController {
     @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public SuccessResponse<?> createDog(
             @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @RequestBody @Valid CreateDogRequestDTO createDogRequestDTO,
+            @RequestPart("createDogRequestDto") @Valid CreateDogRequestDTO createDogRequestDTO,
             @RequestPart("image") MultipartFile dogImage) {
         createDogUseCase.createDog(createDogRequestDTO, memberPrincipal.getMemberId(), dogImage);
         return SuccessResponse.created();
@@ -47,7 +47,7 @@ public class DogController {
     @PatchMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public SuccessResponse<?> updateDog(
             @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @RequestPart @Valid UpdateDogRequestDTO updateDogRequestDTO,
+            @RequestPart("updateDogRequestDto") @Valid UpdateDogRequestDTO updateDogRequestDTO,
             @RequestPart MultipartFile dogImage) {
         updateDogUseCase.updateDog(updateDogRequestDTO, memberPrincipal.getMemberId(), dogImage);
         return SuccessResponse.updated();
