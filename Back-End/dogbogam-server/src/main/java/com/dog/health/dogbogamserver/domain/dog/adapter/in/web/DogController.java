@@ -49,7 +49,7 @@ public class DogController {
     @PatchMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public SuccessResponse<?> updateDog(
             @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @ModelAttribute @Valid UpdateDogRequestDTO updateDogRequestDTO) {
+            @ModelAttribute @Valid UpdateDogRequestDTO updateDogRequestDTO) throws IOException {
         updateDogUseCase.updateDog(updateDogRequestDTO, memberPrincipal.getMemberId());
         return SuccessResponse.updated();
     }
