@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/dogs")
 @RequiredArgsConstructor
+@Slf4j
 public class DogController {
 
     private final CreateDogUseCase createDogUseCase;
@@ -33,12 +35,11 @@ public class DogController {
     private final MemberService memberService;
 
     @Operation(summary = "반려견 등록", description = "새로운 반려견 정보를 등록합니다.")
-    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
     public SuccessResponse<?> createDog(
             @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @RequestPart("createDogRequestDto") @Valid CreateDogRequestDTO createDogRequestDTO,
-            @RequestPart("image") MultipartFile dogImage) {
-        createDogUseCase.createDog(createDogRequestDTO, memberPrincipal.getMemberId(), dogImage);
+            @ModelAttribute CreateDogRequestDTO createDogRequestDTO) {
+        createDogUseCase.createDog(createDogRequestDTO, memberPrincipal.getMemberId());
         return SuccessResponse.created();
     }
 
@@ -47,9 +48,8 @@ public class DogController {
     @PatchMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public SuccessResponse<?> updateDog(
             @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @RequestPart("updateDogRequestDto") @Valid UpdateDogRequestDTO updateDogRequestDTO,
-            @RequestPart MultipartFile dogImage) {
-        updateDogUseCase.updateDog(updateDogRequestDTO, memberPrincipal.getMemberId(), dogImage);
+            @ModelAttribute @Valid UpdateDogRequestDTO updateDogRequestDTO) {
+        updateDogUseCase.updateDog(updateDogRequestDTO, memberPrincipal.getMemberId());
         return SuccessResponse.updated();
     }
 
