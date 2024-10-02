@@ -69,11 +69,13 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     }
 
     @Override
-    public void updateDog(UpdateDogRequestDTO updateDogRequestDTO, Long memberId) {
+    public void updateDog(UpdateDogRequestDTO updateDogRequestDTO, Long memberId) throws IOException {
         Member member = memberService.findByMemberId(memberId);
         if(member.getMemberId() != updateDogRequestDTO.getMemberId()){
             throw new CustomException(ErrorCode.USER_VALIDATION_ERROR);
         }
+        String path = "dog_image";
+        Map<String, Object> uploadParam = awsService.uploadFile(updateDogRequestDTO.getImage(),path);
         Optional<Dog> existingDog = findDogDetailsPort.findByDogId(updateDogRequestDTO.getDogId());
         if (existingDog.isPresent()) {
             Dog updatedDog = Dog.builder()
@@ -86,6 +88,8 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                     .weight(updateDogRequestDTO.getWeight())
                     .gender(updateDogRequestDTO.getGender())
                     .isDeleted(existingDog.get().getIsDeleted())
+                    .imageName(uploadParam.get("s3FileName").toString())
+                    .imageUrl(uploadParam.get("uploadImageUrl").toString())
                     .build();
             updateDogPort.update(updatedDog);
         } else {
@@ -117,8 +121,8 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                 .gender(dog.getGender())
                 .birth(dog.getBirthDate())
                 .weight(dog.getWeight())
-                .weight(dog.getWeight())
                 .imageUrl(dog.getImageUrl())
+                .createdAt(dog.getCreatedAt())
                 .build();
     }
 
