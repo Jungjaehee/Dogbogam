@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 @Builder
-public class DogDto {
+public class FindDogsDogInfoDto {
     Long dogId;
     String dogName;
     String imageUrl;

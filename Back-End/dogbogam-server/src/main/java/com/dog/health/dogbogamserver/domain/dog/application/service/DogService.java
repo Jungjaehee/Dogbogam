@@ -7,7 +7,7 @@ import com.dog.health.dogbogamserver.domain.dog.application.port.out.CreateDogPo
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogsPort;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.UpdateDogPort;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogDetailsPort;
-import com.dog.health.dogbogamserver.domain.dog.application.service.dto.responseDto.DogDto;
+import com.dog.health.dogbogamserver.domain.dog.application.service.dto.responseDto.FindDogsDogInfoDto;
 import com.dog.health.dogbogamserver.domain.dog.application.service.dto.responseDto.FindDogResponseDto;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.domain.healthProblem.application.service.HealthProblemService;
@@ -117,16 +117,16 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     }
 
     @Override
-    public Optional<List<DogDto>> findDogsByMemberId(Long memberId) {
+    public Optional<List<FindDogsDogInfoDto>> findDogsByMemberId(Long memberId) {
         // 전체 데이터 리스트를 Port에서 가져오기
         List<Dog> dogs = findDogsPort.findDogsByMemberId(memberId).orElse(Collections.emptyList());
 
         // Dog 객체들을 DogDto로 변환
-        List<DogDto> dogDtos = dogs.stream()
+        List<FindDogsDogInfoDto> findDogsDogInfoDtos = dogs.stream()
                 .map(this::convertToDogDto)  // 변환 메서드를 사용
                 .collect(Collectors.toList());
 
-        return Optional.of(dogDtos);
+        return Optional.of(findDogsDogInfoDtos);
     }
 
 
@@ -145,9 +145,9 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
         return date;
     }
 
-    private DogDto convertToDogDto(Dog dog) {
+    private FindDogsDogInfoDto convertToDogDto(Dog dog) {
         // Dog 객체를 DogDto로 변환
-        return DogDto.builder()
+        return FindDogsDogInfoDto.builder()
                 .dogId(dog.getDogId())
                 .dogName(dog.getName())  // Dog의 이름을 DogDto의 이름 필드로 설정
                 .imageUrl(dog.getImageUrl())  // Dog의 이미지 URL을 DogDto에 설정
