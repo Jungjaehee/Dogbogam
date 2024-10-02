@@ -8,8 +8,10 @@ import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogsPor
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.UpdateDogPort;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogDetailsPort;
 import com.dog.health.dogbogamserver.domain.dog.application.service.dto.responseDto.DogDto;
-import com.dog.health.dogbogamserver.domain.dog.application.service.dto.responseDto.FindDogsResponseDto;
+import com.dog.health.dogbogamserver.domain.dog.application.service.dto.responseDto.FindDogResponseDto;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
+import com.dog.health.dogbogamserver.domain.healthProblem.application.service.HealthProblemService;
+import com.dog.health.dogbogamserver.domain.healthProblem.application.service.dto.response.HealthProblemResponse;
 import com.dog.health.dogbogamserver.domain.member.application.service.MemberService;
 import com.dog.health.dogbogamserver.domain.member.domain.Member;
 import com.dog.health.dogbogamserver.global.auth.utils.JWTProvider;
@@ -17,16 +19,11 @@ import com.dog.health.dogbogamserver.global.web.exception.CustomException;
 import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,10 +37,11 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     private final FindDogDetailsPort findDogDetailsPort;
     private final FindDogsPort findDogsPort;
     private final MemberService memberService;
+    private final HealthProblemService healthProblemService;
     private final JWTProvider jwtProvider;
 
     @Override
-    public void createDog(CreateDogRequestDTO createDogRequestDTO, Long memberId) {
+    public Map<String, Long> createDog(CreateDogRequestDTO createDogRequestDTO, Long memberId) {
         Member member = memberService.findByMemberId(memberId);
         Dog createDog = Dog.builder()
                 .name(createDogRequestDTO.getName())
@@ -56,7 +54,12 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                 .isDeleted(false)
                 // 추후 이미지 추가
                 .build();
-        createDogPort.save(createDog);
+        Dog savedDog = createDogPort.save(createDog);
+
+        Map<String, Long> response = new HashMap<>();
+        response.put("dogId", savedDog.getDogId());
+
+        return response;
     }
 
     @Override
@@ -95,15 +98,35 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     }
 
     @Override
-    public Optional<Dog> findDogDetails(Long dogId) {
-        return findDogDetailsPort.findByDogId(dogId);
+    public FindDogResponseDto findDogDetails(Long dogId) {
+        Dog dog = findDogDetailsPort.findByDogId(dogId).orElseThrow(() -> new CustomException(ErrorCode.DOG_NOT_FOUND));
+
+        List<HealthProblemResponse> healthProblems = healthProblemService.findHealthProblems(dog.getDogId());
+
+        return FindDogResponseDto.builder()
+                .list(healthProblems)
+                .dogId(dog.getDogId())
+                .name(dog.getName())
+                .breed(dog.getBreed())
+                .gender(dog.getGender())
+                .birth(dog.getBirthDate())
+                .weight(dog.getWeight())
+                .weight(dog.getWeight())
+                .imageUrl(dog.getImageUrl())
+                .build();
     }
 
     @Override
-    public Optional<List<Dog>> findDogsByMemberId(Long memberId) {
+    public Optional<List<DogDto>> findDogsByMemberId(Long memberId) {
         // 전체 데이터 리스트를 Port에서 가져오기
         List<Dog> dogs = findDogsPort.findDogsByMemberId(memberId).orElse(Collections.emptyList());
-        return Optional.of(dogs);
+
+        // Dog 객체들을 DogDto로 변환
+        List<DogDto> dogDtos = dogs.stream()
+                .map(this::convertToDogDto)  // 변환 메서드를 사용
+                .collect(Collectors.toList());
+
+        return Optional.of(dogDtos);
     }
 
 
@@ -120,5 +143,14 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
         }
 
         return date;
+    }
+
+    private DogDto convertToDogDto(Dog dog) {
+        // Dog 객체를 DogDto로 변환
+        return DogDto.builder()
+                .dogId(dog.getDogId())
+                .dogName(dog.getName())  // Dog의 이름을 DogDto의 이름 필드로 설정
+                .imageUrl(dog.getImageUrl())  // Dog의 이미지 URL을 DogDto에 설정
+                .build();
     }
 }

@@ -10,5 +10,5 @@ import lombok.Getter;
 public class DogDto {
     Long dogId;
     String dogName;
-    String dogUrl;
+    String imageUrl;
 }

@@ -3,6 +3,7 @@ package com.dog.health.dogbogamserver.domain.dog.adapter.in.web;
 import com.dog.health.dogbogamserver.domain.dog.application.service.dto.requestDto.CreateDogRequestDTO;
 import com.dog.health.dogbogamserver.domain.dog.application.service.dto.requestDto.UpdateDogRequestDTO;
 import com.dog.health.dogbogamserver.domain.dog.application.port.in.*;
+import com.dog.health.dogbogamserver.domain.dog.application.service.dto.responseDto.FindDogResponseDto;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.domain.member.application.service.MemberService;
 import com.dog.health.dogbogamserver.global.auth.dto.MemberPrincipal;
@@ -39,8 +40,7 @@ public class DogController {
     public SuccessResponse<?> createDog(
             @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
             @ModelAttribute CreateDogRequestDTO createDogRequestDTO) {
-        createDogUseCase.createDog(createDogRequestDTO, memberPrincipal.getMemberId());
-        return SuccessResponse.created();
+        return SuccessResponse.created(createDogUseCase.createDog(createDogRequestDTO, memberPrincipal.getMemberId()));
     }
 
 
@@ -66,9 +66,8 @@ public class DogController {
     @GetMapping("/{dogId}")
     public SuccessResponse<?> getDogDetails(
             @Parameter(description = "조회할 반려견의 ID", required = true) @PathVariable("dogId") Long dogId) {
-        Optional<Dog> dog = findDogDetailsUseCase.findDogDetails(dogId);
-        return SuccessResponse.created(dog.map(SuccessResponse::ok)
-                .orElseGet(() -> SuccessResponse.ok(null)));
+
+        return SuccessResponse.ok(findDogDetailsUseCase.findDogDetails(dogId));
     }
 
     @Operation(summary = "반려견 목록 조회", description = "사용자의 반려견 목록을 조회합니다.")

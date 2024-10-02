@@ -26,9 +26,10 @@ public class DogPersistenceAdapter implements CreateDogPort, UpdateDogPort, Dele
 
     @Override
     @Transactional
-    public void save(Dog dog) {
+    public Dog save(Dog dog) {
         DogEntity dogEntity = dogMapper.toEntity(dog);
-        dogSpringDataRepository.save(dogEntity);
+        DogEntity savedDogEntity = dogSpringDataRepository.save(dogEntity);  // 저장된 DogEntity 반환
+        return dogMapper.toDomain(savedDogEntity);  // 저장된 엔티티를 다시 도메인 객체로 변환하여 반환
     }
 
     @Override

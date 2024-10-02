@@ -1,9 +1,7 @@
 package com.dog.health.dogbogamserver.domain.dog.application.port.in;
 
-import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
-
-import java.util.Optional;
+import com.dog.health.dogbogamserver.domain.dog.application.service.dto.responseDto.FindDogResponseDto;
 
 public interface FindDogDetailsUseCase {
-    Optional<Dog> findDogDetails(Long dogId);
+    FindDogResponseDto findDogDetails(Long dogId);
 }
