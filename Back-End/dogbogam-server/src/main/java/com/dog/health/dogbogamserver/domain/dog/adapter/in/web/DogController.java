@@ -74,11 +74,7 @@ public class DogController {
     @Operation(summary = "반려견 목록 조회", description = "사용자의 반려견 목록을 조회합니다.")
     @GetMapping("/list")
     public SuccessResponse<?> getDogList(
-            @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @Parameter(description = "페이지 번호", required = true)
-            @RequestParam(defaultValue = "1", value = "page") int page,
-            @Parameter(description = "페이지 크기", required = true)
-            @RequestParam(defaultValue = "5", value = "size") int size) {
-        return SuccessResponse.ok(findDogsUseCase.findDogsByMemberId(memberPrincipal.getMemberId(), page, size));
+            @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        return SuccessResponse.ok(findDogsUseCase.findDogsByMemberId(memberPrincipal.getMemberId()));
     }
 }

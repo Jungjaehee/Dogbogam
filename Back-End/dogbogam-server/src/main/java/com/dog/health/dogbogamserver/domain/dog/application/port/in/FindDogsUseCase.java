@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FindDogsUseCase {
-    Optional<FindDogsResponseDto> findDogsByMemberId(Long memberId, int page, int size);
+    Optional<List<Dog>> findDogsByMemberId(Long memberId);
 }
