@@ -10,10 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class FindDogsResponseDto {
-    int size;
-    Long totalElements;
-    Long currentPage;
-    Long totalPages;
-    List<DogDto> dogList;
+    List<FindDogsDogInfoDto> list;
 }
 

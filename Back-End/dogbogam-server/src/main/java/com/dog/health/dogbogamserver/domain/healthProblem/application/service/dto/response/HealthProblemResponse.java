@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class HealthProblemResponse {
-    private Long healthProblemId;
     private String problem;
 
     @Builder
-    public HealthProblemResponse(Long healthProblemId, String problem) {
-        this.healthProblemId = healthProblemId;
+    public HealthProblemResponse(String problem) {
         this.problem = problem;
     }
 }
