@@ -3,6 +3,7 @@ package com.dog.health.dogbogamserver.domain.medicalRecords.application.service.
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -22,4 +23,5 @@ public class CreateReportRequestDto {
     Long cost;
 
     // File
+    MultipartFile image;
 }

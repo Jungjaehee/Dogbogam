@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -23,4 +24,5 @@ public class UpdateReportRequestDto {
     @NotBlank(message = "병원 이름은 필수 입니다.")
     String hospital;
     // File
+    MultipartFile image;
 }
