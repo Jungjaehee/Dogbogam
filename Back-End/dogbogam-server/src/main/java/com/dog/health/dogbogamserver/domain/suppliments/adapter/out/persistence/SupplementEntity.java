@@ -37,7 +37,7 @@ public class SupplementEntity {
     @Column(name = "type", nullable = false)
     private String type;
 
-    @Column(name = "basis", nullable = false)
+    @Column(name = "basis")
     private String basis;
 
     @Column(name = "protein")
@@ -51,9 +51,6 @@ public class SupplementEntity {
 
     @Column(name = "price")
     private Integer price;
-
-    @Column(name = "amount")
-    private String amount;
 
     @Column(name = "image_name")
     private String imageName;
