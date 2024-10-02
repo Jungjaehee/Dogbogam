@@ -64,7 +64,7 @@ export const getMyInsuranceDetail = async (insuranceRecordId: number) => {
     console.error("보험 상세 정보 가져오기 실패 :", error);
 
   }
-};
+}
 
 // 내 보험 목록 조회 API 요청 함수
 export const getMyInsurances = async (dogId: number) => {

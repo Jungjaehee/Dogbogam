@@ -1,28 +1,36 @@
+// import { useEffect } from "react";
 import { TopBar } from "../../components/Topbar/index";
 import SearchBar from "../../components/SearchBar/index";
+// import useDogStore from "../../store/UseDogStore";
+// import { BASE_URL } from "../../api/APIconfig";
 
-interface Dog {
-  dogId: number;
-  dogName: string;
-}
 
-interface Insurance {
-  insuranceId: number;
-  name: string;
-  fee: string;
-}
+// interface Insurance {
+//   insuranceId: number;
+//   name: string;
+//   company: string;
+//   minAge: string;
+//   maxAge: string;
+//   fee: string;
+//   limit: string;
+//   period: string;
+//   description: string;
+//   coverageRatio: string;
+//   s3ImageName: string;
+//   s3ImageUrl: string;
+// }
 
 export const Supplement = () => {
-  const dog: Dog = {
-    dogId: 1,
-    dogName: "새우",
-  };
-
-  const insurance: Insurance = {
-    insuranceId: 1,
-    name: "삼성화재 반려견 보험",
-    fee: "13,332",
-  };
+  // const { dogInfo } = useDogStore();
+  
+  // useEffect(() => {
+  //   const fetchInsurances = async() => {
+  //     try {
+  //       const insurance: Insurance = await get
+  //     }
+  //   };
+  //   fetchInsurances();
+  // })
 
   const handleSearch = (query: string) => {
     console.log("검색어", query);
@@ -34,7 +42,7 @@ export const Supplement = () => {
         <TopBar pre={"/home"} title={""} skip={""} />
         <div className="mb-6">
           <p className="text-gray-800 text-xl font-bold">
-            <span className="text-main-color">{`${dog.dogName}`}</span>
+            {/* <span className="text-main-color">{`${dogInfo.name}`}</span> */}
             를 위한, <br /> 펫보험
           </p>
         </div>
@@ -56,8 +64,8 @@ export const Supplement = () => {
           <div className="border border-gray-200 rounded-lg shadow-lg flex justify-between p-5">
             <div className="space-y-5">
               <div className="space-y-1">
-                <p className="font-semibold">{insurance.name}</p>
-                <p className="text-gray-500 text-sm">{`${insurance.fee}`}원</p>
+                {/* <p className="font-semibold">{insurance.name}</p> */}
+                {/* <p className="text-gray-500 text-sm">{`${insurance.fee}`}원</p> */}
               </div>
             </div>
           </div>
