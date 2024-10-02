@@ -1,49 +1,29 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { TopBar } from "../../components/Topbar";
-// import useSignupStore from "../../store/UseSignupStore";
 import { useState } from "react";
 import trash from "../../assets/Signup/trash-bg.png";
 import picture from "../../assets/Signup/picture.png";
-
-interface inputPetInfo {
-  image: File | null;
-  name: string;
-  gender: string; // 여아 남아
-  breed: string;
-  birthDate: string;
-  weight: number | null;
-  isNeutered: boolean;
-}
-
-// interface SignupState {
-//   inputPetInfo: inputPetInfo;
-//   setInputPetInfo: (newInfo: Partial<inputPetInfo>) => void; // 부분적 업데이트를 허용
-// }
+import { inputDogInfo } from "../../models/dog.model";
 
 export const DogInfo = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { inputUserInfo } = location.state;
   const [imageSrc, setImageSrc] = useState<string | null>(null);
-  const [inputPetInfo, setInputPetInfo] = useState<inputPetInfo>({
+  const [inputDogInfo, setInputDogInfo] = useState<inputDogInfo>({
     image: null,
     name: "",
     gender: "",
     breed: "",
     birthDate: "",
-    weight: null,
+    weight: 0,
     isNeutered: false,
   });
-  // const { inputPetInfo, setInputPetInfo } = useSignupStore(
-  //   (state: SignupState) => ({
-  //     inputPetInfo: state.inputPetInfo,
-  //     setInputPetInfo: state.setInputPetInfo,
-  //   })
-  // );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setInputPetInfo((prev) => ({ ...prev, [name]: value }));
-    // setPet((prev) => ({ ...prev, [name]: value })); // 상태 업데이트
+    setInputDogInfo((prev) => ({ ...prev, [name]: value }));
   };
   const handleImageClick = () => {
     document.getElementById("file-input")?.click();
@@ -53,7 +33,7 @@ export const DogInfo = () => {
     const files = event.target.files;
     if (files && files.length > 0) {
       const file = files[0];
-      // setInputPetInfo({ petImage: file }); // 선택된 파일을 상태에 저장합니다.
+      setInputDogInfo((prev) => ({ ...prev, image: file })); // 선택된 파일을 상태에 저장합니다.
       console.log("Selected file:", file);
 
       // FileReader를 사용하여 이미지 URL 생성
@@ -68,15 +48,20 @@ export const DogInfo = () => {
   const [genderError, setGenderError] = useState("");
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // 기본 제출 동작 방지
-    if (!inputPetInfo.gender) {
+    if (!inputDogInfo.gender) {
       setGenderError("이 필드를 선택해야 합니다.");
       console.log(genderError);
     } else {
       setGenderError("");
     }
 
-    if (inputPetInfo.gender) {
-      navigate("/signup/health");
+    if (inputDogInfo.gender) {
+      navigate("/signup/health", {
+        state: {
+          inputUserInfo,
+          inputDogInfo,
+        },
+      });
     }
   };
 
@@ -128,7 +113,7 @@ export const DogInfo = () => {
               <input
                 type="text"
                 name="name"
-                value={inputPetInfo.name}
+                value={inputDogInfo.name}
                 onChange={handleChange} // 상태 업데이트
                 required
                 maxLength={20}
@@ -145,12 +130,12 @@ export const DogInfo = () => {
             <div className="flex justify-between gap-2">
               <div
                 className={`px-16 py-3 w-[50%] text-center rounded-lg font-medium text-sm ${
-                  inputPetInfo.gender === "여아"
+                  inputDogInfo.gender === "여아"
                     ? "bg-[#FFF7E3] border border-main-color text-main-color"
                     : "bg-[#F4F4F4] text-[#73787E]"
                 }`}
                 onClick={() => {
-                  setInputPetInfo((prevState) => ({
+                  setInputDogInfo((prevState) => ({
                     ...prevState,
                     gender: "여아",
                   }));
@@ -161,12 +146,12 @@ export const DogInfo = () => {
               </div>
               <div
                 className={`px-16 py-3 w-[50%] text-center rounded-lg font-medium text-sm ${
-                  inputPetInfo.gender === "남아"
+                  inputDogInfo.gender === "남아"
                     ? "bg-[#FFF7E3] border border-main-color text-main-color"
                     : "bg-[#F4F4F4] text-[#73787E]"
                 }`}
                 onClick={() => {
-                  setInputPetInfo((prevState) => ({
+                  setInputDogInfo((prevState) => ({
                     ...prevState,
                     gender: "남아",
                   }));
@@ -188,7 +173,7 @@ export const DogInfo = () => {
             <input
               type="text"
               name="breed"
-              value={inputPetInfo.breed}
+              value={inputDogInfo.breed}
               onChange={handleChange} // 상태 업데이트
               maxLength={20}
               placeholder="예) 말티즈"
@@ -203,7 +188,7 @@ export const DogInfo = () => {
             <input
               type="text"
               name="birthDate"
-              value={inputPetInfo.birthDate}
+              value={inputDogInfo.birthDate}
               onChange={handleChange} // 상태 업데이트
               minLength={6}
               maxLength={6}
@@ -220,7 +205,7 @@ export const DogInfo = () => {
               <input
                 type="number"
                 name="weight"
-                value={inputPetInfo.weight!}
+                value={inputDogInfo.weight!}
                 onChange={handleChange} // 상태 업데이트
                 minLength={6}
                 maxLength={6}

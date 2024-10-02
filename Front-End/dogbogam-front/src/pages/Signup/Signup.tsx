@@ -2,22 +2,13 @@ import { useState } from "react";
 import { Button } from "../../components/Button";
 import { TopBar } from "../../components/Topbar";
 import { useNavigate } from "react-router-dom";
-// import useSignupStore from "../../store/UseSignupStore";
-// import { checkEmail } from "../../api/userAPI";
-
-interface inputUserInfo {
-  email: string;
-  password: string;
-  nickname: string;
-}
-
-// interface SignupState {
-//   inputUserInfo: inputUserInfo;
-//   setInputUserInfo: (newInfo: Partial<inputUserInfo>) => void; // 부분적 업데이트를 허용
-// }
+import { checkEmail } from "../../api/userAPI";
+import { inputUserInfo } from "../../models/user.model";
 
 export const Signup = () => {
   const navigate = useNavigate();
+  const [message, setMessage] = useState("");
+  const [color, setColor] = useState("");
   const [pwd, setPwd] = useState("");
   const [valid, setValid] = useState(true);
   const [inputUserInfo, setInputUserInfo] = useState<inputUserInfo>({
@@ -25,14 +16,6 @@ export const Signup = () => {
     email: "",
     password: "",
   });
-  // const { inputUserInfo, setInputUserInfo } = useSignupStore(
-  //   (state: SignupState) => ({
-  //     inputUserInfo: state.inputUserInfo,
-  //     setInputUserInfo: state.setInputUserInfo,
-  //   })
-  // );
-  const [message /* setMessage */] = useState("");
-  const [color /* setColor */] = useState("");
 
   // 비밀번호 검증
   const checkPwd = (input: string) => {
@@ -48,19 +31,24 @@ export const Signup = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // 기본 제출 동작 방지
     if (valid) {
-      navigate("/signup/dog");
+      navigate("/signup/dog", {
+        state: {
+          inputUserInfo,
+        },
+      });
     }
   };
 
-  // const check = async (input: string) => {
-  //   const checkResponse = await checkEmail(input);
-  //   setMessage(checkResponse.responseMessage);
-  //   if (checkResponse.responseCode === "E4003") {
-  //     setColor("text-main-color");
-  //   } else {
-  //     setColor("text-red-500");
-  //   }
-  // };
+  const check = async (input: string) => {
+    const checkResponse = await checkEmail(input);
+    setMessage(checkResponse.responseMessage);
+    if (!checkResponse.isDuplicate) {
+      setColor("text-green-500");
+    } else {
+      setColor("text-red-500");
+      setValid(false);
+    }
+  };
 
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col">
@@ -101,7 +89,7 @@ export const Signup = () => {
               maxLength={30}
               className="border rounded-lg px-4 py-3 w-full text-sm focus:border-blue-100 focus:outline-none"
               onChange={handleChange} // 상태 업데이트
-              // onBlur={() => check(inputUserInfo.email)} // 포커스 아웃 시 check 함수 호출
+              onBlur={() => check(inputUserInfo.email)} // 포커스 아웃 시 check 함수 호출
             />
             {message && <p className={`${color} text-sm`}>{message}</p>}
           </div>

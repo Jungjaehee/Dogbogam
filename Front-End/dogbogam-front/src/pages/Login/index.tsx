@@ -1,22 +1,23 @@
 import { useState } from "react";
 import { TopBar } from "../../components/Topbar";
 import { useNavigate } from "react-router-dom";
-// import useUserStore from "../../store/UseUserStore";
+import useUserStore from "../../store/UseUserStore";
 import { Button } from "../../components/Button";
+import { userLogin } from "../../api/userAPI";
 
-interface Member {
+interface Info {
   email: string;
   password: string;
 }
 
 export const Login = () => {
   const navigate = useNavigate();
-  // const setToken = useUserStore((state) => state.setToken);
-  const [, /* member */ setMember] = useState<Member>({
+  const setToken = useUserStore((state) => state.setToken);
+  const [member, setMember] = useState<Info>({
     email: "",
     password: "",
   });
-  const [error /* setError */] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -24,18 +25,17 @@ export const Login = () => {
   };
 
   const login = async () => {
-    // try {
-    //   const loginResponse = await Login(member);
-    //   if (!loginResponse) {
-    //     setError("잘못된 이메일 혹은 비밀번호입니다.");
-    //   } else {
-    //     setToken(loginResponse);
-    //     navigate("/", { replace: true });
-    //   }
-    // } catch (error) {
-    //   console.error("로그인 실패:", error);
-    // }
-    navigate("/home", { replace: true });
+    try {
+      const loginResponse = await userLogin(member);
+      if (!loginResponse) {
+        setError("잘못된 이메일 혹은 비밀번호입니다.");
+      } else {
+        setToken(loginResponse.accessToken);
+        navigate("/home", { replace: true });
+      }
+    } catch (error) {
+      console.error("로그인 실패:", error);
+    }
   };
 
   return (

@@ -6,7 +6,7 @@ export const SignupSuccess = () => {
   const navigate = useNavigate();
   useEffect(() => {
     setTimeout(() => {
-      navigate("/", { replace: true });
+      navigate("/start", { replace: true });
     }, 3000);
   }, []);
 

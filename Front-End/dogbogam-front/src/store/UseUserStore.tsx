@@ -1,32 +1,16 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-// 내 정보 조회
-interface UserInfo {
-  memberId: number;
-  memberName: string;
-  memberImage: string;
-  memberLevel: number;
-  memberPoint: number;
-  memberTarget: number;
-  memberDate: number;
-}
-
-interface PetInfo {
-  petId: number;
-  petName: string;
-  petBirth: string;
-  petType: string; // 강아지 고양이
-  petGender: string; // 여아 남아
-  specie: string;
-  petImage: string;
-}
+import { UserInfo } from "../models/user.model";
+import { Dog, DogList } from "../models/dog.model";
 
 interface StoreState {
   userInfo: UserInfo;
   setUserInfo: (newInfo: Partial<UserInfo>) => void; // 부분적 업데이트를 허용
-  petInfo: PetInfo;
-  setPetInfo: (newInfo: Partial<PetInfo>) => void; // 부분적 업데이트를 허용
+  dogList: DogList[]; // 강아지 리스트
+  setDogList: (newList: DogList[]) => void; // 배열 전체
+  dogInfo: Dog; // 현재 강아지 정보
+  setDogInfo: (newInfo: Partial<Dog>) => void; // 현재 강아지 정보
+
   token: string;
   setToken: (newInfo: string) => void;
 }
@@ -36,29 +20,33 @@ const useUserStore = create(
     (set) => ({
       userInfo: {
         memberId: 0,
-        memberName: "",
-        memberImage: "",
-        memberLevel: 0,
-        memberPoint: 0,
-        memberTarget: 0,
-        memberDate: 0,
+        email: "",
+        nickname: "",
       },
       setUserInfo: (newInfo) =>
         set((state) => ({
           userInfo: { ...state.userInfo, ...newInfo },
         })),
-      petInfo: {
-        petId: 0,
-        petName: "",
-        petGender: "",
-        petType: "",
-        petBirth: "",
-        specie: "",
-        petImage: "",
+      dogList: [],
+      setDogList: (newList: DogList[]) =>
+        set(() => ({
+          dogList: newList, // 배열 전체를 업데이트
+        })),
+      dogInfo: {
+        dogId: 0,
+        name: "",
+        breed: "",
+        gender: "",
+        birth: null,
+        weight: null,
+        isNeutered: null,
+        imageUrl: "",
+        createdAt: null,
+        healthProblems: [],
       },
-      setPetInfo: (newInfo) =>
+      setDogInfo: (newInfo: Partial<Dog>) =>
         set((state) => ({
-          petInfo: { ...state.petInfo, ...newInfo },
+          dogInfo: { ...state.dogInfo, ...newInfo },
         })),
 
       token: "",
