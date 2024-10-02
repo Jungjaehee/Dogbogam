@@ -1,54 +1,29 @@
-import React, { useState } from "react";
-import { DogInfo } from "../../../store/UseDogStore";
+import React, { useEffect } from "react";
 import Setting from "../../../assets/icons/setting.png";
 import Plus from "../../../assets/icons/plus.png";
 import ModalTop from "../../../assets/icons/modalTop.png";
-
+import useUserStore from "../../../store/UseUserStore";
+import { getDogInfo, getDogList } from "../../../api/dogAPI";
 
 interface DogSelectModalProps {
-  onClose: () => void; 
-  onConfirm: (dog: Partial<DogInfo>) => void;
+  onClose: () => void;
 }
 
-const DogSelectModal: React.FC<DogSelectModalProps> = ({
-  onClose,
-  onConfirm,
-}) => {
+const DogSelectModal: React.FC<DogSelectModalProps> = ({ onClose }) => {
   //api 연결 후에 store에서 불러오기
-  const [dogs] = useState<DogInfo[]>([
-    {
-      dogId: 1,
-      memberId: 1,
-      isDeleted: false,
-      name: "새우",
-      breed: "포메라니안",
-      gender: "female",
-      birthDate: new Date(2015, 5, 15),
-      weight: 4.3,
-      isNeutered: true,
-      imageName: "saewoo.jpg",
-      imageUrl:
-        "https://img.freepik.com/free-photo/adorable-portrait-of-pomeranian-dog_23-2151771743.jpg",
-      createdTime: new Date(2023, 0, 1),
-      modifiedTime: null,
-    },
-    {
-      dogId: 2,
-      memberId: 2,
-      isDeleted: false,
-      name: "코코",
-      breed: "말티즈",
-      gender: "male",
-      birthDate: new Date(2017, 8, 20),
-      weight: 5.0,
-      isNeutered: false,
-      imageName: "koko.jpg",
-      imageUrl:
-        "https://img.freepik.com/free-photo/cute-pomeranian-dog_23-2151771750.jpg",
-      createdTime: new Date(2022, 5, 1),
-      modifiedTime: null,
-    },
-  ]);
+  const { token, setDogList, dogList, setDogInfo } = useUserStore((state) => ({
+    token: state.token,
+    setDogList: state.setDogList,
+    dogList: state.dogList,
+    setDogInfo: state.setDogInfo,
+  }));
+
+  const onConfirm = async (dogId: number) => {
+    const dogResponse = await getDogInfo(token, dogId);
+    console.log("강아지 상세조회: ", dogResponse);
+    setDogInfo(dogResponse);
+    onClose();
+  };
 
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget === e.target) {
@@ -56,12 +31,22 @@ const DogSelectModal: React.FC<DogSelectModalProps> = ({
     }
   };
 
+  const getInfo = async () => {
+    const listResponse = await getDogList(token);
+    console.log("강아지 리스트 조회: ", listResponse);
+    setDogList(listResponse);
+  };
+
+  useEffect(() => {
+    getInfo();
+  }, []);
+
   return (
     <div
-  className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20"
-  onClick={handleModalClick}
->
-  <div className="bg-white w-[360px] h-[53vh] p-5 rounded-t-3xl shadow-lg transform translate-y-40">
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20"
+      onClick={handleModalClick}
+    >
+      <div className="bg-white w-[360px] h-[53vh] p-5 rounded-t-3xl shadow-lg transform translate-y-40">
         <div className="flex items-center justify-center place-items-center mb-10">
           <img src={ModalTop} className="max-w-11 max-h-5" />
         </div>
@@ -70,19 +55,19 @@ const DogSelectModal: React.FC<DogSelectModalProps> = ({
           <img src={Setting} className="w-3 h-3" />
         </div>
         <div className="mt-2 space-y-2 flex-grow overflow-y-auto">
-          {dogs.length > 0 ? (
-            dogs.map((dog) => (
+          {dogList.length > 0 ? (
+            dogList.map((dog) => (
               <div
                 key={dog.dogId}
                 className="flex items-center space-x-2 p-2 mb-6 bg-gray-100 rounded-lg cursor-pointer hover:bg-main-color"
-                onClick={() => onConfirm(dog)}
+                onClick={() => onConfirm(dog.dogId)}
               >
                 <img
                   src={dog.imageUrl}
-                  alt={dog.name}
+                  alt={dog.dogName}
                   className="w-12 h-12 rounded-full object-cover mr-2"
                 />
-                <p className="text-md font-medium">{dog.name}</p>
+                <p className="text-md font-medium">{dog.dogName}</p>
               </div>
             ))
           ) : (

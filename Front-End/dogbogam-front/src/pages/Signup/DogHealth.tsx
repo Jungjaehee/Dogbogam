@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { TopBar } from "../../components/Topbar";
-import { useNavigate } from "react-router-dom";
-// import useUserStore from "../../store/UseUserStore";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button";
 import eye from "../../assets/Signup/health/eye.png";
 import bone from "../../assets/Signup/health/bone.png";
@@ -12,25 +11,24 @@ import fat from "../../assets/Signup/health/fat.png";
 import heart from "../../assets/Signup/health/heart.png";
 import poo from "../../assets/Signup/health/poo.png";
 import ear from "../../assets/Signup/health/ear.png";
-
-interface Problem {
-  problem: string;
-}
+import { userSignup } from "../../api/userAPI";
+import { registDogHealth, registDogInfo } from "../../api/dogAPI";
 
 export const DogHealth = () => {
   const navigate = useNavigate();
-  // const setToken = useUserStore((state) => state.setToken);
-  const [problemList, setProblemList] = useState<Problem[]>([]);
+  const location = useLocation();
+  const { inputDogInfo, inputUserInfo } = location.state;
+  const [problemList, setProblemList] = useState<string[]>([]);
   const problemName = [
     { image: eye, name: "눈" },
-    { image: bone, name: "뼈/관절" },
-    { image: kidney, name: "신장" },
-    { image: skin, name: "피부/피모" },
-    { image: tooth, name: "치아/구강" },
+    { image: bone, name: "관절" },
+    { image: kidney, name: "면역력" },
+    { image: skin, name: "피모" },
+    { image: tooth, name: "구강" },
     { image: fat, name: "비만" },
     { image: heart, name: "심장" },
     { image: poo, name: "변비" },
-    { image: ear, name: "귀" },
+    { image: ear, name: "스트레스" },
   ];
   const rows = Math.ceil(problemName.length / 3); // 행의 수 계산
 
@@ -38,14 +36,14 @@ export const DogHealth = () => {
   const toggleProblem = (problem: { image: string; name: string }) => {
     setProblemList((prevState) => {
       const isProblemSelected = prevState.some(
-        (p) => p.problem === problem.name // 문제 이름으로 비교
+        (p) => p === problem.name // 문제 이름으로 비교
       );
 
       if (isProblemSelected) {
-        return prevState.filter((p) => p.problem !== problem.name);
+        return prevState.filter((p) => p !== problem.name);
       } else {
         if (prevState.length < 3) {
-          return [...prevState, { problem: problem.name }]; // 문제 추가
+          return [...prevState, problem.name]; // 문제 추가
         } else {
           alert("문제는 최대 3개까지만 추가할 수 있습니다.");
           return prevState;
@@ -55,7 +53,16 @@ export const DogHealth = () => {
   };
 
   const signup = async () => {
-    navigate("/signup/success", { replace: true });
+    try {
+      const userResponse = await userSignup(inputUserInfo);
+      const token = userResponse.accessToken;
+      const dogResponse = await registDogInfo(token, inputDogInfo);
+      await registDogHealth(token, dogResponse.dogId, problemList);
+
+      navigate("/signup/success", { replace: true });
+    } catch (error) {
+      console.log("회원 가입 실패: ", error);
+    }
   };
 
   return (
@@ -78,7 +85,7 @@ export const DogHealth = () => {
                 .slice(rowIndex * 3, rowIndex * 3 + 3)
                 .map((problem) => {
                   const isSelected = problemList.some(
-                    (p) => p.problem === problem.name
+                    (p) => p === problem.name
                   ); // 선택 여부 확인
                   return (
                     <div

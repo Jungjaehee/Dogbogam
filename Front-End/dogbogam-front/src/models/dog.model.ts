@@ -1,16 +1,29 @@
 // Dog 인터페이스 정의
 export interface Dog {
   dogId: number;
-  memberId: number;
-  isDeleted: boolean;
   name: string;
   breed: string;
   gender: string;
-  birthDate?: Date | null;
+  birth?: Date | null;
   weight?: number | null;
   isNeutered?: boolean | null;
-  imageName?: string | null;
   imageUrl?: string | null;
-  createdTime: Date;
-  modifiedTime: Date | null;
+  createdAt: Date | null;
+  healthProblems: string[];
+}
+
+export interface inputDogInfo {
+  image: File | null;
+  name: string;
+  gender: string; // 여아 남아
+  breed: string;
+  birthDate: string; // 강아지 고양이
+  weight: number;
+  isNeutered: boolean;
+}
+
+export interface DogList {
+  dogId: number;
+  dogName: string;
+  imageUrl: string;
 }
