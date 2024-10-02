@@ -20,6 +20,6 @@ public class FindDogResponseDto {
     double weight;
     boolean isNeutered;
     String imageUrl;
-    List<HealthProblemResponse> list;
+    List<HealthProblemResponse> healthProblems;
 }
 

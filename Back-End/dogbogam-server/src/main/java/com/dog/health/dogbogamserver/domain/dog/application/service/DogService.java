@@ -104,7 +104,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
         List<HealthProblemResponse> healthProblems = healthProblemService.findHealthProblems(dog.getDogId());
 
         return FindDogResponseDto.builder()
-                .list(healthProblems)
+                .healthProblems(healthProblems)
                 .dogId(dog.getDogId())
                 .name(dog.getName())
                 .breed(dog.getBreed())
