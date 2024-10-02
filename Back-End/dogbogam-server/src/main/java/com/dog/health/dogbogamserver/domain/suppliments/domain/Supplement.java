@@ -17,12 +17,11 @@ public class Supplement {
     private String fat;
     private String feature;
     private Integer price;
-    private String amount;
     private String imageName;
     private String imageUrl;
 
     @Builder
-    public Supplement(Long supplementId, String productName, String brandName, String target, String how, String offer, String type, String basis, String protein, String fat, String feature, Integer price, String amount, String imageName, String imageUrl) {
+    public Supplement(Long supplementId, String productName, String brandName, String target, String how, String offer, String type, String basis, String protein, String fat, String feature, Integer price, String imageName, String imageUrl) {
         this.supplementId = supplementId;
         this.productName = productName;
         this.brandName = brandName;
@@ -35,7 +34,6 @@ public class Supplement {
         this.fat = fat;
         this.feature = feature;
         this.price = price;
-        this.amount = amount;
         this.imageName = imageName;
         this.imageUrl = imageUrl;
     }
