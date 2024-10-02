@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DogCard } from "./components/dogCard";
 import DogSelectModal from "./components/dogSelectModal";
@@ -10,15 +10,32 @@ import Left from "../../assets/icons/left.png";
 import Right from "../../assets/icons/right.png";
 import Down from "../../assets/icons/down.png";
 import useUserStore from "../../store/UseUserStore";
+import { getDogInfo, getDogList } from "../../api/dogAPI";
 
 export const Home = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { dogInfo } = useUserStore();
+  const { token, setDogList, setDogInfo, dogInfo } = useUserStore();
 
   const handleModalClose = () => {
     setIsModalOpen(false);
   };
+
+  const getInfo = async () => {
+    const listResponse = await getDogList(token);
+    setDogList(listResponse);
+    const dogResponse = await getDogInfo(token, listResponse[0].dogId);
+    setDogInfo(dogResponse);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log(dogInfo.dogId);
+      await getInfo(); // await을 붙여 비동기 작업의 완료를 기다림
+    };
+
+    fetchData(); // 비동기 함수 호출
+  }, [token]);
 
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col justify-between">

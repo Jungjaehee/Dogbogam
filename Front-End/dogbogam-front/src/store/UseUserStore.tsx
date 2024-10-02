@@ -1,11 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { UserInfo } from "../models/user.model";
 import { Dog, DogList } from "../models/dog.model";
 
 interface StoreState {
-  userInfo: UserInfo;
-  setUserInfo: (newInfo: Partial<UserInfo>) => void; // 부분적 업데이트를 허용
   dogList: DogList[]; // 강아지 리스트
   setDogList: (newList: DogList[]) => void; // 배열 전체
   dogInfo: Dog; // 현재 강아지 정보
@@ -18,15 +15,6 @@ interface StoreState {
 const useUserStore = create(
   persist<StoreState>(
     (set) => ({
-      userInfo: {
-        memberId: 0,
-        email: "",
-        nickname: "",
-      },
-      setUserInfo: (newInfo) =>
-        set((state) => ({
-          userInfo: { ...state.userInfo, ...newInfo },
-        })),
       dogList: [],
       setDogList: (newList: DogList[]) =>
         set(() => ({

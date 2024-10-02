@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Setting from "../../../assets/icons/setting.png";
 import Plus from "../../../assets/icons/plus.png";
 import ModalTop from "../../../assets/icons/modalTop.png";
 import useUserStore from "../../../store/UseUserStore";
-import { getDogInfo, getDogList } from "../../../api/dogAPI";
+import { getDogInfo } from "../../../api/dogAPI";
 
 interface DogSelectModalProps {
   onClose: () => void;
@@ -11,12 +11,7 @@ interface DogSelectModalProps {
 
 const DogSelectModal: React.FC<DogSelectModalProps> = ({ onClose }) => {
   //api 연결 후에 store에서 불러오기
-  const { token, setDogList, dogList, setDogInfo } = useUserStore((state) => ({
-    token: state.token,
-    setDogList: state.setDogList,
-    dogList: state.dogList,
-    setDogInfo: state.setDogInfo,
-  }));
+  const { token, dogList, setDogInfo } = useUserStore();
 
   const onConfirm = async (dogId: number) => {
     const dogResponse = await getDogInfo(token, dogId);
@@ -30,16 +25,6 @@ const DogSelectModal: React.FC<DogSelectModalProps> = ({ onClose }) => {
       onClose();
     }
   };
-
-  const getInfo = async () => {
-    const listResponse = await getDogList(token);
-    console.log("강아지 리스트 조회: ", listResponse);
-    setDogList(listResponse);
-  };
-
-  useEffect(() => {
-    getInfo();
-  }, []);
 
   return (
     <div
