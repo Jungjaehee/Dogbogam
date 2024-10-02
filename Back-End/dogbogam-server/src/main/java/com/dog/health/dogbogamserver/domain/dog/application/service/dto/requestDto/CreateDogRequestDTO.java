@@ -2,12 +2,17 @@ package com.dog.health.dogbogamserver.domain.dog.application.service.dto.request
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
-@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class CreateDogRequestDTO {
     @NotNull(message = "멤버는 필수 입니다.")
     private Long memberId;
@@ -21,4 +26,5 @@ public class CreateDogRequestDTO {
     private Double weight;
     @NotNull(message = "중성화 여부는 필수 입니다.")
     private Boolean isNeutered;
+    private MultipartFile image;
 }

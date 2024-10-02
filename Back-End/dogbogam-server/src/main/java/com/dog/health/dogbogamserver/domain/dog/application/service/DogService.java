@@ -16,6 +16,7 @@ import com.dog.health.dogbogamserver.global.auth.utils.JWTProvider;
 import com.dog.health.dogbogamserver.global.web.exception.CustomException;
 import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDogUseCase, FindDogDetailsUseCase,
         FindDogsUseCase {
 
@@ -41,7 +43,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     private final JWTProvider jwtProvider;
 
     @Override
-    public void createDog(CreateDogRequestDTO createDogRequestDTO, Long memberId, MultipartFile image) {
+    public void createDog(CreateDogRequestDTO createDogRequestDTO, Long memberId) {
         Member member = memberService.findByMemberId(memberId);
         Dog createDog = Dog.builder()
                 .name(createDogRequestDTO.getName())
@@ -58,7 +60,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     }
 
     @Override
-    public void updateDog(UpdateDogRequestDTO updateDogRequestDTO, Long memberId, MultipartFile image) {
+    public void updateDog(UpdateDogRequestDTO updateDogRequestDTO, Long memberId) {
         Member member = memberService.findByMemberId(memberId);
         if(member.getMemberId() != updateDogRequestDTO.getMemberId()){
             throw new CustomException(ErrorCode.USER_VALIDATION_ERROR);
