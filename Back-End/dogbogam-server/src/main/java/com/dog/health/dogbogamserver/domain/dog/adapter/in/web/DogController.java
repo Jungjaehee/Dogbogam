@@ -1,7 +1,7 @@
 package com.dog.health.dogbogamserver.domain.dog.adapter.in.web;
 
-import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.CreateDogDTO;
-import com.dog.health.dogbogamserver.domain.dog.adapter.in.web.dto.UpdateDogDTO;
+import com.dog.health.dogbogamserver.domain.dog.application.service.dto.requestDto.CreateDogRequestDTO;
+import com.dog.health.dogbogamserver.domain.dog.application.service.dto.requestDto.UpdateDogRequestDTO;
 import com.dog.health.dogbogamserver.domain.dog.application.port.in.*;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.domain.member.application.service.MemberService;
@@ -12,8 +12,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -31,22 +33,26 @@ public class DogController {
     private final MemberService memberService;
 
     @Operation(summary = "반려견 등록", description = "새로운 반려견 정보를 등록합니다.")
-    @PostMapping
+    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public SuccessResponse<?> createDog(
             @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @Valid @RequestBody CreateDogDTO createDogDTO) {
-        createDogUseCase.createDog(createDogDTO, memberPrincipal.getMemberId());
+            @RequestPart("createDogRequestDto") @Valid CreateDogRequestDTO createDogRequestDTO,
+            @RequestPart("image") MultipartFile dogImage) {
+        createDogUseCase.createDog(createDogRequestDTO, memberPrincipal.getMemberId(), dogImage);
         return SuccessResponse.created();
     }
 
+
     @Operation(summary = "반려견 정보 수정", description = "반려견의 정보를 수정합니다.")
-    @PatchMapping
+    @PatchMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public SuccessResponse<?> updateDog(
             @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @Valid @RequestBody UpdateDogDTO updateDogDTO) {
-        updateDogUseCase.updateDog(updateDogDTO, memberPrincipal.getMemberId());
+            @RequestPart("updateDogRequestDto") @Valid UpdateDogRequestDTO updateDogRequestDTO,
+            @RequestPart MultipartFile dogImage) {
+        updateDogUseCase.updateDog(updateDogRequestDTO, memberPrincipal.getMemberId(), dogImage);
         return SuccessResponse.updated();
     }
+
 
     @Operation(summary = "반려견 삭제", description = "반려견 정보를 삭제합니다.")
     @DeleteMapping("/{dogId}")
@@ -68,7 +74,11 @@ public class DogController {
     @Operation(summary = "반려견 목록 조회", description = "사용자의 반려견 목록을 조회합니다.")
     @GetMapping("/list")
     public SuccessResponse<?> getDogList(
-            @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-        return SuccessResponse.ok(findDogsUseCase.findDogsByMemberId(memberPrincipal.getMemberId()));
+            @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
+            @Parameter(description = "페이지 번호", required = true)
+            @RequestParam(defaultValue = "1", value = "page") int page,
+            @Parameter(description = "페이지 크기", required = true)
+            @RequestParam(defaultValue = "5", value = "size") int size) {
+        return SuccessResponse.ok(findDogsUseCase.findDogsByMemberId(memberPrincipal.getMemberId(), page, size));
     }
 }
