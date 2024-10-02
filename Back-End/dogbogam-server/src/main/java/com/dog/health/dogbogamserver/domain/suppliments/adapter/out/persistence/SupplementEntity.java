@@ -37,7 +37,7 @@ public class SupplementEntity {
     @Column(name = "type", nullable = false)
     private String type;
 
-    @Column(name = "basis", nullable = false)
+    @Column(name = "basis")
     private String basis;
 
     @Column(name = "protein")
