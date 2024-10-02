@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -30,4 +31,5 @@ public class UpdateVaccinationRecordRequestDto {
     Long cost;
 
     // File
+    MultipartFile image;
 }
