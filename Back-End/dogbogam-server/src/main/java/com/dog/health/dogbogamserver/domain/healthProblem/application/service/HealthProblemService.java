@@ -66,7 +66,6 @@ public class HealthProblemService implements CreateHealthProblemUseCase, FindHea
         // HealthProblem을 HealthProblemResponse로 변환
         return healthProblems.stream()
                 .map(healthProblem -> HealthProblemResponse.builder()
-                        .healthProblemId(healthProblem.getHealthProblemId())
                         .problem(healthProblem.getProblem())
                         .build())
                 .collect(Collectors.toList());
