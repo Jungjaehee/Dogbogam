@@ -1,7 +1,7 @@
 package com.dog.health.dogbogamserver.domain.aiReportDisease.adapter.out.persistence;
 
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence.AiDiagnosisMapper;
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence.AiDiagnosisPersistenceAdapter;
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence.AiDiagnosisReportPersistenceAdapter;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out.CreateAiReportDiseasePort;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out.FindAiReportDiseasePort;
@@ -21,10 +21,8 @@ import java.util.List;
 public class AiReportDiseasePersistenceAdapter implements CreateAiReportDiseasePort, FindAiReportDiseasePort,
         FindAiReportDiseasesPort {
 
-    private final AiReportDiseaseMapper DiseaseMapper;
     private final AiReportDiseaseSpringDataRepository jpaRepository;
-    private final AiDiagnosisPersistenceAdapter diagnosisAdapter;
-    private final AiDiagnosisMapper DiagnosisMapper;
+    private final AiDiagnosisReportPersistenceAdapter diagnosisAdapter;
     private final AiDiagnosisMapper aiDiagnosisMapper;
     private final AiReportDiseaseMapper aiReportDiseaseMapper;
 
@@ -34,9 +32,8 @@ public class AiReportDiseasePersistenceAdapter implements CreateAiReportDiseaseP
         AiDiagnosis aiDiagnosis = diagnosisAdapter.findAiDiagnosisByAiDiagnosisId(
                 requestDto.getAiDiagnosisId());
         AiReportDiseaseEntity aiReportDiseaseEntity = AiReportDiseaseEntity.builder()
-                .diagnosisItem(requestDto.getDiagnosisItem())
-                .aiDiagnosis(DiagnosisMapper.toEntity(aiDiagnosis))
-                .name(requestDto.getName())
+                .aiDiagnosis(aiDiagnosisMapper.toEntity(aiDiagnosis))
+                .disease(requestDto.getDisease())
                 .percentage(requestDto.getPercentage())
                 .build();
         jpaRepository.save(aiReportDiseaseEntity);
