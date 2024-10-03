@@ -1,6 +1,5 @@
 package com.dog.health.dogbogamserver.domain.aiReportDisease.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence.AiDiagnosisEntity;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence.AiDiagnosisMapper;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.domain.AiReportDisease;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +20,8 @@ public class AiReportDiseaseMapper {
         return AiReportDisease.builder()
                 .aiReportDiseaseId(entity.getAiReportDiseaseId())
                 .aiDiagnosis(aiDiagnosisMapper.toDomain(entity.getAiDiagnosis()))
-                .name(entity.getName())
+                .disease(entity.getDisease())
                 .percentage(entity.getPercentage())
-                .diagnosisItem(entity.getDiagnosisItem())
                 .build();
     }
 
@@ -32,9 +30,8 @@ public class AiReportDiseaseMapper {
         return AiReportDiseaseEntity.builder()
                 .aiReportDiseaseId(domain.getAiReportDiseaseId())
                 .aiDiagnosis(aiDiagnosisMapper.toEntity(domain.getAiDiagnosis()))
-                .name(domain.getName())
+                .disease(domain.getDisease())
                 .percentage(domain.getPercentage())
-                .diagnosisItem(domain.getDiagnosisItem())
                 .build();
     }
 
