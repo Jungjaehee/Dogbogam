@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class AiResultDto {
+public class AiResultResponseDto {
 
     private String label;
 

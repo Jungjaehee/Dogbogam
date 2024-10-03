@@ -12,7 +12,7 @@ public class DiagnosisRequestDto {
     @NotNull(message = "반려견 Id는 필수입니다.")
     Long dogId;
 
-    @NotNull
+    @NotNull(message = "image는 필수입니다.")
     MultipartFile image;
 
 }

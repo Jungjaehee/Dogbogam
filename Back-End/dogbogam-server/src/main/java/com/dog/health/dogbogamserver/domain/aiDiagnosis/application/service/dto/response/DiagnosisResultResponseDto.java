@@ -13,6 +13,6 @@ public class DiagnosisResultResponseDto {
 
     private String message;
 
-    private List<AiResultDto> data;
+    private List<AiResultResponseDto> data;
 
 }
