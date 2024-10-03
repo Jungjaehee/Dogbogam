@@ -15,12 +15,14 @@ import com.dog.health.dogbogamserver.domain.healthProblem.application.service.dt
 import com.dog.health.dogbogamserver.domain.member.application.service.MemberService;
 import com.dog.health.dogbogamserver.domain.member.domain.Member;
 import com.dog.health.dogbogamserver.global.auth.utils.JWTProvider;
+import com.dog.health.dogbogamserver.global.aws.service.AwsService;
 import com.dog.health.dogbogamserver.global.web.exception.CustomException;
 import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -38,11 +40,14 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     private final FindDogsPort findDogsPort;
     private final MemberService memberService;
     private final HealthProblemService healthProblemService;
+    private final AwsService awsService;
     private final JWTProvider jwtProvider;
 
     @Override
-    public Map<String, Long> createDog(CreateDogRequestDTO createDogRequestDTO, Long memberId) {
+    public Map<String, Long> createDog(CreateDogRequestDTO createDogRequestDTO, Long memberId) throws IOException {
         Member member = memberService.findByMemberId(memberId);
+        String path = "dog_image";
+        Map<String, Object> uploadParam = awsService.uploadFile(createDogRequestDTO.getImage(),path);
         Dog createDog = Dog.builder()
                 .name(createDogRequestDTO.getName())
                 .member(member)
@@ -51,8 +56,9 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                 .birthDate(strToLocalDate(createDogRequestDTO.getBirthDate()))
                 .weight(createDogRequestDTO.getWeight())
                 .isNeutered(createDogRequestDTO.getIsNeutered())
+                .imageName(uploadParam.get("s3FileName").toString())
+                .imageUrl(uploadParam.get("uploadImageUrl").toString())
                 .isDeleted(false)
-                // 추후 이미지 추가
                 .build();
         Dog savedDog = createDogPort.save(createDog);
 
@@ -63,11 +69,13 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     }
 
     @Override
-    public void updateDog(UpdateDogRequestDTO updateDogRequestDTO, Long memberId) {
+    public void updateDog(UpdateDogRequestDTO updateDogRequestDTO, Long memberId) throws IOException {
         Member member = memberService.findByMemberId(memberId);
         if(member.getMemberId() != updateDogRequestDTO.getMemberId()){
             throw new CustomException(ErrorCode.USER_VALIDATION_ERROR);
         }
+        String path = "dog_image";
+        Map<String, Object> uploadParam = awsService.uploadFile(updateDogRequestDTO.getImage(),path);
         Optional<Dog> existingDog = findDogDetailsPort.findByDogId(updateDogRequestDTO.getDogId());
         if (existingDog.isPresent()) {
             Dog updatedDog = Dog.builder()
@@ -80,6 +88,8 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                     .weight(updateDogRequestDTO.getWeight())
                     .gender(updateDogRequestDTO.getGender())
                     .isDeleted(existingDog.get().getIsDeleted())
+                    .imageName(uploadParam.get("s3FileName").toString())
+                    .imageUrl(uploadParam.get("uploadImageUrl").toString())
                     .build();
             updateDogPort.update(updatedDog);
         } else {
@@ -111,8 +121,8 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                 .gender(dog.getGender())
                 .birth(dog.getBirthDate())
                 .weight(dog.getWeight())
-                .weight(dog.getWeight())
                 .imageUrl(dog.getImageUrl())
+                .createdAt(dog.getCreatedAt())
                 .build();
     }
 
@@ -131,6 +141,9 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
 
 
     public LocalDate strToLocalDate(String str) {
+        if (str == null || str.isEmpty()) {
+            return null;
+        }
 // 입력된 6자리 문자열(YYMMDD)로부터 연도, 월, 일을 추출하여 LocalDate로 변환
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
 
