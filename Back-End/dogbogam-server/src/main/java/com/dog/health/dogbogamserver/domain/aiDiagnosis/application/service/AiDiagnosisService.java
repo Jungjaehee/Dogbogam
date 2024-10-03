@@ -118,7 +118,7 @@ public class AiDiagnosisService implements RequestSkinDiagnosisUseCase, RequestE
         }
 
         Map<String, Long> aiDiagnosisResult = new HashMap<>();
-        aiDiagnosisResult.put("aiDiagnosisId", aiDiagnosisId);
+        aiDiagnosisResult.put("reportId", aiDiagnosisId);
         return aiDiagnosisResult;
     }
 
