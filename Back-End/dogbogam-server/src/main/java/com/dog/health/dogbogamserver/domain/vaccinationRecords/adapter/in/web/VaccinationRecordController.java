@@ -53,7 +53,7 @@ public class VaccinationRecordController {
 
     @Operation(summary = "접종 기록 삭제", description = "특정 백신 접종 기록을 삭제합니다.")
     @DeleteMapping("/{recordId}")
-    public SuccessResponse<?> deleteVaccinationRecord(@PathVariable("recordId") Long recordId) {
+    public SuccessResponse<?> deleteVaccinationRecord(@PathVariable("recordId") Long recordId) throws IOException {
         log.info("Controller Delete Vaccination record: {}", recordId);
         deleteVaccinationRecordUseCase.deleteVaccinationRecord(recordId);
         return SuccessResponse.deleted();

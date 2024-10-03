@@ -29,11 +29,11 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
     private final FindVaccinationRecordsPort findVaccinationRecordsPort;
     private final DogPersistenceAdapter dogPersistenceAdapter;
     private final AwsService awsService;
+    private static final String path = "vaccination_record_image";
 
     @Override
     public void createVaccinationRecord(CreateVaccinationRecordRequestDto createVaccinationRecordRequestDto) throws IOException {
         log.info("Service Create record : {}", createVaccinationRecordRequestDto);
-        String path = "vaccination_record_image";
         Map<String, String> uploadParam = awsService.uploadFile(createVaccinationRecordRequestDto.getImage(), path);
         VaccinationRecordEntity vaccinationRecordEntity = VaccinationRecordEntity.builder()
                 .recordTime(createVaccinationRecordRequestDto.getRecordTime())
@@ -52,7 +52,6 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
     @Override
     public void updateVaccinationRecord(UpdateVaccinationRecordRequestDto updateVaccinationRecordRequestDto) throws IOException {
         log.info("Service Update record : {}", updateVaccinationRecordRequestDto);
-        String path = "vaccination_record_image";
         Map<String, String> uploadParam = awsService.uploadFile(updateVaccinationRecordRequestDto.getImage(), path);
         VaccinationRecordEntity vaccinationRecordEntity = VaccinationRecordEntity.builder()
                 .vaccinationRecordId(updateVaccinationRecordRequestDto.getVaccinationRecordId())
@@ -77,8 +76,10 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
     }
 
     @Override
-    public void deleteVaccinationRecord(Long vaccinationRecordId) {
+    public void deleteVaccinationRecord(Long vaccinationRecordId) throws IOException {
         log.info("Service Delete record : {}", vaccinationRecordId);
+        VaccinationRecord vaccinationRecord = findVaccinationRecordById(vaccinationRecordId);
+        awsService.deleteFile(vaccinationRecord.getImageName());
         deleteVaccinationRecordPort.deleteVaccinationRecord(vaccinationRecordId);
     }
 

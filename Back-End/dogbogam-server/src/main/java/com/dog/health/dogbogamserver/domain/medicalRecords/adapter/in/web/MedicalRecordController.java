@@ -71,7 +71,7 @@ public class MedicalRecordController {
             @ApiResponse(responseCode = "404", description = "병원 기록을 찾을 수 없음", content = @Content)
     })
     @DeleteMapping("/{medicalRecordId}")
-    public SuccessResponse<?> deleteMedicalRecord(@PathVariable("medicalRecordId") Long medicalRecordId) {
+    public SuccessResponse<?> deleteMedicalRecord(@PathVariable("medicalRecordId") Long medicalRecordId) throws IOException {
         log.info("Controller Delete medical record: {}", medicalRecordId);
         deleteReportUseCase.deleteReportUseCase(medicalRecordId);
         return SuccessResponse.deleted();

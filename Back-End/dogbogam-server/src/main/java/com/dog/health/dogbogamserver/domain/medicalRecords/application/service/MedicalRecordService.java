@@ -28,11 +28,11 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
     private final FindReportsPort findReportsPort;
     private final FindDogDetailsPort dogDetailsPort;
     private final AwsService awsService;
+    private static final String path = "medical_record_image";
 
     @Override
     public void createReport(CreateReportRequestDto createReportRequestDto) throws IOException {
         log.info("Service Create record : {}", createReportRequestDto);
-        String path = "medical_record_image";
         Map<String, String> uploadParam = awsService.uploadFile(createReportRequestDto.getImage(), path);
 
         MedicalRecordEntity medicalRecordEntity = MedicalRecordEntity.builder()
@@ -50,7 +50,6 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
     @Override
     public void updateReport(UpdateReportRequestDto updateReportRequestDto) throws IOException {
         log.info("Service Update record : {}", updateReportRequestDto);
-        String path = "medical_record_image";
         Map<String, String> uploadParam = awsService.uploadFile(updateReportRequestDto.getImage(), path);
         MedicalRecordEntity medicalRecordEntity = MedicalRecordEntity.builder()
                 .medicalRecordId(updateReportRequestDto.getMedicalRecordId())
@@ -73,8 +72,10 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
     }
 
     @Override
-    public void deleteReportUseCase(Long reportId) {
+    public void deleteReportUseCase(Long reportId) throws IOException {
         log.info("Service Delete record : {}", reportId);
+        MedicalRecord entity = findMedicalRecordById(reportId);
+        awsService.deleteFile(entity.getImageName());
         deleteReportPort.deleteReport(reportId);
     }
 
