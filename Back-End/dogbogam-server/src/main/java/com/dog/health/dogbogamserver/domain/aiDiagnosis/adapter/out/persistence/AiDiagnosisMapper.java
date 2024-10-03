@@ -25,7 +25,8 @@ public class AiDiagnosisMapper {
                 .diagnosisItem(entity.getDiagnosisItem())
                 .dog(dogMapper.toDomain(entity.getDog()))
                 .normal(entity.getNormal())
-                // 이미지
+                .imageName(entity.getImageName())
+                .imageUrl(entity.getImageUrl())
                 .build();
     }
 
@@ -37,7 +38,8 @@ public class AiDiagnosisMapper {
                 .diagnosisItem(domain.getDiagnosisItem())
                 .dog(dogMapper.toEntity(domain.getDog()))
                 .normal(domain.getNormal())
-                // 이미지
+                .imageName(domain.getImageName())
+                .imageUrl(domain.getImageUrl())
                 .build();
     }
 
