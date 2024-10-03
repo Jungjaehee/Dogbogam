@@ -5,6 +5,13 @@ class SuccessResponse:
         self.data = data
 
     @staticmethod
-    def ok(self, data):
+    def ok(data):
         response = SuccessResponse(data)
         return response
+
+    def dict(self):
+        return {
+            "code": self.code,
+            "message": self.message,
+            "data": self.data
+        }
