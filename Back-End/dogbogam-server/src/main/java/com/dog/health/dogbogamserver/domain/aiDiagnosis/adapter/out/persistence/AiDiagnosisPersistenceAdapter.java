@@ -1,84 +1,42 @@
 package com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.CreateAiDiagnosisPort;
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.DeleteAiDiagnosisPort;
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.FindAiDiagnosesPort;
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.FindAiDiagnosisPort;
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.request.CreateAiDiagnosisRequestDto;
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.response.CreateAiDiagnosisResponseDto;
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
-import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogMapper;
-import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogPersistenceAdapter;
-import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
-import com.dog.health.dogbogamserver.global.web.exception.CustomException;
-import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
-import jakarta.transaction.Transactional;
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.*;
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.response.DiagnosisResultResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class AiDiagnosisPersistenceAdapter implements CreateAiDiagnosisPort, FindAiDiagnosisPort, FindAiDiagnosesPort
-, DeleteAiDiagnosisPort {
-    private final AiDiagnosisMapper aiDiagnosisMapper;
-    private final AiDiagnosisSpringDataRepository jpaRepository;
-    private final DogPersistenceAdapter dogPersistenceAdapter;
-    private final DogMapper dogMapper;
+public class AiDiagnosisPersistenceAdapter implements RequestSkinDiagnosisPort, RequestEyeDiagnosisPort,
+       RequestObesityDiagnosisPort, RequestBreedDiagnosisPort {
+
+    private final AiDiagnosisFeignClient aiDiagnosisFeignClient;
+
+    @Value("${gpu.server.uri}")
+    private String url;
 
     @Override
-    @Transactional
-    public void createAiDiagnosis(Long memberId, CreateAiDiagnosisRequestDto requestDto) {
-        Dog dog = dogPersistenceAdapter.findByDogId(
-                requestDto.getDogId()).orElseThrow(()->new CustomException(ErrorCode.DOG_NOT_FOUND));
-
-        if(!dog.getMember().getMemberId().equals(memberId)){
-            throw new CustomException(ErrorCode.DOG_NO_ACCESS);
-        }
-
-        AiDiagnosisEntity aiDiagnosisEntity = AiDiagnosisEntity.builder()
-                .dog(dogMapper.toEntity(dog))
-                .normal(requestDto.getNormal())
-                .diagnosisItem(requestDto.getDiagnosisItem())
-                // 이미지
-                .build();
-        jpaRepository.save(aiDiagnosisEntity);
+    public DiagnosisResultResponseDto requestSkinDiagnosis(MultipartFile image){
+        return aiDiagnosisFeignClient.requestSkinDiagnosis(image);
     }
 
     @Override
-    public AiDiagnosis findAiDiagnosisByAiDiagnosisId(Long aiDiagnosisId) {
-        log.info("AI diagnosis aiDiagnosisId: {}", aiDiagnosisId);
-        AiDiagnosisEntity aiDiagnosisEntity = jpaRepository.findById(aiDiagnosisId)
-                .orElseThrow(()->new CustomException(ErrorCode.AI_DIAGNOSIS_NOT_FOUND));
-        log.info("AI diagnosis aiDiagnosisEntity: {}", aiDiagnosisEntity);
-        return aiDiagnosisMapper.toDomain(aiDiagnosisEntity);
+    public DiagnosisResultResponseDto requestEyeDiagnosis(MultipartFile image){
+        return aiDiagnosisFeignClient.requestEyeDiagnosis(image);
     }
 
     @Override
-    public CreateAiDiagnosisResponseDto findAiDiagnosesByDogId(Long dogId, int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<AiDiagnosisEntity> aiDiagnosesPage = jpaRepository.findByDog_DogId(dogId, pageable);
-
-        List<AiDiagnosis> diagnoses = aiDiagnosisMapper.entityListToDomainList(aiDiagnosesPage.getContent());
-
-        return CreateAiDiagnosisResponseDto.builder()
-                .currantPage(aiDiagnosesPage.getNumber()+1)
-                .size(aiDiagnosesPage.getSize())
-                .totalElements(aiDiagnosesPage.getTotalElements())
-                .totalPages(aiDiagnosesPage.getTotalPages())
-                .diagnoses(diagnoses)
-                .build();
+    public DiagnosisResultResponseDto requestObesityDiagnosis(MultipartFile image){
+        return aiDiagnosisFeignClient.requestObesityDiagnosis(image);
     }
 
     @Override
-    @Transactional
-    public void deleteAiDiagnosis(Long aiDiagnosisId) {
-        jpaRepository.deleteById(aiDiagnosisId);
+    public DiagnosisResultResponseDto requestBreedDiagnosis(MultipartFile image){
+        return aiDiagnosisFeignClient.requestBreedDiagnosis(image);
     }
+
 }

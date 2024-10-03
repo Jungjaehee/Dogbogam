@@ -25,12 +25,9 @@ public class AiReportDiseaseEntity {
     @JoinColumn(name = "ai_diagnosis_id", nullable = false)
     private AiDiagnosisEntity aiDiagnosis;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "disease", nullable = false)
+    private String disease;
 
-    @Column(name = "percentage", columnDefinition = "DECIMAL(3, 2)",nullable = false)
+    @Column(name = "percentage", columnDefinition = "DECIMAL(5, 2)",nullable = false)
     private Float percentage;
-
-    @Column(name = "diagnosis_item", nullable = false)
-    private String diagnosisItem;
 }
