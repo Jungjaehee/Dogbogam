@@ -32,8 +32,8 @@ public class AwsService {
 
     private final AmazonS3 S3Client;
 
-    public Map<String, String> uploadFile(MultipartFile multipartFile, String path) throws IOException {
-        Map<String, String> uploadParam = new HashMap<>();
+    public Map<String, Object> uploadFile(MultipartFile multipartFile, String path) throws IOException {
+        Map<String, Object> uploadParam = new HashMap<>();
 
         String localFileName = UUID.randomUUID() +"_" +multipartFile.getOriginalFilename();
         File uploadFile = convert(multipartFile, localFileName)
@@ -48,7 +48,7 @@ public class AwsService {
         try {
             S3Client.putObject(
                     new PutObjectRequest(bucketName, generatedFileName, uploadFile));
-            //.withCannedAcl(CannedAccessControlList.PublicRead));
+                            //.withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (AmazonS3Exception e) {
             throw new IOException("Error uploading file", e);
         }

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -17,9 +18,10 @@ public class FindDogResponseDto {
     String breed;
     String gender;
     LocalDate birth;
-    double weight;
-    boolean isNeutered;
+    Double weight;
+    Boolean isNeutered;
     String imageUrl;
     List<HealthProblemResponse> healthProblems;
+    LocalDateTime createdAt;
 }
 

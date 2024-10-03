@@ -19,6 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Tag(name = "Dog API", description = "반려견 정보 관리 API")
@@ -39,7 +40,7 @@ public class DogController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
     public SuccessResponse<?> createDog(
             @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @ModelAttribute CreateDogRequestDTO createDogRequestDTO) {
+            @ModelAttribute CreateDogRequestDTO createDogRequestDTO) throws IOException {
         return SuccessResponse.created(createDogUseCase.createDog(createDogRequestDTO, memberPrincipal.getMemberId()));
     }
 
@@ -48,7 +49,7 @@ public class DogController {
     @PatchMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public SuccessResponse<?> updateDog(
             @Parameter(description = "로그인된 사용자의 정보", required = true) @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @ModelAttribute @Valid UpdateDogRequestDTO updateDogRequestDTO) {
+            @ModelAttribute @Valid UpdateDogRequestDTO updateDogRequestDTO) throws IOException {
         updateDogUseCase.updateDog(updateDogRequestDTO, memberPrincipal.getMemberId());
         return SuccessResponse.updated();
     }

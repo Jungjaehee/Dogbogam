@@ -33,14 +33,14 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
     @Override
     public void createReport(CreateReportRequestDto createReportRequestDto) throws IOException {
         log.info("Service Create record : {}", createReportRequestDto);
-        Map<String, String> uploadParam = awsService.uploadFile(createReportRequestDto.getImage(), path);
+        Map<String, Object> uploadParam = awsService.uploadFile(createReportRequestDto.getImage(), path);
 
         MedicalRecordEntity medicalRecordEntity = MedicalRecordEntity.builder()
                 .recordTime(createReportRequestDto.getRecordTime())
                 .dog(dogDetailsPort.findEntityByDogId(createReportRequestDto.getDogId())
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견 입니다.")))
-                .imageName(uploadParam.get("s3FileName"))
-                .imageUrl(uploadParam.get("uploadImageUrl"))
+                .imageName(uploadParam.get("s3FileName").toString())
+                .imageUrl(uploadParam.get("uploadImageUrl").toString())
                 .content(createReportRequestDto.getContent())
                 .hospital(createReportRequestDto.getHospital())
                 .build();
@@ -50,14 +50,14 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
     @Override
     public void updateReport(UpdateReportRequestDto updateReportRequestDto) throws IOException {
         log.info("Service Update record : {}", updateReportRequestDto);
-        Map<String, String> uploadParam = awsService.uploadFile(updateReportRequestDto.getImage(), path);
+        Map<String, Object> uploadParam = awsService.uploadFile(updateReportRequestDto.getImage(), path);
         MedicalRecordEntity medicalRecordEntity = MedicalRecordEntity.builder()
                 .medicalRecordId(updateReportRequestDto.getMedicalRecordId())
                 .recordTime(updateReportRequestDto.getRecordTime())
                 .dog(dogDetailsPort.findEntityByDogId(updateReportRequestDto.getDogId())
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견입니다.")))
-                .imageName(uploadParam.get("s3FileName"))
-                .imageUrl(uploadParam.get("uploadImageUrl"))
+                .imageName(uploadParam.get("s3FileName").toString())
+                .imageUrl(uploadParam.get("uploadImageUrl").toString())
                 .content(updateReportRequestDto.getContent())
                 .hospital(updateReportRequestDto.getHospital())
                 .build();

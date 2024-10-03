@@ -34,13 +34,13 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
     @Override
     public void createVaccinationRecord(CreateVaccinationRecordRequestDto createVaccinationRecordRequestDto) throws IOException {
         log.info("Service Create record : {}", createVaccinationRecordRequestDto);
-        Map<String, String> uploadParam = awsService.uploadFile(createVaccinationRecordRequestDto.getImage(), path);
+        Map<String, Object> uploadParam = awsService.uploadFile(createVaccinationRecordRequestDto.getImage(), path);
         VaccinationRecordEntity vaccinationRecordEntity = VaccinationRecordEntity.builder()
                 .recordTime(createVaccinationRecordRequestDto.getRecordTime())
                 .dog(dogPersistenceAdapter.findEntityByDogId(createVaccinationRecordRequestDto.getDogId())
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견 입니다.")))
-                .imageName(uploadParam.get("s3FileName"))
-                .imageUrl(uploadParam.get("uploadImageUrl"))
+                .imageName(uploadParam.get("s3FileName").toString())
+                .imageUrl(uploadParam.get("uploadImageUrl").toString())
                 .content(createVaccinationRecordRequestDto.getContent())
                 .hospital(createVaccinationRecordRequestDto.getHospital())
                 .cost(createVaccinationRecordRequestDto.getCost())
@@ -52,14 +52,14 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
     @Override
     public void updateVaccinationRecord(UpdateVaccinationRecordRequestDto updateVaccinationRecordRequestDto) throws IOException {
         log.info("Service Update record : {}", updateVaccinationRecordRequestDto);
-        Map<String, String> uploadParam = awsService.uploadFile(updateVaccinationRecordRequestDto.getImage(), path);
+        Map<String, Object> uploadParam = awsService.uploadFile(updateVaccinationRecordRequestDto.getImage(), path);
         VaccinationRecordEntity vaccinationRecordEntity = VaccinationRecordEntity.builder()
                 .vaccinationRecordId(updateVaccinationRecordRequestDto.getVaccinationRecordId())
                 .recordTime(updateVaccinationRecordRequestDto.getRecordTime())
                 .dog(dogPersistenceAdapter.findEntityByDogId(updateVaccinationRecordRequestDto.getDogId())
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견입니다.")))
-                .imageName(uploadParam.get("s3FileName"))
-                .imageUrl(uploadParam.get("uploadImageUrl"))
+                .imageName(uploadParam.get("s3FileName").toString())
+                .imageUrl(uploadParam.get("uploadImageUrl").toString())
                 .content(updateVaccinationRecordRequestDto.getContent())
                 .hospital(updateVaccinationRecordRequestDto.getHospital())
                 .cost(updateVaccinationRecordRequestDto.getCost())

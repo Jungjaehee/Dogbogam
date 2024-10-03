@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
 @Getter
 public class CreateAiDiagnosisRequestDto {
     @NotNull(message = "강아지는 필수입니다.")
@@ -19,6 +20,10 @@ public class CreateAiDiagnosisRequestDto {
 
     @NotBlank(message = "진단 항목은 필수입니다.")
     private String diagnosisItem;
+
+    @NotBlank(message = "이미지 이름은 필수입니다.")
     private String imageName;
+
+    @NotBlank(message = "이미지 url은 필수입니다.")
     private String imageUrl;
 }

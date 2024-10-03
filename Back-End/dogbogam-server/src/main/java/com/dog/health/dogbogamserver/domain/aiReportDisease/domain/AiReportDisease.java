@@ -11,7 +11,6 @@ import lombok.Getter;
 public class AiReportDisease {
     private Long aiReportDiseaseId;
     private AiDiagnosis aiDiagnosis;
-    private String name;
     private Float percentage;
-    private String diagnosisItem;
+    private String disease;
 }
