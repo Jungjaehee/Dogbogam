@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,7 +47,7 @@ public class MedicalRecordController {
             @ApiResponse(responseCode = "400", description = "잘못된 입력", content = @Content)
     })
     @PostMapping
-    public SuccessResponse<?> createMedicalRecord(@ModelAttribute CreateReportRequestDto createReportRequestDto) {
+    public SuccessResponse<?> createMedicalRecord(@ModelAttribute CreateReportRequestDto createReportRequestDto) throws IOException {
         log.info("Controller Create medical record: {}", createReportRequestDto);
         createReportUseCase.createReport(createReportRequestDto);
         return SuccessResponse.created();
@@ -58,7 +59,7 @@ public class MedicalRecordController {
             @ApiResponse(responseCode = "404", description = "병원 기록을 찾을 수 없음", content = @Content)
     })
     @PatchMapping
-    public SuccessResponse<?> updateMedicalRecord(@ModelAttribute UpdateReportRequestDto updateReportRequestDto) {
+    public SuccessResponse<?> updateMedicalRecord(@ModelAttribute UpdateReportRequestDto updateReportRequestDto) throws IOException {
         log.info("Controller Update medical record: {}", updateReportRequestDto);
         updateReportUseCase.updateReport(updateReportRequestDto);
         return SuccessResponse.updated();

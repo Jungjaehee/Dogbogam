@@ -1,7 +1,11 @@
 package com.dog.health.dogbogamserver.global.aws.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.dog.health.dogbogamserver.global.web.dto.response.ExceptionResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +17,9 @@ import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -25,72 +28,57 @@ import java.util.UUID;
 @Slf4j
 public class AwsService {
     @Value("${aws.s3.bucket}")
-    private String name;
+    private String bucketName;
 
-    private final AmazonS3 s3Client;
+    private final AmazonS3 S3Client;
 
-    public String uploadFile(MultipartFile file, Long memberId) {
-        try{
-            File fileObj = convertMultiPartFileToFile(file);
-            String originalFilename = file.getOriginalFilename();
+    public Map<String, String> uploadFile(MultipartFile multipartFile, String path) throws IOException {
+        Map<String, String> uploadParam = new HashMap<>();
 
-            String extension = "";
-            int dotIndex = originalFilename.lastIndexOf('.');
-            if (dotIndex > 0) {
-                extension = originalFilename.substring(dotIndex);
-            }
+        String localFileName = UUID.randomUUID() +"_" +multipartFile.getOriginalFilename();
+        File uploadFile = convert(multipartFile, localFileName)
+                .orElseThrow(() -> new CustomException(ErrorCode.FAILED_CONVERT_FILE));
 
-            //memberId로 랜덤
-            String uniqueFileName = generateFileName(String.valueOf(memberId), extension);
+        String generatedFileName = path + "/" + localFileName;
 
-            s3Client.putObject(new PutObjectRequest(name, uniqueFileName, fileObj));
-            fileObj.delete();
-            return uniqueFileName;
+        uploadParam.put("s3FileName", generatedFileName);
 
-        }catch (Exception e) {
-            log.error(e.getMessage());
+        log.info(uploadParam.toString());
 
-            throw new CustomException(ErrorCode.FAILED_CONVERT_FILE);
-        }
-    }
-
-    public String getImageUrl(String userUrl) {
-        URL url = s3Client.getUrl(name, userUrl);
-        return "" + url;
-    }
-
-    private String generateFileName(String memberId, String extension) {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(memberId.getBytes(StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                hexString.append(String.format("%02x", b));
-            }
-            // UUID 추가
-            String uniqueId = UUID.randomUUID().toString();
-            return hexString.toString() + "-" + uniqueId + extension;
-        } catch (NoSuchAlgorithmException e) {
-            throw new CustomException(ErrorCode.FAILED_CONVERT_FILE);
+            S3Client.putObject(
+                    new PutObjectRequest(bucketName, generatedFileName, uploadFile));
+            //.withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch (AmazonS3Exception e) {
+            throw new IOException("Error uploading file", e);
         }
+        String uploadImageUrl = S3Client.getUrl(bucketName, generatedFileName).toString();
+        uploadParam.put("uploadImageUrl", uploadImageUrl);
+
+        uploadFile.delete();
+        log.info("Local file deleted : {}", uploadFile.getAbsolutePath());
+
+        return uploadParam;
     }
 
-    private File convertMultiPartFileToFile(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
-        fos.close();
-        return convFile;
+    private Optional<File> convert(MultipartFile file, String fileName) throws IOException {
+        log.info("Converting file: {}", fileName);
+        File convertFile = new File(fileName);
+        if (convertFile.createNewFile()) {
+            try (FileOutputStream fileOutputStream = new FileOutputStream(convertFile)) {
+                fileOutputStream.write(file.getBytes());
+            }
+            return Optional.of(convertFile);
+        }
+        return Optional.empty();
     }
 
     // 이미지 삭제
-    public void deleteFile(String imageName) {
+    public void deleteFile(String s3FileName) throws IOException {
         try {
-            s3Client.deleteObject(name, imageName);
-            log.info("File deleted successfully from S3: " + imageName);
-        } catch (Exception e) {
-            log.error("Error occurred while deleting file from S3: " + imageName, e);
-            throw new CustomException(ErrorCode.FAILED_DELETE_FILE);
+            S3Client.deleteObject(new DeleteObjectRequest(bucketName, s3FileName));
+        } catch (AmazonS3Exception e) {
+            throw new IOException("Error deleting photo ", e);
         }
     }
 
