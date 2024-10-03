@@ -8,11 +8,14 @@ import com.dog.health.dogbogamserver.domain.vaccinationRecords.application.port.
 import com.dog.health.dogbogamserver.domain.vaccinationRecords.application.service.dto.request.CreateVaccinationRecordRequestDto;
 import com.dog.health.dogbogamserver.domain.vaccinationRecords.application.service.dto.request.UpdateVaccinationRecordRequestDto;
 import com.dog.health.dogbogamserver.domain.vaccinationRecords.domain.VaccinationRecord;
+import com.dog.health.dogbogamserver.global.aws.service.AwsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -25,14 +28,19 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
     private final DeleteVaccinationRecordPort deleteVaccinationRecordPort;
     private final FindVaccinationRecordsPort findVaccinationRecordsPort;
     private final DogPersistenceAdapter dogPersistenceAdapter;
+    private final AwsService awsService;
 
     @Override
-    public void createVaccinationRecord(CreateVaccinationRecordRequestDto createVaccinationRecordRequestDto) {
+    public void createVaccinationRecord(CreateVaccinationRecordRequestDto createVaccinationRecordRequestDto) throws IOException {
         log.info("Service Create record : {}", createVaccinationRecordRequestDto);
+        String path = "vaccination_record_image";
+        Map<String, String> uploadParam = awsService.uploadFile(createVaccinationRecordRequestDto.getImage(), path);
         VaccinationRecordEntity vaccinationRecordEntity = VaccinationRecordEntity.builder()
                 .recordTime(createVaccinationRecordRequestDto.getRecordTime())
                 .dog(dogPersistenceAdapter.findEntityByDogId(createVaccinationRecordRequestDto.getDogId())
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견 입니다.")))
+                .imageName(uploadParam.get("s3FileName"))
+                .imageUrl(uploadParam.get("uploadImageUrl"))
                 .content(createVaccinationRecordRequestDto.getContent())
                 .hospital(createVaccinationRecordRequestDto.getHospital())
                 .cost(createVaccinationRecordRequestDto.getCost())
@@ -42,13 +50,17 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
     }
 
     @Override
-    public void updateVaccinationRecord(UpdateVaccinationRecordRequestDto updateVaccinationRecordRequestDto) {
+    public void updateVaccinationRecord(UpdateVaccinationRecordRequestDto updateVaccinationRecordRequestDto) throws IOException {
         log.info("Service Update record : {}", updateVaccinationRecordRequestDto);
+        String path = "vaccination_record_image";
+        Map<String, String> uploadParam = awsService.uploadFile(updateVaccinationRecordRequestDto.getImage(), path);
         VaccinationRecordEntity vaccinationRecordEntity = VaccinationRecordEntity.builder()
                 .vaccinationRecordId(updateVaccinationRecordRequestDto.getVaccinationRecordId())
                 .recordTime(updateVaccinationRecordRequestDto.getRecordTime())
                 .dog(dogPersistenceAdapter.findEntityByDogId(updateVaccinationRecordRequestDto.getDogId())
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견입니다.")))
+                .imageName(uploadParam.get("s3FileName"))
+                .imageUrl(uploadParam.get("uploadImageUrl"))
                 .content(updateVaccinationRecordRequestDto.getContent())
                 .hospital(updateVaccinationRecordRequestDto.getHospital())
                 .cost(updateVaccinationRecordRequestDto.getCost())
