@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +37,7 @@ public class VaccinationRecordController {
 
     @Operation(summary = "접종 기록 생성", description = "새로운 백신 접종 기록을 생성합니다.")
     @PostMapping
-    public SuccessResponse<?> createVaccinationRecord(@ModelAttribute @Valid CreateVaccinationRecordRequestDto createVaccinationRecordRequestDto) {
+    public SuccessResponse<?> createVaccinationRecord(@ModelAttribute @Valid CreateVaccinationRecordRequestDto createVaccinationRecordRequestDto) throws IOException {
         log.info("Controller Create Vaccination record: {}", createVaccinationRecordRequestDto);
         createVaccinationRecordUseCase.createVaccinationRecord(createVaccinationRecordRequestDto);
         return SuccessResponse.created();
@@ -44,7 +45,7 @@ public class VaccinationRecordController {
 
     @Operation(summary = "접종 기록 업데이트", description = "기존 백신 접종 기록을 업데이트합니다.")
     @PatchMapping
-    public SuccessResponse<?> updateVaccinationRecord(@ModelAttribute @Valid UpdateVaccinationRecordRequestDto updateVaccinationRecordRequestDto) {
+    public SuccessResponse<?> updateVaccinationRecord(@ModelAttribute @Valid UpdateVaccinationRecordRequestDto updateVaccinationRecordRequestDto) throws IOException {
         log.info("Controller Update Vaccination record: {}", updateVaccinationRecordRequestDto);
         updateVaccinationRecordUseCase.updateVaccinationRecord(updateVaccinationRecordRequestDto);
         return SuccessResponse.updated();
