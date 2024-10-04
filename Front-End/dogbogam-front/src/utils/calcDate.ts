@@ -7,11 +7,12 @@ export const calAge = (birthDate: Date | null): number | null => {
 };
 
 // 가입일 계산하는 함수
-export const calSignUpDate = (createdTime: Date | null): number | null => {
-  if (!createdTime) return null; 
+export const calSignUpDate = (createdTime: Date): number | null => {
+  
+  const time = new Date(createdTime);
 
   const today = new Date(); 
-  const diffTime = today.getTime() - createdTime.getTime(); 
+  const diffTime = today.getTime() - time.getTime(); 
   const diffDay = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
   return diffDay;
