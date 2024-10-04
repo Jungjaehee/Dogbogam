@@ -1,8 +1,9 @@
 from fastapi import FastAPI, HTTPException, Request
 from controller.controller import router as image_router
 from fastapi.responses import JSONResponse
+import os
 
-# os.environ["CUDA_VISIBLE_DEVICES"]="7"
+os.environ["CUDA_VISIBLE_DEVICES"]="7"
 
 # uvicorn main:app --reload
 app = FastAPI()
