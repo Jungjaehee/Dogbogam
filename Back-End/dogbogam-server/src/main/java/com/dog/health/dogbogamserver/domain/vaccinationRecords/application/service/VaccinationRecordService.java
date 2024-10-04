@@ -7,15 +7,18 @@ import com.dog.health.dogbogamserver.domain.vaccinationRecords.application.port.
 import com.dog.health.dogbogamserver.domain.vaccinationRecords.application.port.out.*;
 import com.dog.health.dogbogamserver.domain.vaccinationRecords.application.service.dto.request.CreateVaccinationRecordRequestDto;
 import com.dog.health.dogbogamserver.domain.vaccinationRecords.application.service.dto.request.UpdateVaccinationRecordRequestDto;
+import com.dog.health.dogbogamserver.domain.vaccinationRecords.application.service.dto.response.FindVaccinationRecordResponseDto;
 import com.dog.health.dogbogamserver.domain.vaccinationRecords.domain.VaccinationRecord;
 import com.dog.health.dogbogamserver.global.aws.service.AwsService;
+import com.dog.health.dogbogamserver.global.web.exception.CustomException;
+import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -29,18 +32,14 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
     private final FindVaccinationRecordsPort findVaccinationRecordsPort;
     private final DogPersistenceAdapter dogPersistenceAdapter;
     private final AwsService awsService;
-    private static final String path = "vaccination_record_image";
 
     @Override
-    public void createVaccinationRecord(CreateVaccinationRecordRequestDto createVaccinationRecordRequestDto) throws IOException {
+    public void createVaccinationRecord(CreateVaccinationRecordRequestDto createVaccinationRecordRequestDto) {
         log.info("Service Create record : {}", createVaccinationRecordRequestDto);
-        Map<String, Object> uploadParam = awsService.uploadFile(createVaccinationRecordRequestDto.getImage(), path);
         VaccinationRecordEntity vaccinationRecordEntity = VaccinationRecordEntity.builder()
                 .recordTime(createVaccinationRecordRequestDto.getRecordTime())
                 .dog(dogPersistenceAdapter.findEntityByDogId(createVaccinationRecordRequestDto.getDogId())
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견 입니다.")))
-                .imageName(uploadParam.get("s3FileName").toString())
-                .imageUrl(uploadParam.get("uploadImageUrl").toString())
                 .content(createVaccinationRecordRequestDto.getContent())
                 .hospital(createVaccinationRecordRequestDto.getHospital())
                 .cost(createVaccinationRecordRequestDto.getCost())
@@ -50,16 +49,13 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
     }
 
     @Override
-    public void updateVaccinationRecord(UpdateVaccinationRecordRequestDto updateVaccinationRecordRequestDto) throws IOException {
+    public void updateVaccinationRecord(UpdateVaccinationRecordRequestDto updateVaccinationRecordRequestDto) {
         log.info("Service Update record : {}", updateVaccinationRecordRequestDto);
-        Map<String, Object> uploadParam = awsService.uploadFile(updateVaccinationRecordRequestDto.getImage(), path);
         VaccinationRecordEntity vaccinationRecordEntity = VaccinationRecordEntity.builder()
                 .vaccinationRecordId(updateVaccinationRecordRequestDto.getVaccinationRecordId())
                 .recordTime(updateVaccinationRecordRequestDto.getRecordTime())
                 .dog(dogPersistenceAdapter.findEntityByDogId(updateVaccinationRecordRequestDto.getDogId())
                         .orElseThrow(()-> new IllegalArgumentException("없는 반려견입니다.")))
-                .imageName(uploadParam.get("s3FileName").toString())
-                .imageUrl(uploadParam.get("uploadImageUrl").toString())
                 .content(updateVaccinationRecordRequestDto.getContent())
                 .hospital(updateVaccinationRecordRequestDto.getHospital())
                 .cost(updateVaccinationRecordRequestDto.getCost())
@@ -69,24 +65,52 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
     }
 
     @Override
-    public VaccinationRecord findVaccinationRecordById(Long vaccinationRecordId) {
+    public FindVaccinationRecordResponseDto findVaccinationRecordById(Long vaccinationRecordId) {
         log.info("Service Find record : {}", vaccinationRecordId);
-        return findVaccinationRecordPort.findVaccinationRecordById(vaccinationRecordId)
+        VaccinationRecord vaccinationRecord = findVaccinationRecordPort.findVaccinationRecordById(vaccinationRecordId)
                 .orElseThrow(()-> new IllegalArgumentException("없는 리포트입니다."));
+
+        return FindVaccinationRecordResponseDto.builder()
+                .dogId(vaccinationRecord.getDog().getDogId())
+                .recordTime(vaccinationRecord.getRecordTime())
+                .content(vaccinationRecord.getContent())
+                .hospital(vaccinationRecord.getHospital())
+                .imageUrl(vaccinationRecord.getImageUrl())
+                .cost(vaccinationRecord.getCost())
+                .vaccinationRound(vaccinationRecord.getVaccinationRound())
+                .build();
     }
 
     @Override
     public void deleteVaccinationRecord(Long vaccinationRecordId) throws IOException {
         log.info("Service Delete record : {}", vaccinationRecordId);
-        VaccinationRecord vaccinationRecord = findVaccinationRecordById(vaccinationRecordId);
-        awsService.deleteFile(vaccinationRecord.getImageName());
+        VaccinationRecord vaccinationRecord = findVaccinationRecordPort.findVaccinationRecordById(vaccinationRecordId)
+                .orElseThrow(()-> new CustomException(ErrorCode.VACCINATION_NOT_FOUND));
+        if(vaccinationRecord.getImageName() != null) {
+            awsService.deleteFile(vaccinationRecord.getImageName());
+        }
         deleteVaccinationRecordPort.deleteVaccinationRecord(vaccinationRecordId);
     }
 
     @Override
-    public List<VaccinationRecord> findVaccinationsByDogId(Long dogId) {
-        log.info("Service Find records : {}", dogId);
-        return findVaccinationRecordsPort.findVaccinationRecordsByDogId(dogId)
+    public List<FindVaccinationRecordResponseDto> findVaccinationsByDogId(Long dogId) {
+        log.info("Senrvice Find records : {}", dogId);
+        List<VaccinationRecord> vaccinationRecords = findVaccinationRecordsPort.findVaccinationRecordsByDogId(dogId)
                 .orElseThrow(()->new IllegalArgumentException("없는 접종 기록입니다."));
+
+        List<FindVaccinationRecordResponseDto> recordResponseDtos = new ArrayList<>();
+        for (VaccinationRecord vaccinationRecord : vaccinationRecords) {
+            recordResponseDtos.add(FindVaccinationRecordResponseDto.builder()
+                    .dogId(vaccinationRecord.getDog().getDogId())
+                    .recordTime(vaccinationRecord.getRecordTime())
+                    .content(vaccinationRecord.getContent())
+                    .hospital(vaccinationRecord.getHospital())
+                    .cost(vaccinationRecord.getCost())
+                    .vaccinationRound(vaccinationRecord.getVaccinationRound())
+                    .imageUrl(vaccinationRecord.getImageUrl())
+                    .build());
+        }
+
+        return recordResponseDtos;
     }
 }

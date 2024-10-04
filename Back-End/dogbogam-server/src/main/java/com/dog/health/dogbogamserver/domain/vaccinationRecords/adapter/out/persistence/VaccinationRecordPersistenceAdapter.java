@@ -21,9 +21,9 @@ public class VaccinationRecordPersistenceAdapter implements CreateVaccinationRec
 
     @Override
     public Optional<VaccinationRecord> findVaccinationRecordById(Long reportId) {
-        VaccinationRecordEntity VaccinationRecordEntity = jpaRepository.findById(reportId)
+        VaccinationRecordEntity vaccinationRecordEntity = jpaRepository.findById(reportId)
                 .orElseThrow(()-> new IllegalArgumentException("없는 리포트 입니다."));
-        return Optional.ofNullable(VaccinationRecordMapper.toDomain(VaccinationRecordEntity));
+        return Optional.ofNullable(VaccinationRecordMapper.toDomain(vaccinationRecordEntity));
     }
 
     @Override
@@ -34,9 +34,12 @@ public class VaccinationRecordPersistenceAdapter implements CreateVaccinationRec
 
     @Override
     public void deleteVaccinationRecord(Long vaccinationRecordId) {
-        VaccinationRecordEntity VaccinationRecordEntity = jpaRepository.findById(vaccinationRecordId)
+        log.info("Adapter delete : {}", vaccinationRecordId);
+        VaccinationRecordEntity vaccinationRecordEntity = jpaRepository.findById(vaccinationRecordId)
                 .orElseThrow(()-> new IllegalArgumentException("없는 리포트 입니다."));
-        jpaRepository.delete(VaccinationRecordEntity);
+
+        log.info("Adapter delete entity : {}", vaccinationRecordEntity.getVaccinationRecordId());
+        jpaRepository.delete(vaccinationRecordEntity);
     }
 
     @Override
@@ -44,20 +47,20 @@ public class VaccinationRecordPersistenceAdapter implements CreateVaccinationRec
         log.info("Adapter 예방 접종 기록 리스트 : {}", dogId);
 
         // 레포지토리에서 reportId로 VaccinationRecordEntity 리스트 조회
-        List<VaccinationRecordEntity> VaccinationRecordEntities = jpaRepository.findAllByDog_DogId(dogId);
+        List<VaccinationRecordEntity> vaccinationRecordEntities = jpaRepository.findAllByDog_DogId(dogId);
 
         // 조회된 리스트가 비어있으면 Optional.empty() 반환
-        if (VaccinationRecordEntities.isEmpty()) {
+        if (vaccinationRecordEntities.isEmpty()) {
             return Optional.empty();
         }
 
         // VaccinationRecordEntity 리스트를 VaccinationRecord 도메인 리스트로 변환
-        List<VaccinationRecord> VaccinationRecords = VaccinationRecordEntities.stream()
+        List<VaccinationRecord> vaccinationRecords = vaccinationRecordEntities.stream()
                 .map(VaccinationRecordMapper::toDomain) // mapper를 사용하여 엔티티를 도메인 객체로 변환
                 .collect(Collectors.toList());
 
         // Optional로 감싸서 반환
-        return Optional.of(VaccinationRecords);
+        return Optional.of(vaccinationRecords);
     }
 
     @Override
