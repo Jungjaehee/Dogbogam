@@ -1,12 +1,20 @@
 import axios from "axios";
 import { BASE_URL } from "./APIconfig";
 import { inputDogInfo } from "../models/dog.model";
+import defaultImage from "../assets/MyPage/DefaultDogIcon.png";
 
 export const registDogInfo = async (token: string, dog: inputDogInfo) => {
   try {
     const formData = new FormData();
+
+    // 이미지가 있으면 첨부, 없으면 디폴트 이미지
     if (dog.image) {
       formData.append("image", dog.image);
+    } else {
+      const defaultDogImage = await fetch(defaultImage).then((res) =>
+        res.blob()
+      );
+      formData.append("image", defaultDogImage, "default-dog.png"); // 디폴트 이미지
     }
     formData.append("name", dog.name);
     formData.append("gender", dog.gender);
