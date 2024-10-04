@@ -15,7 +15,11 @@ export const calSignUpDate = (createdTime: Date): number | null => {
   const diffTime = today.getTime() - time.getTime(); 
   const diffDay = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-  return diffDay;
+  if (diffDay == 0) {
+    return 1;
+  } else {
+    return diffDay;
+  }
 };
 
 // 진료 경과 시간 확인하는 함수
