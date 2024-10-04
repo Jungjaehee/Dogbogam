@@ -11,8 +11,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 public class CreateDogRequestDTO {
-    @NotNull(message = "멤버는 필수 입니다.")
-    private Long memberId;
     @NotBlank(message = "반려견 이름은 필수 입니다.")
     private String name;
     @NotBlank(message = "견종은 필수 입니다.")
