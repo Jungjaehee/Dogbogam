@@ -1,18 +1,21 @@
 from fastapi import HTTPException
 from ultralytics import YOLO
 from mapper.eye_map import EyeLabelMapper
+from mapper.skin_map import SkinLabelMapper
 import os
 import logging
 import traceback
 
 async def diagnosis_eye(image):
-    model_path = "../model/eye/yolov8.pt"
+    model_path = "./model/eye/yolov8.pt"
     outputs = await ai_inference(model_path, image, EyeLabelMapper)
     return outputs
 
 
 async def diagnosis_skin(image):
-    return
+    model_path = "./model/skin/last.pt"
+    outputs = await ai_inference(model_path, image, SkinLabelMapper)
+    return outputs
 
 
 async def diagnosis_obesity(image):
@@ -24,7 +27,7 @@ async def diagnosis_breed(image):
 
 async def ai_inference(model_path, image, label_mapper):
     try:
-        os.makedirs("../data", exist_ok=True)
+        os.makedirs("./data", exist_ok=True)
         image_path = f"./data/{image.filename}"
         contents = await image.read()
         with open(image_path, "wb") as f:
