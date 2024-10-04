@@ -1,13 +1,11 @@
 package com.dog.health.dogbogamserver.domain.medicalRecords.adapter.out.persistence;
 
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogEntity;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.UpdateReportRequestDto;
 import com.dog.health.dogbogamserver.domain.medicalRecords.domain.MedicalRecord;
 import com.dog.health.dogbogamserver.global.baseTimeEntity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter

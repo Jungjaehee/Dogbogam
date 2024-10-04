@@ -1,7 +1,9 @@
 package com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in;
 
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.CreateReportRequestDto;
+import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.CreateMedicalReportRequestDto;
+
+import java.io.IOException;
 
 public interface CreateReportUseCase {
-    void createReport(CreateReportRequestDto createReportRequestDto);
+    void createReport(CreateMedicalReportRequestDto createMedicalReportRequestDto) throws IOException;
 }

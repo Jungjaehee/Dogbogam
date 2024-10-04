@@ -44,6 +44,7 @@ public class DogMapper {
                 .imageName(dogEntity.getImageName())
                 .imageUrl(dogEntity.getImageUrl())
                 .isDeleted(dogEntity.getIsDeleted())
+                .createdAt(dogEntity.getCreatedAt())
                 .build();
     }
 
