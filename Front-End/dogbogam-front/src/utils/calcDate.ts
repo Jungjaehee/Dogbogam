@@ -1,8 +1,10 @@
 // 나이 계산 함수
 export const calAge = (birthDate: Date | null): number | null => {
   if (!birthDate) return null;
+  
+  const birthDay = new Date(birthDate)
   const today = new Date();
-  const age = today.getFullYear() - birthDate.getFullYear();
+  const age = today.getFullYear() - birthDay.getFullYear();
   return age-1;
 };
 
