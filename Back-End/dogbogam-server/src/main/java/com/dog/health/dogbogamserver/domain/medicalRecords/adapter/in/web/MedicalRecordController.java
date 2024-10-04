@@ -1,12 +1,15 @@
 package com.dog.health.dogbogamserver.domain.medicalRecords.adapter.in.web;
 
 import com.dog.health.dogbogamserver.domain.medicalRecords.application.port.in.*;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.CreateReportRequestDto;
-import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.UpdateReportRequestDto;
+import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.CreateMedicalReportRequestDto;
+import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.request.UpdateMedicalReportRequestDto;
+import com.dog.health.dogbogamserver.domain.medicalRecords.application.service.dto.response.FindMedicalReportResponseDto;
 import com.dog.health.dogbogamserver.domain.medicalRecords.domain.MedicalRecord;
 import com.dog.health.dogbogamserver.global.web.dto.response.SuccessResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -37,7 +40,7 @@ public class MedicalRecordController {
             @ApiResponse(responseCode = "404", description = "병원 기록을 찾을 수 없음", content = @Content)
     })
     @GetMapping("/{medicalRecordId}")
-    public SuccessResponse<MedicalRecord> getMedicalRecordById(@PathVariable("medicalRecordId") Long medicalRecordId) {
+    public SuccessResponse<FindMedicalReportResponseDto> getMedicalRecordById(@PathVariable("medicalRecordId") Long medicalRecordId) {
         return SuccessResponse.ok(findReportUseCase.findMedicalRecordById(medicalRecordId));
     }
 
@@ -46,10 +49,10 @@ public class MedicalRecordController {
             @ApiResponse(responseCode = "201", description = "병원 기록 생성 성공"),
             @ApiResponse(responseCode = "400", description = "잘못된 입력", content = @Content)
     })
-    @PostMapping
-    public SuccessResponse<?> createMedicalRecord(@ModelAttribute CreateReportRequestDto createReportRequestDto) throws IOException {
-        log.info("Controller Create medical record: {}", createReportRequestDto);
-        createReportUseCase.createReport(createReportRequestDto);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+    public SuccessResponse<?> createMedicalRecord(@Valid @ModelAttribute CreateMedicalReportRequestDto createMedicalReportRequestDto) throws IOException {
+        log.info("Controller Create medical record: {}", createMedicalReportRequestDto);
+        createReportUseCase.createReport(createMedicalReportRequestDto);
         return SuccessResponse.created();
     }
 
@@ -58,10 +61,10 @@ public class MedicalRecordController {
             @ApiResponse(responseCode = "200", description = "병원 기록 수정 성공"),
             @ApiResponse(responseCode = "404", description = "병원 기록을 찾을 수 없음", content = @Content)
     })
-    @PatchMapping
-    public SuccessResponse<?> updateMedicalRecord(@ModelAttribute UpdateReportRequestDto updateReportRequestDto) throws IOException {
-        log.info("Controller Update medical record: {}", updateReportRequestDto);
-        updateReportUseCase.updateReport(updateReportRequestDto);
+    @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+    public SuccessResponse<?> updateMedicalRecord(@ModelAttribute @Valid UpdateMedicalReportRequestDto updateMedicalReportRequestDto) throws IOException {
+        log.info("Controller Update medical record: {}", updateMedicalReportRequestDto);
+        updateReportUseCase.updateReport(updateMedicalReportRequestDto);
         return SuccessResponse.updated();
     }
 
@@ -84,7 +87,7 @@ public class MedicalRecordController {
             @ApiResponse(responseCode = "404", description = "해당 반려견의 병원 기록을 찾을 수 없음", content = @Content)
     })
     @GetMapping("/dog/{dogId}")
-    public SuccessResponse<List<MedicalRecord>> getAllMedicalRecordsForDog(@PathVariable("dogId") Long dogId) {
+    public SuccessResponse<List<FindMedicalReportResponseDto>> getAllMedicalRecordsForDog(@PathVariable("dogId") Long dogId) {
         return SuccessResponse.ok(findReportsUseCase.findReportsByDogId(dogId));
     }
 }
