@@ -12,6 +12,7 @@ import com.dog.health.dogbogamserver.global.web.exception.CustomException;
 import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -48,9 +49,7 @@ public class AiReportDiseasePersistenceAdapter implements CreateAiReportDiseaseP
     }
 
     @Override
-    public List<AiReportDisease> findAiReportDiseaseByAiReportDiseaseId(Long aiReportDiseaseId) {
-        AiDiagnosis aiDiagnosis = diagnosisAdapter.findAiDiagnosisByAiDiagnosisId(aiReportDiseaseId);
-
+    public List<AiReportDisease> findAiReportDiseaseByAiDiagnosis(AiDiagnosis aiDiagnosis) {
         if(aiDiagnosis == null) {
             throw new CustomException(ErrorCode.AI_DIAGNOSIS_NOT_FOUND);
         }

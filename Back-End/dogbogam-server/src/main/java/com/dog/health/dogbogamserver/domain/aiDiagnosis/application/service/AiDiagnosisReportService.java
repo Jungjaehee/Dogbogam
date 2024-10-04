@@ -9,10 +9,15 @@ import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.Del
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.FindAiDiagnosesPort;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.FindAiDiagnosisPort;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.request.CreateAiDiagnosisRequestDto;
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.response.CreateAiDiagnosisResponseDto;
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.response.FindAiDiagnosesResponseDto;
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.response.FindAiDiagnosisResponseDto;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
+import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out.FindAiReportDiseasesPort;
+import com.dog.health.dogbogamserver.domain.aiReportDisease.domain.AiReportDisease;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +28,7 @@ public class AiDiagnosisReportService implements CreateAiDiagnosisUseCase, FindA
     private final FindAiDiagnosisPort findAiDiagnosisPort;
     private final FindAiDiagnosesPort findAiDiagnosesPort;
     private final DeleteAiDiagnosisPort deleteAiDiagnosisPort;
+    private final FindAiReportDiseasesPort findAiReportDiseasesPort;
 
     @Override
     public void createAiDiagnosis(Long memberId, CreateAiDiagnosisRequestDto requestDto) {
@@ -30,12 +36,21 @@ public class AiDiagnosisReportService implements CreateAiDiagnosisUseCase, FindA
     }
 
     @Override
-    public AiDiagnosis findAiDiagnosisByAiDiagnosisId(Long aiDiagnosisId) {
-        return findAiDiagnosisPort.findAiDiagnosisByAiDiagnosisId(aiDiagnosisId);
+    public FindAiDiagnosisResponseDto findAiDiagnosisByAiDiagnosisId(Long aiDiagnosisId) {
+        AiDiagnosis aiDiagnosis = findAiDiagnosisPort.findAiDiagnosisByAiDiagnosisId(aiDiagnosisId);
+        List<AiReportDisease> diseases = findAiReportDiseasesPort.findAiReportDiseaseByAiDiagnosis(aiDiagnosis);
+        return FindAiDiagnosisResponseDto.builder()
+                .aiDiagnosisId(aiDiagnosisId)
+                .dogId(aiDiagnosis.getDog().getDogId())
+                .normal(aiDiagnosis.getNormal())
+                .imageUrl(aiDiagnosis.getImageUrl())
+                .diagnosisItem(aiDiagnosis.getDiagnosisItem())
+                .diseases(diseases)
+                .build();
     }
 
     @Override
-    public CreateAiDiagnosisResponseDto findAiDiagnosesByDogId(Long dogId, int page, int size) {
+    public FindAiDiagnosesResponseDto findAiDiagnosesByDogId(Long dogId, int page, int size) {
         return findAiDiagnosesPort.findAiDiagnosesByDogId(dogId, page, size);
     }
 

@@ -10,10 +10,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @Getter
-public class CreateAiDiagnosisResponseDto {
+public class FindAiDiagnosesResponseDto {
     private int size;
     private long totalElements;
     private int currantPage;
     private int totalPages;
-    private List<AiDiagnosis> diagnoses;
+    private List<FindAiDiagnosisResponseDto> diagnoses;
 }
