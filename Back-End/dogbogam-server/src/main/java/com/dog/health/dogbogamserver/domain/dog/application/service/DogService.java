@@ -129,7 +129,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     @Override
     public Optional<List<FindDogsDogInfoDto>> findDogsByMemberId(Long memberId) {
         // 전체 데이터 리스트를 Port에서 가져오기
-        List<Dog> dogs = findDogsPort.findDogsByMemberId(memberId).orElse(Collections.emptyList());
+        List<Dog> dogs = findDogsPort.findDogsByMemberId(memberId);
 
         // Dog 객체들을 DogDto로 변환
         List<FindDogsDogInfoDto> findDogsDogInfoDtos = dogs.stream()

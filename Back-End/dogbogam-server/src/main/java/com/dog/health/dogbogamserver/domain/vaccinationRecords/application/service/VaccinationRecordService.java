@@ -95,8 +95,7 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
     @Override
     public List<FindVaccinationRecordResponseDto> findVaccinationsByDogId(Long dogId) {
         log.info("Senrvice Find records : {}", dogId);
-        List<VaccinationRecord> vaccinationRecords = findVaccinationRecordsPort.findVaccinationRecordsByDogId(dogId)
-                .orElseThrow(()->new IllegalArgumentException("없는 접종 기록입니다."));
+        List<VaccinationRecord> vaccinationRecords = findVaccinationRecordsPort.findVaccinationRecordsByDogId(dogId);
 
         List<FindVaccinationRecordResponseDto> recordResponseDtos = new ArrayList<>();
         for (VaccinationRecord vaccinationRecord : vaccinationRecords) {
