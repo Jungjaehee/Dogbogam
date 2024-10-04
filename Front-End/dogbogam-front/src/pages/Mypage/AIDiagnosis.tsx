@@ -1,72 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../assets/MyPage/BackButton.png";
 import AIDiagnosisList from "./components/AIDiagnosisList";
-import DiagnosisFilter from "./components/DiagnosisFilter"; 
-import type { AiDiagnosis } from "../../models/record.model";
+import DiagnosisFilter from "./components/DiagnosisFilter";
+import { getDiagnosisRecords } from "../../api/aiDiagnosisAPI"; 
+import useUserStore from "../../store/UseUserStore"; 
+import useAIDiagnosisStore from "../../store/UseAIDiagnosisStore";
 
 const AIDiagnosis = () => {
-  
-  // 더미 데이터
+  const [filteredDiag, setFilteredDiag] = useState([]); 
 
-  // 데이터 없을 때
-  // const dummyData: any[] = [];
-
-  // 데이터 있을 때
-  const dummyData: AiDiagnosis[] = [
-    {
-      reportId: 1,
-      dogId: 101,
-      createdAt: new Date("2023-09-10T10:00:00Z"),
-      imageName: "eye_test.jpg",
-      imageUrl: "",
-      normal: true, // 정상 상태이므로 diseases 배열 없음
-      diagnosisItem: "눈 건강 검사",
-    },
-    {
-      reportId: 2,
-      dogId: 102,
-      createdAt: new Date("2024-06-30T14:00:00Z"),
-      imageName: "skin_test.jpg",
-      imageUrl: "",
-      normal: false,
-      diagnosisItem: "피부병 진단",
-      diseases: [
-        { name: "피부염", percentage: "60" },
-        { name: "습진", percentage: "40" },
-      ],
-    },
-    {
-      reportId: 3,
-      dogId: 103,
-      createdAt: new Date("2024-09-17T09:00:00Z"),
-      imageName: "joint_test.jpg",
-      imageUrl: "",
-      normal: false, 
-      diagnosisItem: "관절 검사",
-      diseases: [
-        { name: "관절염", percentage: "35" },
-        { name: "퇴행성 관절염", percentage: "45" },
-      ],
-    },
-  ];
-
-
-  const [filteredDiag, setFilteredDiag] = useState(dummyData);
   const navigate = useNavigate();
+  const { dogInfo } = useUserStore(); 
+  const { setDiagnosisList } = useAIDiagnosisStore();
+  
+  const getDiagnosis = async () => {
+    const listResponse = await getDiagnosisRecords(dogInfo.dogId);
+    setDiagnosisList(listResponse);
+  };
+
+
+  useEffect(() => {
+      const fetchDiagnosis = async () => {
+        await getDiagnosis(); 
+      };
+
+    fetchDiagnosis();
+  }, []); // 최초 1회 렌더링 될 때 데이터 호출
 
   const ClickBackButton = () => {
     navigate(-1);
   };
+
   // 필터 변경 함수
   const FilterChange = (filter: string) => {
     if (filter === "") {
-      setFilteredDiag(dummyData);
+      setFilteredDiag(filteredDiag); // 전체 데이터 보여주기
     } else {
-      const newFilteredDiag = dummyData.filter((item) =>
+      const newFilteredDiag = filteredDiag.filter((item) =>
+        
         item.diagnosisItem.includes(filter)
       );
-      setFilteredDiag(newFilteredDiag);
+      setFilteredDiag(newFilteredDiag); // 필터링된 데이터로 상태 업데이트
     }
   };
 
@@ -92,7 +67,7 @@ const AIDiagnosis = () => {
       <DiagnosisFilter onFilterChange={FilterChange} />
 
       {/* AI 진단 결과 리스트 */}
-      <AIDiagnosisList diagnosisArray={filteredDiag} />
+      <AIDiagnosisList />
     </div>
   );
 };
