@@ -1,22 +1,7 @@
 import { calAge } from "../../../utils/calcDate";
 import GenderIcon from "./GenderIcon";
 import UpdateIcon from "../../../assets/MyPage/InfoUpdateIcon.png";
-
-interface Dog {
-  dogId: number;
-  memberId: number;
-  isDeleted: boolean;
-  name: string;
-  breed: string;
-  gender: string;
-  birthDate?: Date | null;
-  weight?: number | null;
-  isNeutered?: boolean | null;
-  imageName?: string | null;
-  imageUrl?: string | null;
-  createdTime: Date;
-  modifiedTime: Date | null;
-}
+import type { Dog } from "../../../models/dog.model"
 
 const DogInfo = ({ dog }: { dog: Dog }) => {
   const { name, breed, gender, birthDate, weight, imageUrl } = dog;
