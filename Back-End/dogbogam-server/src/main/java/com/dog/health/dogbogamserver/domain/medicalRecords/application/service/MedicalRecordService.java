@@ -98,8 +98,7 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
     @Override
     public List<FindMedicalReportResponseDto> findReportsByDogId(Long dogId) {
         log.info("Service Find records : {}", dogId);
-        List<MedicalRecord> medicalRecords = findReportsPort.findReportsByDogId(dogId)
-                .orElseThrow(()->new IllegalArgumentException("없는 리포트입니다."));
+        List<MedicalRecord> medicalRecords = findReportsPort.findReportsByDogId(dogId);
 
         List<FindMedicalReportResponseDto> findMedicalReportResponseDtos = new ArrayList<>();
         for(MedicalRecord medicalRecord : medicalRecords) {

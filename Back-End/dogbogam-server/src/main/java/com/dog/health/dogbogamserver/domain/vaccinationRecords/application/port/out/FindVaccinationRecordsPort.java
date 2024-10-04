@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FindVaccinationRecordsPort {
-    Optional<List<VaccinationRecord>> findVaccinationRecordsByDogId(Long dogId);
+    List<VaccinationRecord> findVaccinationRecordsByDogId(Long dogId);
 }

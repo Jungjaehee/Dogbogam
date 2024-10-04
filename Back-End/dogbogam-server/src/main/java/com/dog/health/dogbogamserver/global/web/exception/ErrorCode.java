@@ -13,7 +13,6 @@ public enum ErrorCode {
     JSON_PROCESSING_ERROR("JSON 처리 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
     // 반려견
     DOG_NOT_FOUND("존재하지 않는 반려견입니다.", HttpStatus.NOT_FOUND),
-    DOG_LIST_NOT_FOUND("해당 유저는 반려견이 없습니다.", HttpStatus.NOT_FOUND),
     DOG_NO_ACCESS("해당 반려견에 대한 접근 권한이 존재하지 않습니다.", HttpStatus.UNAUTHORIZED),
     // 보험
     INSURANCE_NOT_FOUND("존재하지 않는 보험입니다.", HttpStatus.NOT_FOUND),
