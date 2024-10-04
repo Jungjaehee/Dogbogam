@@ -1,35 +1,60 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../assets/MyPage/BackButton.png";
-
-// interface MyInsurance {
-//   insurances: {
-//     insuranceRecord: {
-//       insuranceRecordId: number;
-//       insuranceId: number;
-//       dogId: number;
-//       registDate: string;
-//       monthlyPayment: number;
-//       expirationDate: string;
-//       isDeleted: boolean;
-//       createdAt: Date;
-//       modifiedAt?: Date | null;
-//     };
-//     insuranceDetails: {
-//       name: string;
-//       premium: number;
-//       description: string;
-//       coveragePeriod: string;
-//       insuranceCompany: string;
-//     };
-//   }[];
-// }
+import { registeInsurance } from "../../api/myPetInsuranceAPI"; // 보험 등록 API 함수 임포트
+import useUserStore from "../../store/UseUserStore"; // zustand 스토어에서 강아지 정보와 토큰 가져오기
+import { getInsurancelist } from "../../api/insuranceAPI";
+import type { ResponseData } from "../../models/insurance.model";
 
 const RegistInsurance = () => {
   const navigate = useNavigate();
+  const { dogInfo } = useUserStore(); // 강아지 정보와 토큰 가져오기
 
-  // 내 보험 등록 요청 함수
-  const ClickSubmitButton = () => {
-    // api 연결 필요
+  // 입력값 상태 관리
+  const [insuranceList, setInsuranceList] = useState([]);
+  const [insuranceId, setInsuranceId] = useState("");
+  const [monthlyPayment, setMonthlyPayment] = useState("");
+  const [registDate, setRegistDate] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
+
+  useEffect(() => {
+    const fetchInsuranceList = async () => {
+      try {
+        const data = await getInsurancelist(); // 보험 리스트 API 호출
+        // 가져온 데이터를 상태에 저장
+        setInsuranceList(data);
+      } catch (error) {
+        console.error("보험 리스트를 불러오는 중 에러 발생:", error);
+      }
+    };
+
+    fetchInsuranceList();
+  }, []);
+
+  // 보험 등록 요청 함수
+  const ClickSubmitButton = async () => {
+    if (!insuranceId || !monthlyPayment || !registDate || !expirationDate) {
+      alert("모든 필드를 입력해 주세요.");
+      return;
+    }
+
+    const insuranceRecord = {
+      insuranceId: Number(insuranceId), // 보험 ID
+      dogId: dogInfo.dogId, // 강아지 ID
+      registDate, // 가입일
+      monthlyPayment: Number(monthlyPayment), // 월 납입료
+      expirationDate, // 만기일
+    };
+
+    try {
+      const response = await registeInsurance(insuranceRecord); // API 호출
+      console.log("보험 등록 성공:", response);
+      alert("보험 등록이 완료되었습니다.");
+      navigate(-1); // 등록 완료 후 이전 페이지로 이동
+    } catch (error) {
+      console.error("보험 등록 실패:", error);
+      alert("보험 등록 중 오류가 발생했습니다.");
+    }
   };
 
   const ClickBackButton = () => {
@@ -56,17 +81,23 @@ const RegistInsurance = () => {
         마이 펫 보험 정보를 등록하고 간편하게 확인하세요
       </p>
 
-      {/* 보험 입력 */}
+      {/* 보험 선택 */}
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-semibold mb-1">
           보험<span className="text-main-color ml-0.5">*</span>
         </label>
-        <input
-          type="text"
-          className="w-full py-2 px-3 border border-gray-100 rounded-md text-gray-700 placeholder:text-sm"
-          placeholder="보험을 선택해주세요"
-          required
-        />
+        <select
+          className="w-full py-2 px-3 border border-gray-100 rounded-md text-gray-700 text-sm"
+          value={insuranceId}
+          onChange={(e) => setInsuranceId(e.target.value)} // 보험 ID 업데이트
+        >
+          <option value="">보험을 선택해주세요</option>
+          {Object.entries(insuranceList).map(([key, value]: any) => (
+            <option key={key} value={value.insurance.insuranceId}>
+              {value.insurance.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* 월 납입료 입력 */}
@@ -78,9 +109,12 @@ const RegistInsurance = () => {
           type="text"
           className="w-full py-2 px-3 border border-gray-100 rounded-md text-gray-700 placeholder:text-sm"
           placeholder="월 납입료를 입력해주세요"
+          value={monthlyPayment}
+          onChange={(e) => setMonthlyPayment(e.target.value)}
           required
         />
       </div>
+
       {/* 가입 일 만기 일 선택 */}
       <div className="space-y-4">
         <div>
@@ -90,6 +124,8 @@ const RegistInsurance = () => {
           <input
             type="date"
             className="w-full py-2 px-3 border rounded-md text-gray-700"
+            value={registDate}
+            onChange={(e) => setRegistDate(e.target.value)}
             required
           />
         </div>
@@ -101,6 +137,8 @@ const RegistInsurance = () => {
           <input
             type="date"
             className="w-full py-2 px-3 border rounded-md text-gray-700"
+            value={expirationDate}
+            onChange={(e) => setExpirationDate(e.target.value)}
             required
           />
         </div>
