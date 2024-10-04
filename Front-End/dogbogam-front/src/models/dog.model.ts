@@ -8,7 +8,7 @@ export interface Dog {
   weight?: number | null;
   isNeutered?: boolean | null;
   imageUrl?: string | null;
-  createdAt: Date | null;
+  createdAt: Date;
   healthProblems: string[];
 }
 
