@@ -1,7 +1,8 @@
 import axios from "axios";
+import { BASE_URL } from "./APIconfig";
 
 const axiosInstance = axios.create({
-  baseURL: "https://j11b101.p.ssafy.io/api", // 배포 URL
+  baseURL: `${BASE_URL}`, // 배포 URL
   timeout: 50000, // 요청 타임아웃
 });
 
