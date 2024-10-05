@@ -1,36 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import { calPaymentsTime } from "../../../utils/calcDate";
+import type { myInsurance } from "../../../models/insurance.model"; 
 
-interface MyInsurance {
-  insuranceRecord: {
-    insuranceRecordId: number;
-    insuranceId: number;
-    dogId: number;
-    registDate: string;
-    monthlyPayment: number;
-    expirationDate: string;
-    isDeleted: boolean;
-    createdAt: Date;
-    modifiedAt?: Date | null;
-  };
-  insuranceDetails: {
-    name: string;
-    premium: number;
-    description: string;
-    coveragePeriod: string;
-    insuranceCompany: string;
-  };
+interface myInsuranceProps {
+  insurance: myInsurance;
 }
 
-const InsuranceItem = ({ insuranceRecord, insuranceDetails }: MyInsurance) => {
+const InsuranceItem = ({ insurance }: myInsuranceProps) => {
   const navigate = useNavigate();
 
   const ClickInsurance = () => {
-    navigate(`${insuranceRecord.insuranceId}`);
+    navigate(`${insurance.insuranceId}`);
   };
 
   // 가입 날짜를 기준으로 납입 횟수 계산
-  const recordDate = new Date(insuranceRecord.registDate);
+  const recordDate = new Date(insurance.registDate);
   const paymentsTime = calPaymentsTime(recordDate);
 
   return (
@@ -41,15 +25,13 @@ const InsuranceItem = ({ insuranceRecord, insuranceDetails }: MyInsurance) => {
       {/* 보험 이름 */}
       <div>
         <span className="text-gray-700 text-ms font-semibold">
-          {insuranceDetails.name}
+          {insurance.insuranceName}
         </span>
       </div>
 
       {/* 납입 횟수 */}
       <div>
-        <span className="text-gray-500 text-xs">
-          {paymentsTime}회 납입
-        </span>
+        <span className="text-gray-500 text-xs">{paymentsTime}회 납입</span>
       </div>
     </div>
   );

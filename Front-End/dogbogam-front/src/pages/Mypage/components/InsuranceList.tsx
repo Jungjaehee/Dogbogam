@@ -1,48 +1,42 @@
+import { useEffect , useState } from "react";
 import InsuranceItem from "./InsuranceItem";
 import { useNavigate } from "react-router-dom";
 import NonInsuranceIcon from "../../../assets/MyPage/NonInsuranceIcon.png";
 import RegistIcon from "../../../assets/MyPage/RegistIcon.png";
+import useInsuranceStore from "../../../store/UseInsuranceStore";
+import type { myInsurance } from "../../../models/insurance.model";
 
-interface MyInsuranceList {
-  insurances: {
-    insuranceRecord: {
-      insuranceRecordId: number;
-      insuranceId: number;
-      dogId: number;
-      registDate: string;
-      monthlyPayment: number;
-      expirationDate: string;
-      isDeleted: boolean;
-      createdAt: Date;
-      modifiedAt?: Date | null;
-    };
-    insuranceDetails: {
-      name: string;
-      premium: number;
-      description: string;
-      coveragePeriod: string;
-      insuranceCompany: string;
-    };
-  }[];
-}
+const InsuranceList = () => {
+  const navigate = useNavigate();
 
-const InsuranceList = ({ insurances }: MyInsuranceList) => {
-    const navigate = useNavigate();
+  const { insuranceList } = useInsuranceStore(); // zustand 스토어에서 전역 상태 가져오기
+  const [insuranceArray, setInsuranceArray] = useState<myInsurance[]>([]); // 로컬 상태 관리
 
-    const ClickRegistButton = () => {
-      navigate("/mypage/regist-insurance");
-    };
+  useEffect(() => {
+    const data = localStorage.getItem("insuranceStorage");
+    if (data) {
+      const parsedData = JSON.parse(data);
+      const storedInsuranceArray =
+        parsedData.state.insuranceList.data.insuranceRecords;
+      setInsuranceArray(storedInsuranceArray);
+    } else {
+      setInsuranceArray(insuranceList); // 스토어에서 가져온 데이터를 로컬 상태에 반영
+    }
+  }, [insuranceList]); // 진단 리스트 변경 시 다시 반영
+
+  const ClickRegistButton = () => {
+    navigate("/mypage/regist-insurance");
+  };
 
   return (
     <div>
-      {insurances.length > 0 ? (
+      {insuranceArray.length > 0 ? (
         // 가입 보험이 있을 때
         <>
-          {insurances.map((insurance) => (
+          {insuranceArray.map((insurance) => (
             <InsuranceItem
-              key={insurance.insuranceRecord.insuranceRecordId}
-              insuranceRecord={insurance.insuranceRecord}
-              insuranceDetails={insurance.insuranceDetails}
+              key={insurance.insuranceId}
+              insurance={insurance}
             />
           ))}
           {/* 보험 추가 가입? 조회? 버튼 */}

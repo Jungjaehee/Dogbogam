@@ -1,20 +1,27 @@
 // 나이 계산 함수
 export const calAge = (birthDate: Date | null): number | null => {
   if (!birthDate) return null;
+  
+  const birthDay = new Date(birthDate)
   const today = new Date();
-  const age = today.getFullYear() - birthDate.getFullYear();
+  const age = today.getFullYear() - birthDay.getFullYear();
   return age-1;
 };
 
 // 가입일 계산하는 함수
-export const calSignUpDate = (createdTime: Date | null): number | null => {
-  if (!createdTime) return null; 
+export const calSignUpDate = (createdTime: Date): number | null => {
+  
+  const time = new Date(createdTime);
 
   const today = new Date(); 
-  const diffTime = today.getTime() - createdTime.getTime(); 
+  const diffTime = today.getTime() - time.getTime(); 
   const diffDay = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-  return diffDay;
+  if (diffDay == 0) {
+    return 1;
+  } else {
+    return diffDay;
+  }
 };
 
 // 진료 경과 시간 확인하는 함수

@@ -29,7 +29,7 @@ const useUserStore = create(
         weight: null,
         isNeutered: null,
         imageUrl: "",
-        createdAt: null,
+        createdAt: "" as unknown as Date,
         healthProblems: [],
       },
       setDogInfo: (newInfo: Partial<Dog>) =>

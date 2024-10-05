@@ -69,7 +69,7 @@ export const getVaccinationDetail = async (vaccinationRecordId: number) => {
 export const getMyVaccination = async (dogId: number) => {
   try {
 
-    const response = await axiosInstance.get(`/vaccination-records/dog/${dogId}`);
+    const response = await axiosInstance.get(`/vaccination-records/list/${dogId}`);
     console.log("예방접종 목록 불러오기 성공 :", response.data);
 
     return response.data;

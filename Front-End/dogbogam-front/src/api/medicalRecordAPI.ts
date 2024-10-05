@@ -71,7 +71,7 @@ export const getMyMedicalRecord = async (dogId: number) => {
 
     const response = await axiosInstance.get(`/medical-records/dog/${dogId}`);
     console.log("진료 목록 불러오기 성공 :", response.data);
-
+    
     return response.data;
 
   } catch (error) {
