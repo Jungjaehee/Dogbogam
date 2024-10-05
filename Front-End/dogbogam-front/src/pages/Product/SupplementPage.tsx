@@ -20,7 +20,7 @@ import SearchBar from "../../components/SearchBar/index";
 //   s3ImageUrl: string;
 // }
 
-export const Supplement = () => {
+export const SupplementPage = () => {
   // const { dogInfo } = useDogStore();
   
   // useEffect(() => {

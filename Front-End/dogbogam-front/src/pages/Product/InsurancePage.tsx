@@ -1,35 +1,32 @@
 import { TopBar } from "../../components/Topbar/index";
 import SearchBar from "../../components/SearchBar/index";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useUserStore from "../../store/UseUserStore";
+import { getInsuranceList } from "../../api/insuranceAPI";
+import { Insurance } from "../../models/insurance.model";
 
-interface Dog {
-  dogId: number;
-  dogName: string;
-}
 
-interface Supplement {
-  supplimentId: number;
-  productName: string;
-  price: string;
-  supplimentUrl: string;
-}
+export const InsurancePage = () => {
+  const { dogInfo } = useUserStore();
 
-export const Insurance = () => {
-  const dog: Dog = {
-    dogId: 1,
-    dogName: "새우",
-  };
-
-  const supplement: Supplement = {
-    supplimentId: 1,
-    productName: "우프앤먀오",
-    price: "35000",
-    supplimentUrl:
-      "https://godomall.speedycdn.net/8bb927ea5e884dfc56c94474d6fa9fe1/goods/1000000126/image/main/1000000126_main_048.jpg",
+  const [insuranceList, setInsuranceList] = useState<Insurance[]>([]);
+  const [page, setPage] = useState(1);
+  const [size] = useState(4);
+  
+  const fetchInsuranceList = async (page: number, size: number) => {
+    try {
+      const data = await getInsuranceList(size,page);
+      const insuranceArray = Object.values(data).map((item: any) => item.insurance);  // 보험 객체만 추출
+      console.log("insuranceArray", insuranceArray);
+      setInsuranceList(insuranceArray);
+      console.log("insuranceList", insuranceList);
+    } catch (error) {
+      console.log("보험 리스트를 가져오는 중 오류 발생", error);
+    }
   };
 
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
-
+  
   const handleButton = (buttonType: string) => {
     setSelectedButton(buttonType);
   };
@@ -38,14 +35,23 @@ export const Insurance = () => {
     console.log("검색어", query);
   };
 
+  useEffect(() => {
+    fetchInsuranceList(page, size);
+  }, [page, size]);
+
+   // 페이지 변경 함수
+   const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col justify-between">
       <div className="h-full flex flex-col">
         <TopBar pre={"/home"} title={""} skip={""} />
         <div className="mb-6">
           <p className="text-gray-800 text-xl font-bold">
-            <span className="text-main-color">{`${dog.dogName}`}</span>
-            를 위한, <br /> 영양제
+            <span className="text-main-color">{`${dogInfo.name}`}</span>
+            를 위한, <br /> 보험
           </p>
         </div>
         <div className="mb-6">
@@ -94,66 +100,23 @@ export const Insurance = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div className="border border-gray-100 rounded-lg shadow-lg flex justify-between p-5">
+          {insuranceList.map((insurance, index) => (
+            <div key={index} className="border border-gray-100 rounded-lg shadow-lg flex justify-between p-5">
             <div className="space-y-5">
               <img
-                src={supplement.supplimentUrl}
+                src={insurance.image_url}
                 alt=""
                 className="w-[120px] h-[83px]"
               />
               <div className="space-y-1">
-                <p className="font-semibold">{supplement.productName}</p>
+                <p className="font-semibold">{insurance.name}</p>
                 <p className="text-gray-500 text-sm">
-                  {`${supplement.price}`}원
+                  {`${insurance.fee}`}원
                 </p>
               </div>
             </div>
           </div>
-          <div className="border border-gray-100 rounded-lg shadow-lg flex justify-between p-5">
-            <div className="space-y-5">
-              <img
-                src={supplement.supplimentUrl}
-                alt=""
-                className="w-[120px] h-[83px]"
-              />
-              <div className="space-y-1">
-                <p className="font-semibold">{supplement.productName}</p>
-                <p className="text-gray-500 text-sm">
-                  {`${supplement.price}`}원
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="border border-gray-100 rounded-lg shadow-lg flex justify-between p-5">
-            <div className="space-y-5">
-              <img
-                src={supplement.supplimentUrl}
-                alt=""
-                className="w-[120px] h-[83px]"
-              />
-              <div className="space-y-1">
-                <p className="font-semibold">{supplement.productName}</p>
-                <p className="text-gray-500 text-sm">
-                  {`${supplement.price}`}원
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="border border-gray-100 rounded-lg shadow-lg flex justify-between p-5">
-            <div className="space-y-5">
-              <img
-                src={supplement.supplimentUrl}
-                alt=""
-                className="w-[120px] h-[83px]"
-              />
-              <div className="space-y-1">
-                <p className="font-semibold">{supplement.productName}</p>
-                <p className="text-gray-500 text-sm">
-                  {`${supplement.price}`}원
-                </p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
