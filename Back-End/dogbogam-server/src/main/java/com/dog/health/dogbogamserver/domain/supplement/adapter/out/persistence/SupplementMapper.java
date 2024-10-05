@@ -1,6 +1,6 @@
-package com.dog.health.dogbogamserver.domain.suppliments.adapter.out.persistence;
+package com.dog.health.dogbogamserver.domain.supplement.adapter.out.persistence;
 
-import com.dog.health.dogbogamserver.domain.suppliments.domain.Supplement;
+import com.dog.health.dogbogamserver.domain.supplement.domain.Supplement;
 import org.springframework.stereotype.Component;
 
 @Component
