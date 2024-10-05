@@ -19,9 +19,8 @@ public class AiDiagnosisEntity {
     @Column(name = "ai_diagnosis_id")
     private Long aiDiagnosisId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dog_id", nullable = false)
-    private DogEntity dog;
+    @Column(name = "dog_id", nullable = false)
+    private Long dogId;
 
     @Column(name = "normal", nullable = false)
     private Boolean normal;

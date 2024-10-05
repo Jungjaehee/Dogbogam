@@ -6,5 +6,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface AiDiagnosisSpringDataRepository extends JpaRepository<AiDiagnosisEntity, Long> {
-    Page<AiDiagnosisEntity> findByDog_DogId(Long dogId, Pageable pageable);
+    Page<AiDiagnosisEntity> findByDogId(Long dogId, Pageable pageable);
 }
