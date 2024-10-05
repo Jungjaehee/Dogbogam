@@ -1,5 +1,6 @@
 package com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.response;
 
+import com.dog.health.dogbogamserver.domain.aiReportDisease.application.service.dto.response.FIndAiReportDiseaseResponseDto;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.domain.AiReportDisease;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,5 +18,5 @@ public class FindAiDiagnosisResponseDto {
     String imageUrl;
     Boolean normal;
     String diagnosisItem;
-    List<AiReportDisease> diseases;
+    List<FIndAiReportDiseaseResponseDto> diseases;
 }

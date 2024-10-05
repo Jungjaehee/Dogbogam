@@ -15,6 +15,7 @@ import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out.FindAiReportDiseasesPort;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.service.AiReportDiseaseService;
+import com.dog.health.dogbogamserver.domain.aiReportDisease.application.service.dto.response.FIndAiReportDiseaseResponseDto;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.domain.AiReportDisease;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -42,7 +43,7 @@ public class AiDiagnosisReportService implements CreateAiDiagnosisUseCase, FindA
     @Override
     public FindAiDiagnosisResponseDto findAiDiagnosisByAiDiagnosisId(Long aiDiagnosisId) {
         AiDiagnosis aiDiagnosis = findAiDiagnosisPort.findAiDiagnosisByAiDiagnosisId(aiDiagnosisId);
-        List<AiReportDisease> diseases = aiReportDiseaseService.findAiReportsByDiagnosis(aiDiagnosis);
+        List<FIndAiReportDiseaseResponseDto> diseases = aiReportDiseaseService.findAiReportsByDiagnosis(aiDiagnosis);
         return FindAiDiagnosisResponseDto.builder()
                 .aiDiagnosisId(aiDiagnosisId)
                 .dogId(aiDiagnosis.getDogId())

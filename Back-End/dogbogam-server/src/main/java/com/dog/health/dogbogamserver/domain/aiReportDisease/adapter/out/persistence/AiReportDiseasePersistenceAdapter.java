@@ -7,14 +7,15 @@ import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out.FindAiReportDiseasePort;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out.FindAiReportDiseasesPort;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.service.dto.request.CreateAiReportDiseaseDto;
+import com.dog.health.dogbogamserver.domain.aiReportDisease.application.service.dto.response.FIndAiReportDiseaseResponseDto;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.domain.AiReportDisease;
 import com.dog.health.dogbogamserver.global.web.exception.CustomException;
 import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -49,7 +50,7 @@ public class AiReportDiseasePersistenceAdapter implements CreateAiReportDiseaseP
     }
 
     @Override
-    public List<AiReportDisease> findAiReportDiseaseByAiDiagnosis(AiDiagnosis aiDiagnosis) {
+    public List<FIndAiReportDiseaseResponseDto> findAiReportDiseaseByAiDiagnosis(AiDiagnosis aiDiagnosis) {
         if(aiDiagnosis == null) {
             throw new CustomException(ErrorCode.AI_DIAGNOSIS_NOT_FOUND);
         }
@@ -57,6 +58,17 @@ public class AiReportDiseasePersistenceAdapter implements CreateAiReportDiseaseP
         List<AiReportDiseaseEntity> entityList = jpaRepository.findAiReportDiseaseEntitiesByAiDiagnosis(
                 aiDiagnosisMapper.toEntity(aiDiagnosis));
 
-        return aiReportDiseaseMapper.entityListToDomainList(entityList);
+        List<AiReportDisease> domainList = aiReportDiseaseMapper.entityListToDomainList(entityList);
+
+        List<FIndAiReportDiseaseResponseDto> responseDtoList = new ArrayList<>();
+
+        for(AiReportDisease aiReportDisease : domainList) {
+            responseDtoList.add(FIndAiReportDiseaseResponseDto.builder()
+                            .disease(aiReportDisease.getDisease())
+                            .percentage(aiReportDisease.getPercentage())
+                            .build());
+        }
+
+        return responseDtoList;
     }
 }

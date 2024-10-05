@@ -8,6 +8,7 @@ import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out.FindAiReportDiseasePort;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out.FindAiReportDiseasesPort;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.service.dto.request.CreateAiReportDiseaseDto;
+import com.dog.health.dogbogamserver.domain.aiReportDisease.application.service.dto.response.FIndAiReportDiseaseResponseDto;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.domain.AiReportDisease;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class AiReportDiseaseService implements CreateAiReportDiseaseUseCase, Fin
     }
 
     @Override
-    public List<AiReportDisease> findAiReportsByDiagnosis(AiDiagnosis aiDiagnosis) {
+    public List<FIndAiReportDiseaseResponseDto> findAiReportsByDiagnosis(AiDiagnosis aiDiagnosis) {
         return findAiReportDiseasesPort.findAiReportDiseaseByAiDiagnosis(aiDiagnosis);
     }
 }
