@@ -12,12 +12,13 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+import static com.dog.health.dogbogamserver.global.web.exception.ErrorCode.DOG_NOT_FOUND;
 import static com.dog.health.dogbogamserver.global.web.exception.ErrorCode.USER_NOT_FOUND;
 
 @Component
 @RequiredArgsConstructor
 public class DogPersistenceAdapter implements CreateDogPort, UpdateDogPort, DeleteDogPort, FindDogDetailsPort,
-        FindDogsPort {
+        FindDogsPort, FindDogByDogIdPort {
 
     private final MemberSpringDataRepository memberSpringDataRepository;
     private final DogSpringDataRepository dogSpringDataRepository;
@@ -60,5 +61,11 @@ public class DogPersistenceAdapter implements CreateDogPort, UpdateDogPort, Dele
         Optional<List<DogEntity>> dogList = dogSpringDataRepository.findDogsByMember(memberEntity);
 
         return dogMapper.entityListToDomainList(dogList.get());
+    }
+
+    @Override
+    public Dog FindDogByDogId(Long dogId) {
+        return dogMapper.toDomain(dogSpringDataRepository.findById(dogId)
+                .orElseThrow(()-> new CustomException(DOG_NOT_FOUND)));
     }
 }

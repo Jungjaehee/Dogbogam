@@ -23,7 +23,7 @@ public class AiDiagnosisMapper {
     public AiDiagnosis toDomain(AiDiagnosisEntity entity) {
         if(entity == null) return null;
         return AiDiagnosis.builder()
-                .dogId(entity.getDogId())
+                .dogId(entity.getDog().getDogId())
                 .aiDiagnosisId(entity.getAiDiagnosisId())
                 .diagnosisItem(entity.getDiagnosisItem())
                 .normal(entity.getNormal())
@@ -36,7 +36,7 @@ public class AiDiagnosisMapper {
         if(domain == null) return null;
         return AiDiagnosisEntity.builder()
                 .aiDiagnosisId(domain.getAiDiagnosisId())
-                .dogId(domain.getDogId())
+                .dog(dogMapper.toEntity(dogService.FindDogByDogId(domain.getDogId())))
                 .diagnosisItem(domain.getDiagnosisItem())
                 .normal(domain.getNormal())
                 .imageName(domain.getImageName())

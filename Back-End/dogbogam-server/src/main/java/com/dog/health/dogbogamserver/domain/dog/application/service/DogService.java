@@ -1,12 +1,9 @@
 package com.dog.health.dogbogamserver.domain.dog.application.service;
 
+import com.dog.health.dogbogamserver.domain.dog.application.port.out.*;
 import com.dog.health.dogbogamserver.domain.dog.application.service.dto.requestDto.CreateDogRequestDTO;
 import com.dog.health.dogbogamserver.domain.dog.application.service.dto.requestDto.UpdateDogRequestDTO;
 import com.dog.health.dogbogamserver.domain.dog.application.port.in.*;
-import com.dog.health.dogbogamserver.domain.dog.application.port.out.CreateDogPort;
-import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogsPort;
-import com.dog.health.dogbogamserver.domain.dog.application.port.out.UpdateDogPort;
-import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogDetailsPort;
 import com.dog.health.dogbogamserver.domain.dog.application.service.dto.responseDto.FindDogsDogInfoDto;
 import com.dog.health.dogbogamserver.domain.dog.application.service.dto.responseDto.FindDogResponseDto;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
@@ -42,6 +39,7 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     private final HealthProblemService healthProblemService;
     private final AwsService awsService;
     private final JWTProvider jwtProvider;
+    private final FindDogByDogIdPort findDogByDogIdPort;
 
     @Override
     public Map<String, Long> createDog(CreateDogRequestDTO createDogRequestDTO, Long memberId) throws IOException {
@@ -165,5 +163,9 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
                 .dogName(dog.getName())  // Dog의 이름을 DogDto의 이름 필드로 설정
                 .imageUrl(dog.getImageUrl())  // Dog의 이미지 URL을 DogDto에 설정
                 .build();
+    }
+
+    public Dog FindDogByDogId(Long dogId) {
+        return findDogByDogIdPort.FindDogByDogId(dogId);
     }
 }

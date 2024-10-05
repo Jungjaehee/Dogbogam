@@ -8,6 +8,7 @@ import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogMapper;
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogPersistenceAdapter;
+import com.dog.health.dogbogamserver.domain.dog.application.service.DogService;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.global.web.exception.CustomException;
 import com.dog.health.dogbogamserver.global.web.exception.ErrorCode;
@@ -28,6 +29,7 @@ public class AiDiagnosisReportPersistenceAdapter implements CreateAiDiagnosisPor
     private final AiDiagnosisSpringDataRepository jpaRepository;
     private final DogPersistenceAdapter dogPersistenceAdapter;
     private final DogMapper dogMapper;
+    private final DogService dogService;
 
     @Override
     @Transactional
@@ -40,7 +42,7 @@ public class AiDiagnosisReportPersistenceAdapter implements CreateAiDiagnosisPor
         }
 
         AiDiagnosisEntity aiDiagnosisEntity = AiDiagnosisEntity.builder()
-                .dogId(dog.getDogId())
+                .dog(dogMapper.toEntity(dogService.FindDogByDogId(dog.getDogId())))
                 .normal(requestDto.getNormal())
                 .diagnosisItem(requestDto.getDiagnosisItem())
                 .imageName(requestDto.getImageName())
@@ -64,7 +66,7 @@ public class AiDiagnosisReportPersistenceAdapter implements CreateAiDiagnosisPor
     @Override
     public Page<AiDiagnosis> findAiDiagnosesByDogId(Long dogId, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<AiDiagnosisEntity> aiDiagnosesPage = jpaRepository.findByDogId(dogId, pageable);
+        Page<AiDiagnosisEntity> aiDiagnosesPage = jpaRepository.findByDog_DogId(dogId, pageable);
 
         return aiDiagnosisMapper.entityPagetoDomainPage(aiDiagnosesPage);
     }
