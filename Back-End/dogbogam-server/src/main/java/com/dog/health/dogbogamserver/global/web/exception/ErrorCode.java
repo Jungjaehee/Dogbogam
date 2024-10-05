@@ -13,7 +13,6 @@ public enum ErrorCode {
     JSON_PROCESSING_ERROR("JSON 처리 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
     // 반려견
     DOG_NOT_FOUND("존재하지 않는 반려견입니다.", HttpStatus.NOT_FOUND),
-    DOG_LIST_NOT_FOUND("해당 유저는 반려견이 없습니다.", HttpStatus.NOT_FOUND),
     DOG_NO_ACCESS("해당 반려견에 대한 접근 권한이 존재하지 않습니다.", HttpStatus.UNAUTHORIZED),
     // 보험
     INSURANCE_NOT_FOUND("존재하지 않는 보험입니다.", HttpStatus.NOT_FOUND),
@@ -31,7 +30,11 @@ public enum ErrorCode {
     AI_DIAGNOSIS_NOT_FOUND("해당 AI 예측 기록이 없습니다.", HttpStatus.NOT_FOUND),
     // S3
     FAILED_CONVERT_FILE("파일 변환에 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
-    FAILED_DELETE_FILE("파일 삭제에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+    FAILED_DELETE_FILE("파일 삭제에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
+    // 예방접종기록
+    VACCINATION_NOT_FOUND("예방 접종 기록이 없습니다.", HttpStatus.NOT_FOUND),
+    // 병원진료기록
+    MEDICAL_RECORD_NOT_FOUND("병원 진료 기록이 없습니다.", HttpStatus.NOT_FOUND);
 
     private final String message;
     private final HttpStatus httpStatus;
