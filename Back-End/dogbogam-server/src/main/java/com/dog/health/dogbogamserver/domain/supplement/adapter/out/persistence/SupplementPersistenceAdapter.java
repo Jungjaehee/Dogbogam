@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -22,5 +23,10 @@ public class SupplementPersistenceAdapter implements LoadSupplementPort {
                 .stream()
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Supplement> findSupplementById(Long supplementId) {
+        return repository.findById(supplementId).map(mapper::toDomain);
     }
 }
