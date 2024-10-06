@@ -34,7 +34,9 @@ public enum ErrorCode {
     // 예방접종기록
     VACCINATION_NOT_FOUND("예방 접종 기록이 없습니다.", HttpStatus.NOT_FOUND),
     // 병원진료기록
-    MEDICAL_RECORD_NOT_FOUND("병원 진료 기록이 없습니다.", HttpStatus.NOT_FOUND);
+    MEDICAL_RECORD_NOT_FOUND("병원 진료 기록이 없습니다.", HttpStatus.NOT_FOUND),
+    // 영양제
+    SUPPLEMENT_NOT_FOUND("해당 id를 가진 영양제가 없습니다.",HttpStatus.NOT_FOUND);
 
     private final String message;
     private final HttpStatus httpStatus;

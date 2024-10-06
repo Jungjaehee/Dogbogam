@@ -1,4 +1,4 @@
-package com.dog.health.dogbogamserver.domain.suppliments.adapter.out.persistence;
+package com.dog.health.dogbogamserver.domain.supplement.adapter.out.persistence;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

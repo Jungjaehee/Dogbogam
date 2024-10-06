@@ -1,10 +1,12 @@
-package com.dog.health.dogbogamserver.domain.suppliments.domain;
+package com.dog.health.dogbogamserver.domain.supplement.application.service.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-public class Supplement {
+@NoArgsConstructor
+public class SupplementDetailResponse {
     private Long supplementId;
     private String productName;
     private String brandName;
@@ -21,7 +23,7 @@ public class Supplement {
     private String imageUrl;
 
     @Builder
-    public Supplement(Long supplementId, String productName, String brandName, String target, String how, String offer, String type, String basis, String protein, String fat, String feature, Integer price, String imageName, String imageUrl) {
+    public SupplementDetailResponse(Long supplementId, String productName, String brandName, String target, String how, String offer, String type, String basis, String protein, String fat, String feature, Integer price, String imageName, String imageUrl) {
         this.supplementId = supplementId;
         this.productName = productName;
         this.brandName = brandName;
