@@ -1,19 +1,34 @@
 import type { myVaccinationRecord } from "../models/record.model";
 import axiosInstance from "./axiosinstance";
-
+import { BASE_URL } from "./APIconfig";
 // 예방접종 기록 등록 API 요청 함수
-export const registVaccination = async (vaccinationRecord: myVaccinationRecord) => {
+// 진료 기록 등록 API 요청 함수
+export const registVaccination = async (record: myVaccinationRecord) => {
   try {
+    const formData = new FormData();
 
-    const response = await axiosInstance.post("/vaccination-records", vaccinationRecord);
-    console.log("예방접종 등록 성공함 : ", response.data);
+    // 이미지가 있으면 첨부, 없으면 디폴트 이미지
+    if (record.image) {
+      formData.append("image", record.image);
+    } else {
+      formData.append("image" , "");
+    }
+    formData.append("dogId", record.dogId.toString());
+    formData.append("recordTime", record.recordTime.toISOString());
+    formData.append("content", record.content);
+    formData.append("hospital", record.hospital);
+    formData.append("cost", record.cost.toString());
+    formData.append("vaccinationRound", record.vaccinationRound.toString())
 
-    return response.data;
-
+    const response = await axiosInstance.post(`${BASE_URL}/medical-records`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response?.data?.data;
   } catch (error) {
-
-    console.error("예방접종 등록 실패함 :", error);
-
+    console.log("예방 접종 기록 등록 실패: ", error);
+    throw error;
   }
 };
 
