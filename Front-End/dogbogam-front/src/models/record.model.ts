@@ -52,15 +52,15 @@ export interface myVaccinationRecord {
   hospital: string;
   cost: number;
   vaccinationRound: number;
-  // 사진 필드 추가해야됨
+  image: File | null;
 }
 
 // 등록 하는 진료 기록
 export interface myMedicalRecord {
   dogId: number;
-  recordTime: Date;
+  recordTime: string;
   content: string;
   hospital: string;
   cost: number;
-  // 사진 필드 추가해야됨
+  image: File | null;
 }
