@@ -27,6 +27,7 @@ public class SupplementService implements FindSupplementUseCase {
                         .supplementId(supplement.getSupplementId())
                         .productName(supplement.getProductName())
                         .imageUrl(supplement.getImageUrl())
+                        .offer(supplement.getOffer())
                         .price(supplement.getPrice())
                         .build())
                 .collect(Collectors.toList());
