@@ -1,5 +1,6 @@
 package com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service;
 
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence.AiDiagnosisEntity;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.in.CreateAiDiagnosisUseCase;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.in.DeleteAiDiagnosisUseCase;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.in.FindAiDiagnosesUseCase;
@@ -9,10 +10,19 @@ import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.Del
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.FindAiDiagnosesPort;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.port.out.FindAiDiagnosisPort;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.request.CreateAiDiagnosisRequestDto;
-import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.response.CreateAiDiagnosisResponseDto;
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.response.FindAiDiagnosesResponseDto;
+import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.response.FindAiDiagnosisResponseDto;
 import com.dog.health.dogbogamserver.domain.aiDiagnosis.domain.AiDiagnosis;
+import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out.FindAiReportDiseasesPort;
+import com.dog.health.dogbogamserver.domain.aiReportDisease.application.service.AiReportDiseaseService;
+import com.dog.health.dogbogamserver.domain.aiReportDisease.application.service.dto.response.FIndAiReportDiseaseResponseDto;
+import com.dog.health.dogbogamserver.domain.aiReportDisease.domain.AiReportDisease;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +33,7 @@ public class AiDiagnosisReportService implements CreateAiDiagnosisUseCase, FindA
     private final FindAiDiagnosisPort findAiDiagnosisPort;
     private final FindAiDiagnosesPort findAiDiagnosesPort;
     private final DeleteAiDiagnosisPort deleteAiDiagnosisPort;
+    private final AiReportDiseaseService aiReportDiseaseService;
 
     @Override
     public void createAiDiagnosis(Long memberId, CreateAiDiagnosisRequestDto requestDto) {
@@ -30,13 +41,43 @@ public class AiDiagnosisReportService implements CreateAiDiagnosisUseCase, FindA
     }
 
     @Override
-    public AiDiagnosis findAiDiagnosisByAiDiagnosisId(Long aiDiagnosisId) {
-        return findAiDiagnosisPort.findAiDiagnosisByAiDiagnosisId(aiDiagnosisId);
+    public FindAiDiagnosisResponseDto findAiDiagnosisByAiDiagnosisId(Long aiDiagnosisId) {
+        AiDiagnosis aiDiagnosis = findAiDiagnosisPort.findAiDiagnosisByAiDiagnosisId(aiDiagnosisId);
+        List<FIndAiReportDiseaseResponseDto> diseases = aiReportDiseaseService.findAiReportsByDiagnosis(aiDiagnosis);
+        return FindAiDiagnosisResponseDto.builder()
+                .aiDiagnosisId(aiDiagnosisId)
+                .dogId(aiDiagnosis.getDogId())
+                .normal(aiDiagnosis.getNormal())
+                .imageUrl(aiDiagnosis.getImageUrl())
+                .diagnosisItem(aiDiagnosis.getDiagnosisItem())
+                .diseases(diseases)
+                .build();
     }
 
     @Override
-    public CreateAiDiagnosisResponseDto findAiDiagnosesByDogId(Long dogId, int page, int size) {
-        return findAiDiagnosesPort.findAiDiagnosesByDogId(dogId, page, size);
+    public FindAiDiagnosesResponseDto findAiDiagnosesByDogId(Long dogId, int page, int size) {
+        Page<AiDiagnosis> aiDiagnosesPage = findAiDiagnosesPort.findAiDiagnosesByDogId(dogId, page, size);
+
+        List<AiDiagnosis> diagnoses = aiDiagnosesPage.getContent();
+
+        List<FindAiDiagnosisResponseDto> diseases = new ArrayList<>();
+        for(AiDiagnosis aiDiagnosis: diagnoses){
+            diseases.add(FindAiDiagnosisResponseDto.builder()
+                            .aiDiagnosisId(aiDiagnosis.getAiDiagnosisId())
+                            .dogId(aiDiagnosis.getDogId())
+                            .imageUrl(aiDiagnosis.getImageUrl())
+                            .diagnosisItem(aiDiagnosis.getDiagnosisItem())
+                            .diseases(aiReportDiseaseService.findAiReportsByDiagnosis(aiDiagnosis))
+                            .build());
+        }
+
+        return FindAiDiagnosesResponseDto.builder()
+                .currantPage(aiDiagnosesPage.getNumber()+1)
+                .size(aiDiagnosesPage.getSize())
+                .totalElements(aiDiagnosesPage.getTotalElements())
+                .totalPages(aiDiagnosesPage.getTotalPages())
+                .diagnoses(diseases)
+                .build();
     }
 
     @Override

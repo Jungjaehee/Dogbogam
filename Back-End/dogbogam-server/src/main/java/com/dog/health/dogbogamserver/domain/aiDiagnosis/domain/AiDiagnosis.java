@@ -10,7 +10,7 @@ import lombok.Getter;
 @Builder
 public class AiDiagnosis {
     private Long aiDiagnosisId;
-    private Dog dog;
+    private Long dogId;
     private Boolean normal;
     private String diagnosisItem;
     private String imageName;

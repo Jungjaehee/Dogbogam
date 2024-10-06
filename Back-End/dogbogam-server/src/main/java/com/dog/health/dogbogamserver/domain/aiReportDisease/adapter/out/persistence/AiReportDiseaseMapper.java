@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AiReportDiseaseMapper {
 
-    private AiDiagnosisMapper aiDiagnosisMapper;
+    private final AiDiagnosisMapper aiDiagnosisMapper;
 
     public AiReportDisease toDomain(AiReportDiseaseEntity entity) {
         if (entity == null) return null;
