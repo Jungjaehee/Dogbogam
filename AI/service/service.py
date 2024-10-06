@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from ultralytics import YOLO
 from mapper.eye_map import EyeLabelMapper
 from mapper.skin_map import SkinLabelMapper
+from obesity_breed_map import ObesityBreedMapper  # breed 매핑 import
 import os
 import logging
 import traceback
@@ -19,7 +20,8 @@ async def diagnosis_skin(image):
 
 
 async def diagnosis_obesity(image):
-    return
+    model_path = "./model/obesity/best.pt"
+    return 
 
 async def diagnosis_breed(image):
     return

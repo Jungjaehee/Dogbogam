@@ -22,8 +22,8 @@ async def predict_skin(image: UploadFile = File(...)):
 
 
 @router.post("/obesity")
-async def predict_obesity(image: UploadFile = File(...)):
-    result = await diagnosis_obesity(image)
+async def predict_obesity(image: UploadFile = File(...), json_file: UploadFile = File(...)):
+    result = await diagnosis_obesity(image, json_file)
     return SuccessResponse.ok(result).dict()
 
     
