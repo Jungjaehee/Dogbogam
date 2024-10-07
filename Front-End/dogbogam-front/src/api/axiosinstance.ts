@@ -10,9 +10,9 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-     const userStorage = localStorage.getItem("userStorage");
-     const parseData = JSON.parse(userStorage!);
-     const token = parseData.state.token;
+    const userStorage = localStorage.getItem("userStorage");
+    const parseData = JSON.parse(userStorage!);
+    const token = parseData.state.token;
 
     // 헤더에 토큰 넣어주기
     if (token) {

@@ -4,7 +4,7 @@ import BackButton from "../../assets/MyPage/BackButton.png";
 import { registeInsurance } from "../../api/myPetInsuranceAPI"; // 보험 등록 API 함수 임포트
 import useUserStore from "../../store/UseUserStore"; // zustand 스토어에서 강아지 정보와 토큰 가져오기
 import { getInsuranceList } from "../../api/insuranceAPI";
-// import type { ResponseData } from "../../models/insurance.model";
+import type { ResponseData } from "../../models/insurance.model";
 
 const RegistInsurance = () => {
   const navigate = useNavigate();
