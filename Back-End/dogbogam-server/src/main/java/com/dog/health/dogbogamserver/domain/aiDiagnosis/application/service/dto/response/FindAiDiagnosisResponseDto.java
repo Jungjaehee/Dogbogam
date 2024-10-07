@@ -18,5 +18,6 @@ public class FindAiDiagnosisResponseDto {
     String imageUrl;
     Boolean normal;
     String diagnosisItem;
+    String createdAt;
     List<FIndAiReportDiseaseResponseDto> diseases;
 }

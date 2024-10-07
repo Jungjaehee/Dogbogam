@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 @Builder
@@ -15,4 +17,5 @@ public class AiDiagnosis {
     private String diagnosisItem;
     private String imageName;
     private String imageUrl;
+    private LocalDateTime createdAt;
 }

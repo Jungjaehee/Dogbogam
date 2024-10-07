@@ -29,6 +29,7 @@ public class AiDiagnosisMapper {
                 .normal(entity.getNormal())
                 .imageName(entity.getImageName())
                 .imageUrl(entity.getImageUrl())
+                .createdAt(entity.getCreatedAt())
                 .build();
     }
 
