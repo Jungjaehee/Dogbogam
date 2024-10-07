@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import BackButton from "../../assets/MyPage/BackButton.png";
 import { registeInsurance } from "../../api/myPetInsuranceAPI"; // 보험 등록 API 함수 임포트
 import useUserStore from "../../store/UseUserStore"; // zustand 스토어에서 강아지 정보와 토큰 가져오기
-import { getInsurancelist } from "../../api/insuranceAPI";
-import type { ResponseData } from "../../models/insurance.model";
+import { getInsuranceList } from "../../api/insuranceAPI";
+// import type { ResponseData } from "../../models/insurance.model";
 
 const RegistInsurance = () => {
   const navigate = useNavigate();
@@ -20,9 +20,10 @@ const RegistInsurance = () => {
   useEffect(() => {
     const fetchInsuranceList = async () => {
       try {
-        const data = await getInsurancelist(); // 보험 리스트 API 호출
+        const data = await getInsuranceList(); // 보험 리스트 API 호출
         // 가져온 데이터를 상태에 저장
         setInsuranceList(data);
+        console.log(data)
       } catch (error) {
         console.error("보험 리스트를 불러오는 중 에러 발생:", error);
       }
@@ -49,11 +50,11 @@ const RegistInsurance = () => {
     try {
       const response = await registeInsurance(insuranceRecord); // API 호출
       console.log("보험 등록 성공:", response);
-      alert("보험 등록이 완료되었습니다.");
-      navigate(-1); // 등록 완료 후 이전 페이지로 이동
+      
+      navigate(-1); 
     } catch (error) {
       console.error("보험 등록 실패:", error);
-      alert("보험 등록 중 오류가 발생했습니다.");
+      
     }
   };
 
