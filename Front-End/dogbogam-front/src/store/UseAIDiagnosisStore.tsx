@@ -18,7 +18,7 @@ const useAIDiagnosisStore = create(
           diagnosisList: newList, // 배열 전체를 업데이트
         })),
       diagnosisDetail: {
-        reportId: 0,
+        aiDiagnosisId: 0,
         dogId: 0,
         createdAt: "" as unknown as Date, // 만약 Date 객체로 관리하려면 new Date()로 설정 가능
         imageName: "",
