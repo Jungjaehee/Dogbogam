@@ -1,8 +1,9 @@
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useUserStore from "../../../store/UseUserStore";
+import { recommendSupplement } from "../../../models/supplement.model";
 
-export const RecommendNutrient = () => {
+export const RecommendNutrient = (props: { nutrient: recommendSupplement }) => {
   const { dogInfo } = useUserStore();
   return (
     <div>
@@ -15,10 +16,12 @@ export const RecommendNutrient = () => {
       </p>
       <div className="border border-gray-200 rounded-lg shadow-lg flex justify-between place-items-end p-5">
         <div className="flex space-x-5 place-items-center">
-          <img src="" alt="" className="h-[70px]" />
+          <img src={props.nutrient.imageUrl} alt="" className="h-[70px]" />
           <div className="space-y-1">
-            <p className="font-semibold">우프엔마오 영양제</p>
-            <p className="text-gray-500 text-sm">35,000원</p>
+            <p className="font-semibold">{props.nutrient.productName}</p>
+            <p className="text-gray-500 text-sm">
+              {props.nutrient.price.toLocaleString()}원
+            </p>
           </div>
         </div>
         <FontAwesomeIcon icon={faArrowRight} />

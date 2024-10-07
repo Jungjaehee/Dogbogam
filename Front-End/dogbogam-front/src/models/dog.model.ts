@@ -9,7 +9,11 @@ export interface Dog {
   isNeutered?: boolean | null;
   imageUrl?: string | null;
   createdAt: Date;
-  healthProblems: string[];
+  healthProblems: healthProblems[];
+}
+
+export interface healthProblems {
+  problem: string;
 }
 
 export interface inputDogInfo {
