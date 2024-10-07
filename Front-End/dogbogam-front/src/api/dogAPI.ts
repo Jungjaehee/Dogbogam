@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "./APIconfig";
-import { inputDogInfo } from "../models/dog.model";
+import { inputDogInfo, updateDogInfo } from "../models/dog.model";
 import defaultImage from "../assets/MyPage/DefaultDogIcon.png";
 import axiosInstance from "./axiosinstance";
 
@@ -100,7 +100,7 @@ export const UpdateHealth = async (dogId: number, problem: string[]) => {
   }
 };
 
-export const updateDogInfo = async (dog: inputDogInfo) => {
+export const patchDogInfo = async (dog: updateDogInfo) => {
   try {
     const formData = new FormData();
 
@@ -113,6 +113,7 @@ export const updateDogInfo = async (dog: inputDogInfo) => {
       );
       formData.append("image", defaultDogImage, "default-dog.png"); // 디폴트 이미지
     }
+    formData.append("dogId", dog.dogId.toString());
     formData.append("name", dog.name);
     formData.append("gender", dog.gender);
     formData.append("breed", dog.breed);
