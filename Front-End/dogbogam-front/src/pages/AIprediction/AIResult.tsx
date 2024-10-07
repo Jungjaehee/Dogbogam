@@ -7,13 +7,20 @@ import { Abnormal } from "./components/Abnormal";
 import { RecommendInsurance } from "./components/RecommendInsurance";
 import { RecommendNutrient } from "./components/RecommendNutrient";
 import { AiDiagnosis } from "../../models/record.model";
-import { getAIresult, getInsurance } from "../../api/aiPredictionAPI";
+import {
+  getAIresult,
+  getInsurance,
+  getNutrient,
+} from "../../api/aiPredictionAPI";
 import { recommendInsurance } from "../../models/insurance.model";
+import { recommendSupplement } from "../../models/supplement.model";
+import useUserStore from "../../store/UseUserStore";
 
 export const AIResult = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = location.state;
+  const { dogInfo } = useUserStore();
   const [result, setResult] = useState<AiDiagnosis>({
     aiDiagnosisId: id,
     dogId: 0,
@@ -30,6 +37,13 @@ export const AIResult = () => {
     company: "",
     image: "",
   });
+  const [nutrient, setNutrient] = useState<recommendSupplement>({
+    supplementId: 0,
+    productName: "",
+    offer: "",
+    price: 0,
+    imageUrl: "",
+  });
 
   const confirm = () => {
     navigate("/home");
@@ -40,7 +54,13 @@ export const AIResult = () => {
     setResult(resultResponse);
     const insuranceResponse = await getInsurance(resultResponse.diagnosisItem);
     setInsurance(insuranceResponse);
-    console.log(insurance);
+    const problemsArray = dogInfo.healthProblems.map(
+      (health) => health.problem
+    );
+    problemsArray.push(resultResponse.diagnosisItem);
+    const resultString = problemsArray.join(", ");
+    const nutrientResponse = await getNutrient(resultString);
+    setNutrient(nutrientResponse);
   };
 
   useEffect(() => {
@@ -68,7 +88,7 @@ export const AIResult = () => {
           ) : (
             <Abnormal result={result} />
           )}
-          <RecommendNutrient />
+          <RecommendNutrient nutrient={nutrient} />
           <RecommendInsurance insurance={insurance} />
         </div>
       </div>
