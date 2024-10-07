@@ -90,7 +90,9 @@ async def diagnosis_obesity(image, breed, weight):
         os.remove(image_path)
 
 async def diagnosis_breed(image):
-    return
+    model_path = "./model/breed/best.pt"
+    outputs = await ai_inference(model_path, image, BreedLabelMapper)
+    return outputs
 
 
 async def ai_inference(model_path, image, label_mapper):
