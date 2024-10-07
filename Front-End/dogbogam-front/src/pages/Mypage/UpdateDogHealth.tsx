@@ -18,7 +18,7 @@ export const UpdateDogHealth = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { updateDogInfo } = location.state;
-  const { dogInfo } = useUserStore();
+  const { dogInfo , setDogInfo} = useUserStore();
   const [problemList, setProblemList] = useState<string[]>([]);
 
   const problemName = [
@@ -59,14 +59,14 @@ export const UpdateDogHealth = () => {
     try {
     await patchDogInfo(updateDogInfo);
     await UpdateHealth(dogInfo.dogId, problemList);
-     
+     setDogInfo(updateDogInfo);
       navigate("/mypage", { replace: true });
     } catch (error) {
       console.log("정보 수정 실패: ", error);
     }
+    console.log(updateDogInfo);
+    console.log(problemList);
   };
-     console.log(updateDogInfo);
-     console.log(problemList);
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col justify-between">
       <div>
