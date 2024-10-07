@@ -62,13 +62,12 @@ public class SupplementService implements FindSupplementUseCase {
                 .map(healthProblemToOfferMap::get)
                 .collect(Collectors.toList());
 
-        // 페이지 및 사이즈를 적용하여 영양제 로드
         List<Supplement> supplements = loadSupplementPort.loadAllSupplements(0, Integer.MAX_VALUE);
 
         // 중복을 피하기 위해 Set 사용
-        Set<Supplement> filteredSupplements = supplements.stream()
+        List<Supplement> filteredSupplements = supplements.stream()
                 .filter(supplement -> matchesAnyOffer(supplement.getOffer(), mappedOffers))
-                .collect(Collectors.toSet());
+                .toList();
 
         // 무작위로 1개의 영양제 선택
         if (filteredSupplements.isEmpty()) {
