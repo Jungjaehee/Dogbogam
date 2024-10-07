@@ -1,26 +1,28 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation , useNavigate } from "react-router-dom";
+import { useEffect , useState } from "react";
 import { MedicalRecord } from "../../models/record.model";
 import { formatDate } from "../../utils/calcDate";
 import BackButton from "../../assets/MyPage/BackButton.png";
 import VaccineIcon from "../../assets/MyPage/vaccineIcon.png";
 import NoImageIcon from "../../assets/MyPage/noImageIcon.png";
+import { getMedicalRecordDetail } from "../../api/medicalRecordAPI";
 
-// 더미 데이터
-const dummyData: MedicalRecord = {
-  medicalRecordId: 1,
-  dogId: 101,
-  content: "피부 질환 치료 완료. 추후 경과 관찰 필요",
-  hospital: "서울 동물 병원",
-  imageName: null,
-  imageUrl: null,
-  recordTime: new Date("2024-07-10T14:00:00Z"),
-  createdAt: new Date("2024-07-10T14:00:00Z"),
-  modifiedAt: new Date("2024-07-12T10:00:00Z"),
-  cost: 100000
-};
 
 const MedicalRecordDetail = () => {
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const { id } = location.state;
+
+  const [recordDetail, setRecordDetail] = useState<MedicalRecord | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const responseData = await getMedicalRecordDetail(id);
+      setRecordDetail(responseData);
+    };
+    fetchData();
+  }, [id]);
 
   const handleBackClick = () => {
     navigate(-1); // 뒤로가기
@@ -30,7 +32,12 @@ const MedicalRecordDetail = () => {
     console.log("예방 접종 기록 삭제 요청");
   };
 
-  const record = dummyData; 
+
+  if (!recordDetail) {
+    return <p>진료 기록을 불러오고 있어요!</p>;
+  }
+
+  const record = recordDetail;
 
   return (
     <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
@@ -81,7 +88,7 @@ const MedicalRecordDetail = () => {
           </p>
         </div>
 
-        {/* 비용으로 바꿀지도*/}
+        {/* 비용 */}
         <div>
           <label className="block text-gray-500 text-sm font-bold">비용</label>
           <p className="text-gray-700 text-xs font-semibold">
