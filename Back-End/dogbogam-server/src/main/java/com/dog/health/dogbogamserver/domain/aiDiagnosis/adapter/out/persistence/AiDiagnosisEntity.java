@@ -1,7 +1,7 @@
 package com.dog.health.dogbogamserver.domain.aiDiagnosis.adapter.out.persistence;
 
 import com.dog.health.dogbogamserver.domain.dog.adapter.out.persistence.DogEntity;
-import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
+import com.dog.health.dogbogamserver.global.baseTimeEntity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 @Getter
 @ToString
-public class AiDiagnosisEntity {
+public class AiDiagnosisEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
