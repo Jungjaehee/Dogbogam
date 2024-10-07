@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from ultralytics import YOLO
 from mapper.eye_map import EyeLabelMapper
 from mapper.skin_map import SkinLabelMapper
+from mapper.breed_map import BreedLabelMapper
 import os
 import logging
 import traceback
@@ -22,7 +23,9 @@ async def diagnosis_obesity(image):
     return
 
 async def diagnosis_breed(image):
-    return
+    model_path = "./model/breed/best.pt"
+    outputs = await ai_inference(model_path, image, BreedLabelMapper)
+    return outputs
 
 
 async def ai_inference(model_path, image, label_mapper):
