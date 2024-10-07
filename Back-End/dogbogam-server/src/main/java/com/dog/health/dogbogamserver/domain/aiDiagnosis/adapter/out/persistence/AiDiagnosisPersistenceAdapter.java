@@ -32,8 +32,8 @@ public class AiDiagnosisPersistenceAdapter implements RequestSkinDiagnosisPort, 
     }
 
     @Override
-    public DiagnosisResultResponseDto requestObesityDiagnosis(MultipartFile image){
-        return aiDiagnosisFeignClient.requestObesityDiagnosis(image);
+    public DiagnosisResultResponseDto requestObesityDiagnosis(MultipartFile image, String breed, Double weight){
+        return aiDiagnosisFeignClient.requestObesityDiagnosis(image, breed, weight);
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.dog.health.dogbogamserver.domain.aiDiagnosis.application.service.dto.
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.port.out.CreateAiReportDiseasePort;
 import com.dog.health.dogbogamserver.domain.aiReportDisease.application.service.dto.request.CreateAiReportDiseaseDto;
 import com.dog.health.dogbogamserver.domain.dog.application.port.out.FindDogDetailsPort;
+import com.dog.health.dogbogamserver.domain.dog.application.service.DogService;
 import com.dog.health.dogbogamserver.domain.dog.domain.Dog;
 import com.dog.health.dogbogamserver.global.aws.service.AwsService;
 import com.dog.health.dogbogamserver.global.web.exception.CustomException;
@@ -35,6 +36,7 @@ public class AiDiagnosisService implements RequestSkinDiagnosisUseCase, RequestE
     private final CreateAiDiagnosisPort createAiDiagnosisPort;
     private final CreateAiReportDiseasePort createAiReportDiseasePort;
     private final AwsService awsService;
+    private final DogService dogService;
 
     @Override
     public Map<String, Long> requestSkinDiagnosis(Long memberId, DiagnosisRequestDto requestDto) throws IOException {
@@ -66,8 +68,13 @@ public class AiDiagnosisService implements RequestSkinDiagnosisUseCase, RequestE
 
         Map<String, Object> imageInfo =  saveImage(requestDto, "obesity");
 
+        Dog dog = dogService.FindDogByDogId(requestDto.getDogId());
+
         // 4. AI 예측
-        DiagnosisResultResponseDto responseDto = requestObesityDiagnosisPort.requestObesityDiagnosis(requestDto.getImage());
+        DiagnosisResultResponseDto responseDto = requestObesityDiagnosisPort.requestObesityDiagnosis(
+                requestDto.getImage(),
+                dog.getBreed(),
+                dog.getWeight());
 
         return saveResult(memberId, requestDto.getDogId(), imageInfo, "비만", responseDto);
     }

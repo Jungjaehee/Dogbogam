@@ -5,6 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface RequestObesityDiagnosisPort {
 
-    DiagnosisResultResponseDto requestObesityDiagnosis(MultipartFile image);
+    DiagnosisResultResponseDto requestObesityDiagnosis(MultipartFile image, String breed, Double weight);
 
 }

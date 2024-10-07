@@ -17,7 +17,9 @@ public interface AiDiagnosisFeignClient {
     DiagnosisResultResponseDto requestSkinDiagnosis(@RequestPart("image") MultipartFile image);
 
     @PostMapping(value = "/obesity", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    DiagnosisResultResponseDto requestObesityDiagnosis(@RequestPart("image") MultipartFile image);
+    DiagnosisResultResponseDto requestObesityDiagnosis(@RequestPart("image") MultipartFile image,
+                                                       @RequestPart("breed") String breed,
+                                                       @RequestPart("weight") Double weight);
 
     @PostMapping(value = "/breed", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     DiagnosisResultResponseDto requestBreedDiagnosis(@RequestPart("image") MultipartFile image);
