@@ -43,11 +43,12 @@ const MedicalRecordForm = ({ handleBack }: { handleBack: () => void }) => {
     console.log(updatedMedicalRecord);
     try {
       const response = await registMedicalRecord(updatedMedicalRecord);
-      alert("병원 진료 기록이 성공적으로 등록되었습니다.");
+      console.log(response)
+      
       handleBack();
     } catch (error) {
       console.error("병원 진료 기록 등록 실패:", error);
-      alert("병원 진료 기록 등록 중 오류가 발생했습니다.");
+      
     }
   };
 
