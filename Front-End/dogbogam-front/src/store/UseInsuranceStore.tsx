@@ -1,12 +1,16 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { myInsurance } from "../models/insurance.model";
+import type { myInsurance, insuranceItem } from "../models/insurance.model";
 
 interface StoreState {
   insuranceList: myInsurance[]; // AI 진단 리스트
   setInsuranceList: (newList: myInsurance[]) => void; // AI 진단 리스트 전체
   insuranceDetail: myInsurance; // 현재 진단 상세정보
   setInsurance: (newInfo: Partial<myInsurance>) => void; // 현재 진단 상세정보
+  insuranceItemList: insuranceItem[];
+  setInsuranceItemList: (newList: insuranceItem[]) => void;
+  insuranceItemDetail: insuranceItem;
+  setInsuranceItem: (newInfo: Partial<insuranceItem>) => void;
 }
 
 const useInsuranceStore = create(
@@ -17,6 +21,7 @@ const useInsuranceStore = create(
         set(() => ({
           insuranceList: newList, // 배열 전체를 업데이트
         })),
+
       insuranceDetail: {
         insuranceName: "",
         insuranceId: 0,
@@ -28,6 +33,29 @@ const useInsuranceStore = create(
       setInsurance: (newInfo: Partial<myInsurance>) =>
         set((state) => ({
           insuranceDetail: { ...state.insuranceDetail, ...newInfo },
+        })),
+
+      insuranceItemList: [],
+      setInsuranceItemList: (newList: insuranceItem[]) =>
+        set(() => ({
+          insuranceItemList: newList, // 배열 전체를 업데이트
+        })),
+
+      insuranceItemDetail: {
+        dogId: 0,
+        dogName: "",
+        expirationDate: "" as unknown as Date,
+        insuranceCompany: "",
+        insuranceId: 0,
+        insuranceImage: "" as unknown as File,
+        insuranceName: "",
+        insuranceRecordId: 0,
+        monthlyPayment: 0,
+        registDate: "" as unknown as Date,
+      },
+      setInsuranceItem: (newInfo: Partial<insuranceItem>) =>
+        set((state) => ({
+          insuranceItemDetail: { ...state.insuranceItemDetail, ...newInfo },
         })),
     }),
     {
