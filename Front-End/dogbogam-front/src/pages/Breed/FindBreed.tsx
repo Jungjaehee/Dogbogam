@@ -2,8 +2,13 @@ import FindDogLoading from "../../assets/images/findDogLoading.png";
 import { TopBar } from "../../components/Topbar";
 // import useUserStore from "../../store/UseUserStore";
 import { Button } from "../../components/Button";
+import { useNavigate } from "react-router-dom";
 
 export const FindBreed = () => {
+  const navigate = useNavigate();
+  const next = async () => {
+    navigate("/breed/photo")
+  }
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col w-full">
       <TopBar pre={""} title={""} skip={""} />
@@ -20,7 +25,7 @@ export const FindBreed = () => {
         </p>
       </div>
       <img src={FindDogLoading} alt="" className="w-[328px] h-[328px] mb-20" />
-      <Button text={"다음"} onClick={() => {}} bgColor={"bg-main-color"} />
+      <Button text={"다음"} onClick={() => next()} bgColor={"bg-main-color"} />
     </div>
   );
 };

@@ -7,29 +7,44 @@ interface Response<T> {
   data: T;
 }
 
-interface InsuranceListResponse {
-  [key: string]: {
-    insurance: Insurance;
-    benefit: string[];
-  };
+export interface InsuranceData {
+  insurance: Insurance;
+  benefit: string[];
 }
 
+export interface InsuranceListResponse {
+  [key: string]: InsuranceData;
+}
+
+
 //보험 전체 리스트 조회
-export const getInsuranceList = async (size: number = 4, page: number = 1) => {
+export const getInsuranceList = async () => {
   try {
-    const response: Response<InsuranceListResponse> = await axiosInstance.get(`/insurances`, {
-      params: {
-        size,
-        page,
-      }
-    });
-    console.log(response.data.data);
-    return response.data.data;
+    const response = await axiosInstance.get(`/insurances`);
+    console.log(response?.data?.data);
+    return response?.data.data;
   } catch (error) {
     console.log("보험 리스트 가져오기 실패", error);
     throw error;
   }
 }
+
+// //보험 상세 조회
+export const getInsurance = async (insuranceId: number) => {
+  try {
+    const response: Response<InsuranceListResponse> = await axiosInstance.get(`/insurances/${insuranceId}`);
+    console.log("보험상세", response.data.data);
+    
+    const insuranceDetail = Object.values(response.data.data)[0]; 
+    console.log("insuranceDetail", insuranceDetail);
+
+    return insuranceDetail;
+  } catch (error) {
+    console.log("보험 가져오기 실패", error);
+    throw error;
+  }
+}
+
 
 
 
@@ -44,19 +59,17 @@ export const geInsuranceBenefit = async() => {
   }
 }
 
-// //보험 검색 조회
-// export const getInsuranceSearch = async() => {
-//   try {
-//     const response: Response<InsuranceListResponse> = await axiosInstance.get(`/insurances/search`);
-//     console.log(response.data.data);
-//     return response.data.data;
-//   } catch ()
-// }
-
-
-// //보험 상세 조회
-// export const getinsurance = async() => {
-//   try {
-//     const response: 
-//   }
-// }
+//보험 검색 조회
+export const getInsuranceSearch = async(benefit: string[]) => {
+  try {
+    const response: Response<InsuranceListResponse> = await axiosInstance.get(`/insurances/search`, {
+      params: {
+        benefit
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log("보험 검색 실패", error);
+  }
+}

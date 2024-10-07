@@ -19,15 +19,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className="flex items-center space-x-2 p-2 bg-gray-100 rounded-lg shadow-md">
-      <img src={Search} className="w-4 h-4" />
+    <div className="flex items-center space-x-1 p-2 bg-gray-100 rounded-lg shadow-md w-full h-15">
+      <img src={Search} className="w-3.5 h-3.5 ml-3" />
       <input
         type="text"
         value={searchQuery}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown} 
         placeholder="검색어를 입력하세요"
-        className="flex-grow p-2 rounded-lg bg-gray-100 text-gray-600"
+        className="flex-grow p-2 rounded-lg bg-gray-100 text-gray-600 w-full h-15"
       />
     </div>
   );
