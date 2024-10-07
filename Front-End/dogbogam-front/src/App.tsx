@@ -7,6 +7,7 @@ import SignupPages from "./routes/SignupPages";
 import AIpredictionPages from "./routes/AIpredictionPages";
 import MyPages from "./routes/MyPages";
 import { Navbar } from "./components/Navbar";
+import BreedPages from "./routes/BreedPages";
 
 function App() {
   const location = useLocation();
@@ -22,6 +23,7 @@ function App() {
           <Route path="/signup/*" element={<SignupPages />} />
           <Route path="/AI/*" element={<AIpredictionPages />} />
           <Route path="/mypage/*" element={<MyPages />} />
+          <Route path="/breed/*" element={<BreedPages />} />
         </Routes>
         {location.pathname == "/home" || location.pathname == "/mypage" ? (
           <Navbar />
