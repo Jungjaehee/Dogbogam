@@ -4,19 +4,18 @@ import BackButton from "../../assets/MyPage/BackButton.png";
 import { registeInsurance } from "../../api/myPetInsuranceAPI"; // 보험 등록 API 함수 임포트
 import useUserStore from "../../store/UseUserStore"; // zustand 스토어에서 강아지 정보와 토큰 가져오기
 import { getInsuranceList } from "../../api/insuranceAPI";
-import type { ResponseData } from "../../models/insurance.model";
+// import type { insuranceResponse } from "../../models/insurance.model";
 
 const RegistInsurance = () => {
   const navigate = useNavigate();
   const { dogInfo } = useUserStore(); // 강아지 정보와 토큰 가져오기
 
   // 입력값 상태 관리
-  const [insuranceList, setInsuranceList] = useState([]);
+  const [insuranceList, setInsuranceList] = useState({});
   const [insuranceId, setInsuranceId] = useState("");
   const [monthlyPayment, setMonthlyPayment] = useState("");
   const [registDate, setRegistDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
-
   useEffect(() => {
     const fetchInsuranceList = async () => {
       try {
@@ -28,10 +27,10 @@ const RegistInsurance = () => {
         console.error("보험 리스트를 불러오는 중 에러 발생:", error);
       }
     };
-
+    
     fetchInsuranceList();
   }, []);
-
+  console.log(insuranceList)
   // 보험 등록 요청 함수
   const ClickSubmitButton = async () => {
     if (!insuranceId || !monthlyPayment || !registDate || !expirationDate) {
@@ -42,9 +41,9 @@ const RegistInsurance = () => {
     const insuranceRecord = {
       insuranceId: Number(insuranceId), // 보험 ID
       dogId: dogInfo.dogId, // 강아지 ID
-      registDate, // 가입일
+      registDate: new Date(), 
       monthlyPayment: Number(monthlyPayment), // 월 납입료
-      expirationDate, // 만기일
+      expirationDate: new Date(), 
     };
 
     try {

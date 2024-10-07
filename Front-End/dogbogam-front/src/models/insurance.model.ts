@@ -17,7 +17,6 @@ export interface Insurance {
 // 내가 입력 하는 보험
 export interface myInsurance {
   insuranceId: number; // 보험 ID
-  insuranceName: string;
   dogId: number; // 강아지 ID
   registDate: Date; // 등록 날짜 (YYYY-MM-DD 형식)
   monthlyPayment: number; // 월 납입금액
@@ -31,4 +30,22 @@ export interface recommendInsurance {
   fee: string;
   company: string;
   image: string;
+}
+
+export interface insuranceResponse {
+  insurance : Insurance;
+  benefit : string[];
+}
+
+export interface insuranceItem {
+  dogId: number,
+  dogName: string,
+  expirationDate: Date,
+  insuranceCompany: string,
+  insuranceId: number,
+  insuranceImage: File | null,
+  insuranceName: string,
+  insuranceRecordId: number,
+  monthlyPayment: number,
+  registDate: Date,
 }

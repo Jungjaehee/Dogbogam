@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { calPaymentsTime } from "../../../utils/calcDate";
-import type { myInsurance } from "../../../models/insurance.model"; 
+import type { insuranceItem } from "../../../models/insurance.model"; 
 
-interface myInsuranceProps {
-  insurance: myInsurance;
+interface insuranceItemProps {
+  insurance: insuranceItem;
 }
 
-const InsuranceItem = ({ insurance }: myInsuranceProps) => {
+const InsuranceItem = ({ insurance }: insuranceItemProps) => {
   const navigate = useNavigate();
 
   const ClickInsurance = () => {

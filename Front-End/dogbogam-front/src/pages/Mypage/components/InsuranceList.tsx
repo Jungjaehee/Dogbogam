@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import NonInsuranceIcon from "../../../assets/MyPage/NonInsuranceIcon.png";
 import RegistIcon from "../../../assets/MyPage/RegistIcon.png";
 import useInsuranceStore from "../../../store/UseInsuranceStore";
-import type { myInsurance } from "../../../models/insurance.model";
+import type { insuranceItem } from "../../../models/insurance.model";
 
 const InsuranceList = () => {
   const navigate = useNavigate();
 
   const { insuranceList } = useInsuranceStore(); 
-  const [insuranceArray, setInsuranceArray] = useState<myInsurance[]>([]); 
+  const [insuranceArray, setInsuranceArray] = useState<insuranceItem[]>([]); 
 
   useEffect(() => {
     const data = localStorage.getItem("insuranceStorage");
@@ -19,9 +19,8 @@ const InsuranceList = () => {
       const storedInsuranceArray =
         parsedData.state.insuranceList.data.insuranceRecords;
       setInsuranceArray(storedInsuranceArray);
-    } else {
-      setInsuranceArray(insuranceList); 
-    }
+      console.log(storedInsuranceArray);
+    } 
   }, [insuranceList]); 
 
   const ClickRegistButton = () => {
