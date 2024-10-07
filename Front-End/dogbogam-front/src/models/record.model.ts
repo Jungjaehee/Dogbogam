@@ -34,7 +34,7 @@ export interface Disease {
 }
 // ai 진단 결과 인터페이스
 export interface AiDiagnosis {
-  reportId: number;
+  aiDiagnosisId: number;
   dogId: number;
   createdAt: Date;
   imageName: string;
