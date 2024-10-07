@@ -31,4 +31,12 @@ public class SupplementController {
         SupplementDetailResponse supplement = findSupplementUseCase.findSupplementById(supplementId);
         return SuccessResponse.ok(supplement);
     }
+
+    // 추천 영양제 조회
+    @GetMapping("/recommend")
+    public SuccessResponse<SupplementSummaryResponse> recommendSupplements(
+            @RequestParam List<String> healthProblems) {
+        SupplementSummaryResponse recommendedSupplements = findSupplementUseCase.recommendSupplements(healthProblems);
+        return SuccessResponse.ok(recommendedSupplements);
+    }
 }
