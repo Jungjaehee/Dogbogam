@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import BackButton from "../../assets/MyPage/BackButton.png";
 import { registeInsurance } from "../../api/myPetInsuranceAPI"; // 보험 등록 API 함수 임포트
 import useUserStore from "../../store/UseUserStore"; // zustand 스토어에서 강아지 정보와 토큰 가져오기
-import { getInsurancelist } from "../../api/insuranceAPI";
+import { getInsuranceList } from "../../api/insuranceAPI";
 import type { ResponseData } from "../../models/insurance.model";
 
 const RegistInsurance = () => {
@@ -20,7 +20,7 @@ const RegistInsurance = () => {
   useEffect(() => {
     const fetchInsuranceList = async () => {
       try {
-        const data = await getInsurancelist(); // 보험 리스트 API 호출
+        const data = await getInsuranceList(); // 보험 리스트 API 호출
         // 가져온 데이터를 상태에 저장
         setInsuranceList(data);
       } catch (error) {
