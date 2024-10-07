@@ -9,31 +9,27 @@ import { getMyMedicalRecord } from "../../api/medicalRecordAPI";
 import { getMyVaccination } from "../../api/vaccinationRecordAPI";
 import useVaccinationStore from "../../store/useVaccinationStore";
 
-
-
-// // 병원 진료와 예방 접종 기록을 병합하여 정렬된 배열 생성
-// const records = [...medicalRecords, ...vaccinationRecords].sort(
-//   (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-// );
-
 const MedicalRecord = () => {
   const navigate = useNavigate();
 
   const { dogInfo } = useUserStore();
-  const { setMedicalRecordList } = useMedicalRecordStore();
-  const { setVaccinationList } = useVaccinationStore();
-
+  const { setMedicalRecordList, medicalRecordList } = useMedicalRecordStore();
+  const { setVaccinationList, vaccinationList } = useVaccinationStore();
+  
   const getMedicalRecord = async () => {
     const medicalResponse = await getMyMedicalRecord(dogInfo.dogId);
-    setMedicalRecordList(medicalResponse);
-    console.log(medicalResponse);
+    setMedicalRecordList(medicalResponse.data);
   };
 
-    const getVaccination = async () => {
-      const vaccinationResponse = await getMyVaccination(dogInfo.dogId);
-      setVaccinationList(vaccinationResponse);
-      console.log(vaccinationResponse);
-    };
+  const getVaccination = async () => {
+    const vaccinationResponse = await getMyVaccination(dogInfo.dogId);
+    setVaccinationList(vaccinationResponse.data);
+  };
+
+  // 병원 진료와 예방 접종 기록을 병합하여 정렬된 배열 생성
+  const records = [...medicalRecordList, ...vaccinationList].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,7 +63,7 @@ const MedicalRecord = () => {
       </p>
 
       {/* 병합된 진료 기록 리스트 */}
-      {/* <MedicalRecordList records={records} /> */}
+      <MedicalRecordList records={records} />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { DogCard } from "../Home/components/dogCard";
+import { DogCard } from "../Home/components/dogCard";
 import DogInfo from "./components/Doginfo";
 import AIDiagnosisButton from "./components/Buttons/AIDiagnosisButton";
 import MyInsuranceButton from "./components/Buttons/MyInsuranceButton";
@@ -13,12 +13,11 @@ import useUserStore from "../../store/UseUserStore";
 const MyPage = () => {
   const navigate = useNavigate();
 
-  const { dogInfo, dogList } = useUserStore();
-  console.log(dogInfo)
-  console.log(dogList)
+  const { dogInfo } = useUserStore();
   const [openModal, setOpenModal] = useState(false);
 
   const ClickLogout = () => {
+    window.localStorage.clear();
     navigate("/");
   };
 
@@ -26,7 +25,7 @@ const MyPage = () => {
     <div className="h-full flex flex-col bg-gray-0 pt-6 px-4">
       {/* 강아지 선택 메뉴 */}
       <div className="flex items-center">
-        {/* <DogCard imageUrl={currentDog.imageUrl} dogName={currentDog.name} /> */}
+        <DogCard dog={dogInfo}/>
         <button
           className="text-sm text-gray-500"
           onClick={() => setOpenModal(true)}

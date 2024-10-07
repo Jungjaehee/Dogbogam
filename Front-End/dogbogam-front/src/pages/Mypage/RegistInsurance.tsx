@@ -23,6 +23,7 @@ const RegistInsurance = () => {
         const data = await getInsuranceList(); // 보험 리스트 API 호출
         // 가져온 데이터를 상태에 저장
         setInsuranceList(data);
+        console.log(data)
       } catch (error) {
         console.error("보험 리스트를 불러오는 중 에러 발생:", error);
       }
@@ -49,11 +50,11 @@ const RegistInsurance = () => {
     try {
       const response = await registeInsurance(insuranceRecord); // API 호출
       console.log("보험 등록 성공:", response);
-      alert("보험 등록이 완료되었습니다.");
-      navigate(-1); // 등록 완료 후 이전 페이지로 이동
+      
+      navigate(-1); 
     } catch (error) {
       console.error("보험 등록 실패:", error);
-      alert("보험 등록 중 오류가 발생했습니다.");
+      
     }
   };
 

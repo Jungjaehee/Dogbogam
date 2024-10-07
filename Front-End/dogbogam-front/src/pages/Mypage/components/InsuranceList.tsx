@@ -9,8 +9,8 @@ import type { myInsurance } from "../../../models/insurance.model";
 const InsuranceList = () => {
   const navigate = useNavigate();
 
-  const { insuranceList } = useInsuranceStore(); // zustand 스토어에서 전역 상태 가져오기
-  const [insuranceArray, setInsuranceArray] = useState<myInsurance[]>([]); // 로컬 상태 관리
+  const { insuranceList } = useInsuranceStore(); 
+  const [insuranceArray, setInsuranceArray] = useState<myInsurance[]>([]); 
 
   useEffect(() => {
     const data = localStorage.getItem("insuranceStorage");
@@ -20,9 +20,9 @@ const InsuranceList = () => {
         parsedData.state.insuranceList.data.insuranceRecords;
       setInsuranceArray(storedInsuranceArray);
     } else {
-      setInsuranceArray(insuranceList); // 스토어에서 가져온 데이터를 로컬 상태에 반영
+      setInsuranceArray(insuranceList); 
     }
-  }, [insuranceList]); // 진단 리스트 변경 시 다시 반영
+  }, [insuranceList]); 
 
   const ClickRegistButton = () => {
     navigate("/mypage/regist-insurance");
@@ -33,9 +33,9 @@ const InsuranceList = () => {
       {insuranceArray.length > 0 ? (
         // 가입 보험이 있을 때
         <>
-          {insuranceArray.map((insurance) => (
+          {insuranceArray.map((insurance, index) => (
             <InsuranceItem
-              key={insurance.insuranceId}
+              key={`${insurance.insuranceId}-${index}`}
               insurance={insurance}
             />
           ))}
