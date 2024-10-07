@@ -50,6 +50,7 @@ public class AiDiagnosisReportService implements CreateAiDiagnosisUseCase, FindA
                 .normal(aiDiagnosis.getNormal())
                 .imageUrl(aiDiagnosis.getImageUrl())
                 .diagnosisItem(aiDiagnosis.getDiagnosisItem())
+                .createdAt(aiDiagnosis.getCreatedAt().toString())
                 .diseases(diseases)
                 .build();
     }

@@ -26,7 +26,9 @@ public class AiDiagnosisPersistenceAdapter implements RequestSkinDiagnosisPort, 
 
     @Override
     public DiagnosisResultResponseDto requestEyeDiagnosis(MultipartFile image){
-        return aiDiagnosisFeignClient.requestEyeDiagnosis(image);
+        DiagnosisResultResponseDto responseDto = aiDiagnosisFeignClient.requestEyeDiagnosis(image);
+        log.info("response DTO : {}", responseDto);
+        return responseDto;
     }
 
     @Override
