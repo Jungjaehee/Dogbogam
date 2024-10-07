@@ -68,6 +68,7 @@ public class AiDiagnosisReportService implements CreateAiDiagnosisUseCase, FindA
                             .dogId(aiDiagnosis.getDogId())
                             .imageUrl(aiDiagnosis.getImageUrl())
                             .diagnosisItem(aiDiagnosis.getDiagnosisItem())
+                            .createdAt(aiDiagnosis.getCreatedAt().toString())
                             .diseases(aiReportDiseaseService.findAiReportsByDiagnosis(aiDiagnosis))
                             .build());
         }
