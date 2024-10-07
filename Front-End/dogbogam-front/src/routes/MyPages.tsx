@@ -3,9 +3,10 @@ import MyPage from "../pages/Mypage/Mypage";
 import AIDiagnosis from "../pages/Mypage/AIDiagnosis";
 import MedicalRecord from "../pages/Mypage/MedicalRecord";
 import MyInsurance from "../pages/Mypage/MyInsurance";
-import UpdateInfo from "../pages/Mypage/UpdateInfo";
+import UpdateDog from "../pages/Mypage/UpdateDog"
 import RegistMedicalReport from "../pages/Mypage/RegistMedicalReport";
 import RegistInsurance from "../pages/Mypage/RegistInsurance";
+import UpdateHealth  from "../pages/Mypage/UpdateDogHealth";
 
 const MyPages = () => {
     return (
@@ -18,7 +19,8 @@ const MyPages = () => {
           <Route path="ai-diagnosis" element={<AIDiagnosis />} />
           <Route path="medical-record" element={<MedicalRecord />} />
           <Route path="my-insurance" element={<MyInsurance />} />
-          <Route path="update" element={<UpdateInfo />} />
+          <Route path="updateInfo" element={<UpdateDog />} />
+          <Route path="updateHealth" element={<UpdateHealth/>} />
           <Route path="regist-record" element={<RegistMedicalReport />} />
           <Route path="regist-insurance" element={<RegistInsurance />} />
         </Routes>
