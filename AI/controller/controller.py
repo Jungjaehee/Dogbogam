@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 @router.post("/eye")
 async def predict_eye(image: UploadFile = File(...)):
     result = await diagnosis_eye(image)
-    # logging.info(f"Result: {SuccessResponse.ok(result).dict()}")
+    logging.info(f"Result: {SuccessResponse.ok(result).dict()}")
     return SuccessResponse.ok(result).dict()
 
 
@@ -27,6 +27,7 @@ async def predict_obesity(image: UploadFile = File(...),
                           weight: float = Form(...)  # weight 필드 추가
                          ):
     result = await diagnosis_obesity(image, breed, weight)
+    print(result)
     return SuccessResponse.ok(result).dict()
 
     

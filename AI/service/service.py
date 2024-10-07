@@ -10,6 +10,7 @@ import os
 import logging
 import traceback
 import torch
+import torch.nn.functional as F  # Softmax를 사용하기 위해 추가
 
 async def diagnosis_eye(image):
     model_path = "./model/eye/yolov8.pt"
@@ -34,7 +35,7 @@ async def diagnosis_obesity(image, breed, weight):
             f.write(contents)
 
         # 한글 breed를 breed 코드화
-        breed_code= await get_breed(breed)
+        breed_code = await get_breed(breed)
 
         # 모델 로드
         model = MultiModalMobileNet()
@@ -52,25 +53,38 @@ async def diagnosis_obesity(image, breed, weight):
         image_pil = Image.open(image_path)
         image_tensor = transform(image_pil).unsqueeze(0)  # 배치 차원 추가
 
+        # 이미지 파일 닫기 (중요)
+        image_pil.close()
+
         # breed와 weight를 텐서로 변환
         breed_weight = torch.tensor([[breed_code, weight]], dtype=torch.float32)
 
         # 추론
         with torch.no_grad():
             output = model(image_tensor, breed_weight)
-            _, predicted = torch.max(output, 1)
+
+            # Softmax를 통해 확률 계산
+            probabilities = F.softmax(output, dim=1)[0]  # dim=1로 클래스별 확률 계산
             class_names = ['정상', '과체중', '고도비만']
-            result = class_names[predicted.item()]
 
-        # print(result);
+            # 예측 결과를 YOLO 스타일로 포맷
+            outputs = []
+            for idx, prob in enumerate(probabilities):
+                outputs.append({
+                    "label": class_names[idx],  # 각 클래스 이름
+                    "conf": round(prob.item() * 100, 2)  # 확률을 %로 변환
+                })
 
-        return {"prediction": result}
+            outputs = sorted(outputs, key=lambda x: x['conf'], reverse=True)
+
+            logging.info(outputs)  # 예측 결과 로깅
+            return outputs
 
     except Exception as e:
         logging.error(f"Error during inference: {str(e)}")
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail="비만 진단 중 오류가 발생했습니다.")
-    
+        raise HTTPException(status_code=404, detail="비만 진단 중 오류가 발생했습니다.")
+
     finally:
         # 사용 후 파일 삭제
         os.remove(image_path)
