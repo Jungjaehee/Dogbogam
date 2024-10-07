@@ -36,3 +36,16 @@ export interface insuranceResponse {
   insurance : Insurance;
   benefit : string[];
 }
+
+export interface insuranceItem {
+  dogId: number,
+  dogName: string,
+  expirationDate: Date,
+  insuranceCompany: string,
+  insuranceId: number,
+  insuranceImage: File | null,
+  insuranceName: string,
+  insuranceRecordId: number,
+  monthlyPayment: number,
+  registDate: Date,
+}
