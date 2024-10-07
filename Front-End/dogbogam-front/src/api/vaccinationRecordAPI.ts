@@ -10,21 +10,28 @@ export const registVaccination = async (record: myVaccinationRecord) => {
     // 이미지가 있으면 첨부, 없으면 디폴트 이미지
     if (record.image) {
       formData.append("image", record.image);
-    } else {
-      formData.append("image" , "");
     }
+    // DateTime 형식 변환 (예: 2024-10-07T19:38:00)
+    const formattedRecordTime = new Date(record.recordTime)
+      .toISOString()
+      .slice(0, 19);
+
     formData.append("dogId", record.dogId.toString());
-    formData.append("recordTime", record.recordTime.toISOString());
+    formData.append("recordTime", formattedRecordTime);
     formData.append("content", record.content);
     formData.append("hospital", record.hospital);
     formData.append("cost", record.cost.toString());
-    formData.append("vaccinationRound", record.vaccinationRound.toString())
+    formData.append("vaccinationRound", record.vaccinationRound.toString());
 
-    const response = await axiosInstance.post(`${BASE_URL}/medical-records`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axiosInstance.post(
+      `${BASE_URL}/vaccination-records`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
     return response?.data?.data;
   } catch (error) {
     console.log("예방 접종 기록 등록 실패: ", error);
