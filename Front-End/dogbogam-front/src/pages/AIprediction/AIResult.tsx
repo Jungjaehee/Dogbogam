@@ -1,45 +1,51 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { TopBar } from "../../components/Topbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Normal } from "./components/Normal";
 import { Abnormal } from "./components/Abnormal";
 import { RecommendInsurance } from "./components/RecommendInsurance";
 import { RecommendNutrient } from "./components/RecommendNutrient";
-
-interface Disease {
-  name: string;
-  percentage: string;
-}
-
-interface Result {
-  reportId: number;
-  dogId: number;
-  diagnosisDate: string;
-  imageName: string;
-  imageUrl: string;
-  normal: boolean;
-  diagnosisItem: string;
-  diseases: Disease[];
-}
+import { AiDiagnosis } from "../../models/record.model";
+import { getAIresult, getInsurance } from "../../api/aiPredictionAPI";
+import { recommendInsurance } from "../../models/insurance.model";
 
 export const AIResult = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { Id } = location.state;
-  const [result /* setResult */] = useState<Result>({
-    reportId: Id,
+  const { id } = location.state;
+  const [result, setResult] = useState<AiDiagnosis>({
+    aiDiagnosisId: id,
     dogId: 0,
-    diagnosisDate: "",
-    imageName: "",
+    createdAt: new Date(),
     imageUrl: "",
     normal: true,
     diagnosisItem: "",
     diseases: [],
   });
+  const [insurance, setInsurance] = useState<recommendInsurance>({
+    insuranceId: 0,
+    name: "",
+    fee: "",
+    company: "",
+    image: "",
+  });
+
   const confirm = () => {
     navigate("/home");
   };
+
+  const getResult = async () => {
+    const resultResponse = await getAIresult(id);
+    setResult(resultResponse);
+    const insuranceResponse = await getInsurance(resultResponse.diagnosisItem);
+    setInsurance(insuranceResponse);
+    console.log(insurance);
+  };
+
+  useEffect(() => {
+    getResult();
+  }, []);
 
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col justify-between overflow-y-auto">
@@ -63,7 +69,7 @@ export const AIResult = () => {
             <Abnormal result={result} />
           )}
           <RecommendNutrient />
-          <RecommendInsurance />
+          <RecommendInsurance insurance={insurance} />
         </div>
       </div>
       <Button
