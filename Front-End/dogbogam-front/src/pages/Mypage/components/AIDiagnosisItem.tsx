@@ -10,7 +10,7 @@ interface AIDiagnosisItemProps {
 const AIDiagnosisItem = ({ diagnosis }: AIDiagnosisItemProps) => {
   const navigate = useNavigate();
   const ClickDiagnosis = () => {
-    navigate(`${diagnosis.reportId}`);
+    navigate(`${diagnosis.aiDiagnosisId}`);
   };
 
   const relativeTime = calRelativeTime(diagnosis.createdAt);
