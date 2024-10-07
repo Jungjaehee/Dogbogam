@@ -8,4 +8,5 @@ import java.util.List;
 public interface FindSupplementUseCase {
     List<SupplementSummaryResponse> findAllSupplements(int page, int size);
     SupplementDetailResponse findSupplementById(Long supplementId);
+    SupplementSummaryResponse recommendSupplements(List<String> healthProblems);
 }
