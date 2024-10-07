@@ -43,11 +43,10 @@ const VaccinationRecordForm = ({ handleBack }: { handleBack: () => void }) => {
     };
     try {
       const response = await registVaccination(updatedVaccinationRecord);
-      alert("예방 접종 기록이 성공적으로 등록되었습니다.");
+      console.log(response)
       handleBack();
     } catch (error) {
       console.error("예방 접종 기록 등록 실패:", error);
-      alert("예방 접종 기록 등록 중 오류가 발생했습니다.");
     }
   };
 
