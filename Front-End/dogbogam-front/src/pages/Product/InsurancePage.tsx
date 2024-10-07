@@ -137,7 +137,7 @@ export const InsurancePage = () => {
                 className="flex items-center space-x-4 x-full h-10"
                 onClick={() => handleCardClick(item.insurance.insuranceId)}>
                 <img
-                  src={item.insurance.imageUrl}
+                  src={item.insurance.s3ImageUrl}
                   alt=""
                   className="w-[50px] h-[50px]"
                 />

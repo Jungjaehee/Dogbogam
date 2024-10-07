@@ -12,7 +12,7 @@ const InsuranceDetailModal = (props: { insuranceDetail: Insurance, onClose: () =
             <p className="text-lg font-bold"></p>
         </div>
         <div className="flex flex-col items-center mb-3">
-          <img src={props.insuranceDetail.imageUrl} alt="보험 이미지" className="w-20 h-20 mb- rounded-full shadow-md object-cover" />
+          <img src={props.insuranceDetail.s3ImageUrl} alt="보험 이미지" className="w-20 h-20 mb-5 rounded-full shadow-md object-cover" />
           <h2 className="text-xl font-bold text-center text-gray-900"> 
             {props.insuranceDetail.company} {props.insuranceDetail.name}
           </h2>
@@ -25,7 +25,7 @@ const InsuranceDetailModal = (props: { insuranceDetail: Insurance, onClose: () =
             <span className="font-semibold">보험료:</span> {props.insuranceDetail.fee}
           </p>
           <p className="text-lg text-gray-700">
-            <span className="font-semibold">보장 한도:</span> {props.insuranceDetail.limitFee}
+            <span className="font-semibold">보장 한도:</span> {props.insuranceDetail.limit}
           </p>
           <p className="text-lg text-gray-700">
             <span className="font-semibold">설명:</span> {props.insuranceDetail.description}

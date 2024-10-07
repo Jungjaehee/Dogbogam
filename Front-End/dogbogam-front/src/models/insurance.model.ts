@@ -7,11 +7,11 @@ export interface Insurance {
   fee: number;
   period: string;
   description: string;
-  limitFee?: string | null;
-  coverage_ratio: string;
+  limit?: string | null;
+  coverageRatio: string;
   company: string;
-  imageName: string;
-  imageUrl: string;
+  s3ImageName: string;
+  s3ImageUrl: string;
 }
 
 // 내가 입력 하는 보험
