@@ -1,20 +1,6 @@
-interface Disease {
-  name: string;
-  percentage: string;
-}
+import { AiDiagnosis } from "../../../models/record.model";
 
-interface Result {
-  reportId: number;
-  dogId: number;
-  diagnosisDate: string;
-  imageName: string;
-  imageUrl: string;
-  normal: boolean;
-  diagnosisItem: string;
-  diseases: Disease[];
-}
-
-export const Normal = (props: { result: Result }) => {
+export const Normal = (props: { result: AiDiagnosis }) => {
   return (
     <div className="bg-[#D0ECDA] p-5 rounded-lg place-items-center space-y-3">
       <p className="font-semibold">
