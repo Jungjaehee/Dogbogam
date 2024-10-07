@@ -86,3 +86,16 @@ export const getInsurance = async (diagnosisItem: string) => {
     throw error;
   }
 };
+
+export const getNutrient = async (healthProblems: string) => {
+  try {
+    console.log(healthProblems);
+    const response = await axiosInstance.get("/supplements/recommend", {
+      params: { healthProblems },
+    });
+    return response?.data?.data;
+  } catch (error) {
+    console.log("영양제 추천 실패: ", error);
+    throw error;
+  }
+};
