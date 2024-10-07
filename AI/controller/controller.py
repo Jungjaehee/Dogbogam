@@ -1,4 +1,4 @@
-from fastapi import APIRouter, File, UploadFile
+from fastapi import APIRouter, File, UploadFile, Form
 from service.service import diagnosis_eye, diagnosis_skin, diagnosis_obesity, diagnosis_breed
 from response.success_response import SuccessResponse
 import logging
@@ -22,8 +22,11 @@ async def predict_skin(image: UploadFile = File(...)):
 
 
 @router.post("/obesity")
-async def predict_obesity(image: UploadFile = File(...), json_file: UploadFile = File(...)):
-    result = await diagnosis_obesity(image, json_file)
+async def predict_obesity(image: UploadFile = File(...),
+                          breed: str = Form(...),  # breed 필드 추가
+                          weight: float = Form(...)  # weight 필드 추가
+                         ):
+    result = await diagnosis_obesity(image, breed, weight)
     return SuccessResponse.ok(result).dict()
 
     

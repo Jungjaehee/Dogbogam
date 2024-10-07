@@ -2,9 +2,14 @@ from fastapi import HTTPException
 from ultralytics import YOLO
 from mapper.eye_map import EyeLabelMapper
 from mapper.skin_map import SkinLabelMapper
+from mapper.obesity_breed_map import ObesityBreedMapper
+from model.obesity.MultiModalMobileNet import MultiModalMobileNet
+from PIL import Image
+import torchvision.transforms as transforms
 import os
 import logging
 import traceback
+import torch
 
 async def diagnosis_eye(image):
     model_path = "./model/eye/yolov8.pt"
@@ -18,7 +23,7 @@ async def diagnosis_skin(image):
     return outputs
 
 
-async def diagnosis_obesity(image, json_file):
+async def diagnosis_obesity(image, breed, weight):
     try:
         os.makedirs("./data", exist_ok=True)
 
@@ -28,19 +33,20 @@ async def diagnosis_obesity(image, json_file):
         with open(image_path, "wb") as f:
             f.write(contents)
 
-        # JSON 파일 저장
-        json_path = f"./data/{json_file.filename}"
-        json_content = await json_file.read()
-        with open(json_path, "wb") as f:
-            f.write(json_content)
-
-        # breed와 weight 추출
-        breed_code, weight = await get_breed_and_weight(json_path)
+        # 한글 breed를 breed 코드화
+        breed_code= await get_breed(breed)
 
         # 모델 로드
         model = MultiModalMobileNet()
         model.load_state_dict(torch.load('./model/obesity/best.pt'))
         model.eval()
+
+        # 이미지 전처리 변환 설정 (MobileNet에 맞게 설정)
+        transform = transforms.Compose([
+            transforms.Resize((224, 224)),  # MobileNet 입력 크기
+            transforms.ToTensor(),  # 이미지를 Tensor로 변환
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])  # ImageNet 데이터셋에서 사용된 정규화 값
+        ])
 
         # 이미지 전처리
         image_pil = Image.open(image_path)
@@ -56,6 +62,8 @@ async def diagnosis_obesity(image, json_file):
             class_names = ['정상', '과체중', '고도비만']
             result = class_names[predicted.item()]
 
+        # print(result);
+
         return {"prediction": result}
 
     except Exception as e:
@@ -66,7 +74,6 @@ async def diagnosis_obesity(image, json_file):
     finally:
         # 사용 후 파일 삭제
         os.remove(image_path)
-        os.remove(json_path)
 
 async def diagnosis_breed(image):
     return
@@ -105,17 +112,11 @@ async def ai_inference(model_path, image, label_mapper):
     return outputs
 
 # JSON에서 weight와 한글로 된 breed 처리 함수
-async def get_breed_and_weight(json_path):
-    with open(json_path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    
-    korean_breed = data.get('breed')  # JSON에서 한글 품종 추출
-    weight = data.get('weight')  # JSON에서 weight 추출
-
+async def get_breed(breed):
     # 한글 품종을 영문 코드로 변환
-    breed_code = ObesityBreedMapper.get_breed_code(korean_breed)
+    breed_code = ObesityBreedMapper.get_breed_code(breed)
     
-    if breed_code == "ETC":
+    if breed_code == "-1":
         raise HTTPException(status_code=400, detail="유효하지 않은 품종입니다.")
     
-    return breed_code, weight
+    return breed_code
