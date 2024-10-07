@@ -27,3 +27,14 @@ export interface DogList {
   dogName: string;
   imageUrl: string;
 }
+
+export interface updateDogInfo {
+  image: File | null;
+  dogId: number;
+  name: string;
+  gender: string; // 여아 남아
+  breed: string;
+  birthDate: string; // 강아지 고양이
+  weight: number;
+  isNeutered: boolean;
+}
