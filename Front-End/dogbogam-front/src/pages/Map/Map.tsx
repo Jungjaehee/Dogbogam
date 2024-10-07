@@ -1,38 +1,24 @@
-import Kakao from "../../components/kakao";
+import React, { useState } from "react";
+import KakaoMap from "../../components/kakao"; // KakaoMap 컴포넌트를 가져옵니다.
 import { TopBar } from "../../components/Topbar";
 import useUserStore from "../../store/UseUserStore";
-import { useState, useEffect } from "react";
-import { getHospitalList, AnimalHospital } from "../../api/hospitalAPI";
 
+export interface AnimalHospital {
+  latitude: string;
+  longitude: string;
+  name: string;
+}
 
 export const Map = () => {
   const { dogInfo } = useUserStore();
-  const [hospitalList, setHospitalList] = useState<AnimalHospital[]>([]);
-  const [selectedHospital, setSelectedHospital] = useState<AnimalHospital | null>(null);
   
-  // 사용자 위치를 기반으로 병원 리스트 가져오기
-  const fetchHospitalList = async (latitude: string, longitude: string) => {
-    try {
-      const data = await getHospitalList(latitude, longitude);
-      setHospitalList(data);
-    } catch (error) {
-      console.error("병원 리스트 가져오기 실패", error);
-    }
-  };
-
-  // 병원 선택 시 지도에서 해당 위치로 이동
-  const handleHospitalSelect = (hospital: AnimalHospital) => {
-    setSelectedHospital(hospital);
-    // 여기에서 Kakao 지도에 병원 위치를 표시하도록 함
-  };
-
-  useEffect(() => {
-    fetchHospitalList("35.200403208034665", "126.89636979402314");
-  }, []);
+  // 임의로 선택한 병원 데이터를 저장하는 상태 (선택된 병원이 있으면 지도에서 이동)
+  const [selectedHospital, setSelectedHospital] = useState<AnimalHospital | null>(null);
 
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col justify-between">
       <div className="h-full flex flex-col">
+        {/* TopBar 컴포넌트 */}
         <TopBar pre={"/home"} title={""} skip={""} />
         <div className="mb-6">
           <p className="text-gray-800 text-xl font-bold">
@@ -40,23 +26,27 @@ export const Map = () => {
             근처 <br /> 동물병원이에요
           </p>
         </div>
-        <Kakao hospitals={hospitalList} selectedHospital={selectedHospital} />
 
-        {/* 병원 리스트를 슬라이드 가능한 형태로 출력 */}
-        <div className="flex overflow-x-auto gap-4 mt-4">
-          {hospitalList.map((hospital) => (
-            <div 
-              key={hospital.animalHospitalId} 
-              onClick={() => handleHospitalSelect(hospital)} 
-              className={`flex-shrink-0 w-64 p-4 border rounded-lg shadow-lg cursor-pointer ${selectedHospital?.animalHospitalId === hospital.animalHospitalId ? 'bg-main-color text-white' : 'bg-white'}`}
+        {/* KakaoMap 컴포넌트 */}
+        {/* hospitals는 카카오맵에서 검색된 데이터를 가져오기 때문에 빈 배열로 설정 */}
+        <KakaoMap hospitals={[]} selectedHospital={selectedHospital} />
+
+        {/* 선택된 병원이 있을 경우 병원 리스트를 보여주고 선택한 병원을 업데이트하는 동작 */}
+        {selectedHospital && (
+          <div className="flex flex-col items-center">
+            <h2 className="text-xl font-bold">선택된 병원:</h2>
+            <p>{selectedHospital.name}</p>
+            <button
+              className="p-2 bg-main-color text-white rounded-md mt-4"
+              onClick={() => setSelectedHospital(null)} // 병원 선택 취소
             >
-              <p className="font-bold">{hospital.name}</p>
-              <p className="text-sm">{hospital.address}</p>
-              <p className="text-sm">{hospital.phoneNumber}</p>
-            </div>
-          ))}
-        </div>
+              병원 선택 취소
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
 };
+
+export default Map;
