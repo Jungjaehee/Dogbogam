@@ -2,9 +2,8 @@ import { TopBar } from "../../components/Topbar/index";
 import SearchBar from "../../components/SearchBar/index";
 import { useEffect, useState } from "react";
 import useUserStore from "../../store/UseUserStore";
-import { getInsuranceList } from "../../api/insuranceAPI";
 import { Insurance } from "../../models/insurance.model";
-
+import { getInsuranceList } from "../../api/insuranceAPI";
 
 export const InsurancePage = () => {
   const { dogInfo } = useUserStore();
@@ -104,7 +103,7 @@ export const InsurancePage = () => {
             <div key={index} className="border border-gray-100 rounded-lg shadow-lg flex justify-between p-5">
             <div className="space-y-5">
               <img
-                src={insurance.image_url}
+                src={insurance.imageUrl}
                 alt=""
                 className="w-[120px] h-[83px]"
               />
