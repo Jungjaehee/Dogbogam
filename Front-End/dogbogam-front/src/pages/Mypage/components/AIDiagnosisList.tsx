@@ -25,7 +25,7 @@ const AIDiagnosisList = () => {
       {diagnosisArray.length > 0 ? (
         diagnosisArray.map((diagnosis: AiDiagnosis) => (
           <AIDiagnosisItem
-            key={diagnosis.reportId.toString()}
+            key={diagnosis.aiDiagnosisId.toString()}
             diagnosis={diagnosis}
           />
         ))
