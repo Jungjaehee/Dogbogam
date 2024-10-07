@@ -115,7 +115,6 @@ export const patchDogInfo = async (dog: updateDogInfo) => {
     }
     formData.append("dogId", dog.dogId.toString());
     formData.append("name", dog.name);
-    formData.append("gender", dog.gender);
     formData.append("breed", dog.breed);
     formData.append("birthDate", dog.birthDate);
     formData.append("weight", dog.weight.toString());
@@ -132,3 +131,12 @@ export const patchDogInfo = async (dog: updateDogInfo) => {
     throw error;
   }
 };
+
+export const deleteDog = async (dogId : number) => {
+  try {
+    const response = await axiosInstance.delete(`${BASE_URL}/dogs/${dogId}`)
+    return response.data.data;
+  } catch (error) {
+    console.error("강아지 삭제 실패" , error)
+  }
+}
