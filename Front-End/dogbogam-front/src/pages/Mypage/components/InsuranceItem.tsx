@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { calPaymentsTime } from "../../../utils/calcDate";
-import type { myInsurance } from "../../../models/insurance.model"; 
+import type { Insurance, myInsurance } from "../../../models/insurance.model"; 
 
 interface myInsuranceProps {
-  insurance: myInsurance;
+  insurance: Insurance;
+  myInsurance: myInsurance;
 }
 
-const InsuranceItem = ({ insurance }: myInsuranceProps) => {
+const InsuranceItem = ({ insurance, myInsurance }: myInsuranceProps) => {
   const navigate = useNavigate();
 
   const ClickInsurance = () => {
@@ -14,7 +15,7 @@ const InsuranceItem = ({ insurance }: myInsuranceProps) => {
   };
 
   // 가입 날짜를 기준으로 납입 횟수 계산
-  const recordDate = new Date(insurance.registDate);
+  const recordDate = new Date(myInsurance.registDate);
   const paymentsTime = calPaymentsTime(recordDate);
 
   return (
@@ -25,7 +26,7 @@ const InsuranceItem = ({ insurance }: myInsuranceProps) => {
       {/* 보험 이름 */}
       <div>
         <span className="text-gray-700 text-ms font-semibold">
-          {insurance.insuranceName}
+          {insurance.name}
         </span>
       </div>
 
