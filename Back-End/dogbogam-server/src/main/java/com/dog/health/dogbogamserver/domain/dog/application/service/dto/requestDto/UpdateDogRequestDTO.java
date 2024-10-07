@@ -14,14 +14,8 @@ import java.time.LocalDate;
 public class UpdateDogRequestDTO {
     @NotNull(message = "반려견은 필수 입니다.")
     private Long dogId;
-    @NotNull(message = "멤버는 필수 입니다.")
-    private Long memberId;
-    @NotBlank(message = "반려견 이름은 필수 입니다.")
     private String name;
-    @NotBlank(message = "견종은 필수 입니다.")
     private String breed;
-    @NotBlank(message = "성별은 필수 입니다.")
-    private String gender;
     private String birthDate;
     private Double weight;
     @NotNull(message = "중성화 여부는 필수 입니다.")

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -69,25 +70,24 @@ public class DogService implements CreateDogUseCase, UpdateDogUseCase, DeleteDog
     @Override
     public void updateDog(UpdateDogRequestDTO updateDogRequestDTO, Long memberId) throws IOException {
         Member member = memberService.findByMemberId(memberId);
-        if(member.getMemberId() != updateDogRequestDTO.getMemberId()){
-            throw new CustomException(ErrorCode.USER_VALIDATION_ERROR);
-        }
+
         String path = "dog_image";
         Map<String, Object> uploadParam = awsService.uploadFile(updateDogRequestDTO.getImage(),path);
         Optional<Dog> existingDog = findDogDetailsPort.findByDogId(updateDogRequestDTO.getDogId());
         if (existingDog.isPresent()) {
             Dog updatedDog = Dog.builder()
-                    .member(member)
-                    .breed(updateDogRequestDTO.getBreed())
-                    .name(updateDogRequestDTO.getName())
-                    .birthDate(strToLocalDate(updateDogRequestDTO.getBirthDate()))
                     .dogId(updateDogRequestDTO.getDogId())
-                    .isNeutered(updateDogRequestDTO.getIsNeutered())
-                    .weight(updateDogRequestDTO.getWeight())
-                    .gender(updateDogRequestDTO.getGender())
+                    .member(member)
                     .isDeleted(existingDog.get().getIsDeleted())
+                    .name(updateDogRequestDTO.getName())
+                    .breed(updateDogRequestDTO.getBreed())
+                    .gender(existingDog.get().getGender())
+                    .birthDate(strToLocalDate(updateDogRequestDTO.getBirthDate()))
+                    .weight(updateDogRequestDTO.getWeight())
+                    .isNeutered(updateDogRequestDTO.getIsNeutered())
                     .imageName(uploadParam.get("s3FileName").toString())
                     .imageUrl(uploadParam.get("uploadImageUrl").toString())
+                    .modifiedAt(LocalDateTime.now())
                     .build();
             updateDogPort.update(updatedDog);
         } else {
