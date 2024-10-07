@@ -3,27 +3,33 @@ import { useNavigate } from "react-router-dom";
 import BackButton from "../../assets/MyPage/BackButton.png";
 import AIDiagnosisList from "./components/AIDiagnosisList";
 import DiagnosisFilter from "./components/DiagnosisFilter";
-import { getDiagnosisRecords } from "../../api/aiDiagnosisAPI"; 
-import useUserStore from "../../store/UseUserStore"; 
+import { getDiagnosisRecords } from "../../api/aiDiagnosisAPI";
+import useUserStore from "../../store/UseUserStore";
 import useAIDiagnosisStore from "../../store/UseAIDiagnosisStore";
 
+// 진단 항목의 타입을 정의합니다.
+interface DiagnosisItem {
+  diagnosisItem: string; // diagnosisItem 필드의 타입
+  // 다른 필요한 필드들도 정의할 수 있습니다.
+}
+
 const AIDiagnosis = () => {
-  const [filteredDiag, setFilteredDiag] = useState([]); 
+  const [filteredDiag, setFilteredDiag] = useState<DiagnosisItem[]>([]); // DiagnosisItem 배열로 타입을 지정
 
   const navigate = useNavigate();
-  const { dogInfo } = useUserStore(); 
+  const { dogInfo } = useUserStore();
   const { setDiagnosisList } = useAIDiagnosisStore();
-  
+
   const getDiagnosis = async () => {
     const listResponse = await getDiagnosisRecords(dogInfo.dogId);
     setDiagnosisList(listResponse);
+    setFilteredDiag(listResponse); // 가져온 데이터를 필터에도 반영
   };
 
-
   useEffect(() => {
-      const fetchDiagnosis = async () => {
-        await getDiagnosis(); 
-      };
+    const fetchDiagnosis = async () => {
+      await getDiagnosis();
+    };
 
     fetchDiagnosis();
   }, []); // 최초 1회 렌더링 될 때 데이터 호출
@@ -37,11 +43,10 @@ const AIDiagnosis = () => {
     if (filter === "") {
       setFilteredDiag(filteredDiag); // 전체 데이터 보여주기
     } else {
-      const newFilteredDiag = filteredDiag.filter((item) =>
-        
-        item.diagnosisItem.includes(filter)
+      const newFilteredDiag = filteredDiag.filter(
+        (item) => item.diagnosisItem.includes(filter) // diagnosisItem 필드를 사용
       );
-      setFilteredDiag(newFilteredDiag); // 필터링된 데이터로 상태 업데이트
+      setFilteredDiag(newFilteredDiag);
     }
   };
 
