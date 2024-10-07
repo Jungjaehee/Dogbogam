@@ -5,10 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class UpdateDogRequestDTO {
