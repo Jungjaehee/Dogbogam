@@ -9,7 +9,7 @@ import type { insuranceItem } from "../../../models/insurance.model";
 const InsuranceList = () => {
   const navigate = useNavigate();
 
-  const { insuranceList } = useInsuranceStore(); 
+  const { insuranceItemList } = useInsuranceStore(); 
   const [insuranceArray, setInsuranceArray] = useState<insuranceItem[]>([]); 
 
   useEffect(() => {
@@ -20,8 +20,10 @@ const InsuranceList = () => {
         parsedData.state.insuranceList.data.insuranceRecords;
       setInsuranceArray(storedInsuranceArray);
       console.log(storedInsuranceArray);
-    } 
-  }, [insuranceList]); 
+    } else {
+      setInsuranceArray(insuranceItemList);
+    }
+  }, [insuranceItemList]); 
 
   const ClickRegistButton = () => {
     navigate("/mypage/regist-insurance");
