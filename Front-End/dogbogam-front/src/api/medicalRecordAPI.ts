@@ -79,7 +79,7 @@ export const getMedicalRecordDetail = async (medicalRecordId: number) => {
     const response = await axiosInstance.get(`/medical-records/${medicalRecordId}`);
     console.log("진료 기록 상세 정보 ", response.data);
 
-    return response.data;
+    return response.data.data;
 
   } catch (error) {
 
