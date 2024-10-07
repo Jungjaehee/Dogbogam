@@ -50,7 +50,7 @@ const MyInsurance = () => {
       </p>
 
       {/* 보험 목록 */}
-      <InsuranceList insurances={insuranceList} />
+      <InsuranceList/>
     </div>
   );
 };
