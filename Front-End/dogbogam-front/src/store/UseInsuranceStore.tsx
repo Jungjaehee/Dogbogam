@@ -14,10 +14,12 @@ interface StoreState {
 
 const useInsuranceStore = create<StoreState>((set) => ({
   insuranceList: [],
-  setInsuranceList: (newList: myInsurance[]) =>
+  setInsuranceList: (newList: myInsurance[]) => {
+    console.log("Updating insuranceList with:", newList);
     set(() => ({
       insuranceList: newList, // 배열 전체를 업데이트
-    })),
+    }));
+  },
 
   insuranceDetail: {
     insuranceName: "",
@@ -27,16 +29,19 @@ const useInsuranceStore = create<StoreState>((set) => ({
     monthlyPayment: 0, // 월 납입금액
     expirationDate: "" as unknown as Date, // 만료 날짜 (YYYY-MM-DD 형식)
   },
-  setInsurance: (newInfo: Partial<myInsurance>) =>
+  setInsurance: (newInfo: Partial<myInsurance>) => {
+    console.log("Updating insuranceDetail with:", newInfo);
     set((state) => ({
       insuranceDetail: { ...state.insuranceDetail, ...newInfo },
-    })),
+    }));
+  },
 
   insuranceItemList: [],
-  setInsuranceItemList: (newList: insuranceItem[]) =>
+  setInsuranceItemList: (newList: insuranceItem[]) => {
     set(() => ({
       insuranceItemList: newList, // 배열 전체를 업데이트
-    })),
+    }));
+  },
 
   insuranceItemDetail: {
     dogId: 0,
@@ -50,10 +55,12 @@ const useInsuranceStore = create<StoreState>((set) => ({
     monthlyPayment: 0,
     registDate: "" as unknown as Date,
   },
-  setInsuranceItem: (newInfo: Partial<insuranceItem>) =>
+  setInsuranceItem: (newInfo: Partial<insuranceItem>) => {
+    console.log("Updating insuranceItemDetail with:", newInfo);
     set((state) => ({
       insuranceItemDetail: { ...state.insuranceItemDetail, ...newInfo },
-    })),
+    }));
+  },
 }));
 
 export default useInsuranceStore;
