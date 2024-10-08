@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 public class FindVaccinationRecordResponseDto {
-    Long dogId;
+    Long vaccinationRecordId;
     LocalDateTime recordTime;
     String content;
     String hospital;

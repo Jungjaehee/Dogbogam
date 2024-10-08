@@ -71,7 +71,7 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
                 .orElseThrow(()-> new IllegalArgumentException("없는 리포트입니다."));
 
         return FindVaccinationRecordResponseDto.builder()
-                .dogId(vaccinationRecord.getDog().getDogId())
+                .vaccinationRecordId(vaccinationRecord.getVaccinationRecordId())
                 .recordTime(vaccinationRecord.getRecordTime())
                 .content(vaccinationRecord.getContent())
                 .hospital(vaccinationRecord.getHospital())
@@ -100,7 +100,7 @@ public class VaccinationRecordService implements CreateVaccinationRecordUseCase,
         List<FindVaccinationRecordResponseDto> recordResponseDtos = new ArrayList<>();
         for (VaccinationRecord vaccinationRecord : vaccinationRecords) {
             recordResponseDtos.add(FindVaccinationRecordResponseDto.builder()
-                    .dogId(vaccinationRecord.getDog().getDogId())
+                    .vaccinationRecordId(vaccinationRecord.getVaccinationRecordId())
                     .recordTime(vaccinationRecord.getRecordTime())
                     .content(vaccinationRecord.getContent())
                     .hospital(vaccinationRecord.getHospital())

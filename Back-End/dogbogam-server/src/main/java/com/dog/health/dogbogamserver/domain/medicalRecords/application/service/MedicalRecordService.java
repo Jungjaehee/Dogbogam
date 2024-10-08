@@ -77,7 +77,7 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
                 .orElseThrow(()-> new IllegalArgumentException("없는 리포트입니다."));
 
         return FindMedicalReportResponseDto.builder()
-                .dogId(medicalRecord.getDog().getDogId())
+                .medicalRecordId(medicalRecord.getMedicalRecordId())
                 .recordTime(medicalRecord.getRecordTime())
                 .content(medicalRecord.getContent())
                 .hospital(medicalRecord.getHospital())
@@ -103,7 +103,7 @@ public class MedicalRecordService implements CreateReportUseCase, UpdateReportUs
         List<FindMedicalReportResponseDto> findMedicalReportResponseDtos = new ArrayList<>();
         for(MedicalRecord medicalRecord : medicalRecords) {
             findMedicalReportResponseDtos.add(FindMedicalReportResponseDto.builder()
-                            .dogId(medicalRecord.getDog().getDogId())
+                            .medicalRecordId(medicalRecord.getMedicalRecordId())
                             .recordTime(medicalRecord.getRecordTime())
                             .content(medicalRecord.getContent())
                             .hospital(medicalRecord.getHospital())
