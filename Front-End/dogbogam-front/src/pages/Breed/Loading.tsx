@@ -1,4 +1,5 @@
 import { TopBar } from "../../components/Topbar";
+import dog from "../../assets/AIprediction/loading.gif";
 import { DogInfo } from "../../utils/dogInfo";
 
 export const Loading = () => {
@@ -18,6 +19,7 @@ export const Loading = () => {
         </p>
       </div>
       <div className="flex flex-col flex-grow justify-center place-items-center place-content-center space-y-8 ">
+        <img src={dog} alt="" className="w-[200px] h-[200px]" />
         <div className="space-y-5 border border-gray-500 rounded-lg py-5 px-3 text-center bg-[#FFF1CB] shadow-lg">
           <p className="font-medium">{randomInfo.title}</p>
           <hr className="border-[0.5px] border-gray-500 w-full" />

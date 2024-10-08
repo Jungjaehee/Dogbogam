@@ -4,7 +4,7 @@ import useUserStore from "../../store/UseUserStore";
 import { Supplements } from "../../api/supplementAPI";
 import { getSupplementList } from "../../api/supplementAPI";
 import { getSupplement } from "../../api/supplementAPI";
-import SupplementDetailModal from "./SupplementDetailModal";
+import SupplementDetailModal from "./components/SupplementDetailModal";
 import { supplement } from "../../api/supplementAPI";
 
 export const SupplementPage = () => {

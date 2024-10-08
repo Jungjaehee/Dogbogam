@@ -1,5 +1,5 @@
 // import React from 'react';
-import { Insurance } from '../../models/insurance.model';
+import { Insurance } from '../../../models/insurance.model';
 
 const InsuranceDetailModal = (props: { insuranceDetail: Insurance, onClose: () => void }) => {
   if (!props.insuranceDetail) return null;

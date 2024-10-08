@@ -5,7 +5,7 @@ import useUserStore from "../../store/UseUserStore";
 import { getInsuranceList } from "../../api/insuranceAPI";
 import { getInsurance } from "../../api/insuranceAPI";
 import { Insurance } from "../../models/insurance.model";
-import InsuranceDetailModal from "./InsuranceDetailModal";
+import InsuranceDetailModal from "./components/InsuranceDetailModal";
 
 export const InsurancePage = () => {
   const { dogInfo } = useUserStore();
