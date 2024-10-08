@@ -57,7 +57,7 @@ export const BreedResult = () => {
     <div className="h-full pt-6 px-4 bg-white flex flex-col justify-between overflow-y-auto">
       <div>
         <TopBar pre={""} title={""} skip={""} />
-        <div className="space-y-3 mb-10">
+        <div className="space-y-3 mb-6">
           <p className="text-xl font-semibold">
             <span className="text-main-color">{dogInfo.name}</span>의{" "}
             

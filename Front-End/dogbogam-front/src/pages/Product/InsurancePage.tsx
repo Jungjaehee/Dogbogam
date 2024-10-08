@@ -94,6 +94,7 @@ export const InsurancePage = () => {
                 : "border-gray-100"
             } flex-grow flex justify-center items-center rounded-lg shadow-md p-4 h-12`}
             onClick={() => handleButton("질환")}
+            style={{ cursor: "pointer" }}
           >
             <p className="font-medium">질환</p>
           </div>
@@ -104,6 +105,7 @@ export const InsurancePage = () => {
                 : "border-gray-100"
             } flex-grow flex justify-center items-center rounded-lg shadow-md p-4 h-12`} 
             onClick={() => handleButton("책임")}
+            style={{ cursor: "pointer" }}
           >
             <p className="font-medium">책임</p>
           </div>
@@ -114,6 +116,7 @@ export const InsurancePage = () => {
                 : "border-gray-100"
             } flex-grow flex justify-center items-center rounded-lg shadow-md p-4 h-12`}
             onClick={() => handleButton("비")}
+            style={{ cursor: "pointer" }}
           >
             <p className="font-medium">비용</p>
           </div>
@@ -124,6 +127,7 @@ export const InsurancePage = () => {
                 : "border-gray-100"
             } flex-grow flex justify-center items-center rounded-lg shadow-md p-4 h-12`}
             onClick={() => handleButton("염증")}
+            style={{ cursor: "pointer" }}
           >
             <p className="font-medium">염증</p>
           </div>
@@ -135,13 +139,15 @@ export const InsurancePage = () => {
             <div key={index} className="border border-gray-100 rounded-lg shadow-md flex justify-between p-5">
               <div 
                 className="flex items-center space-x-4 x-full h-10"
-                onClick={() => handleCardClick(item.insurance.insuranceId)}>
+                onClick={() => handleCardClick(item.insurance.insuranceId)}
+                style={{ cursor: "pointer" }}
+                >
                 <img
                   src={item.insurance.s3ImageUrl}
                   alt=""
                   className="w-[50px] h-[50px]"
                 />
-                <div className="space-x-1">
+                <div className="space-x-0">
                   <p className="font-semibold">{item.insurance.name}</p>
                   <p className="text-gray-500 text-sm">{`${item.insurance.fee}`}</p>
                 </div>
