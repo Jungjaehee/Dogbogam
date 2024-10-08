@@ -14,16 +14,15 @@ interface DiagnosisItem {
 }
 
 const AIDiagnosis = () => {
-  const [filteredDiag, setFilteredDiag] = useState<DiagnosisItem[]>([]); // DiagnosisItem 배열로 타입을 지정
-
+  const [filteredDiag, setFilteredDiag] = useState<DiagnosisItem[]>([]); // 필터된 진단 리스트
   const navigate = useNavigate();
   const { dogInfo } = useUserStore();
-  const { setDiagnosisList } = useAIDiagnosisStore();
+  const { setDiagnosisList, diagnosisList } = useAIDiagnosisStore(); // 원본 데이터를 상태로 관리
 
   const getDiagnosis = async () => {
     const listResponse = await getDiagnosisRecords(dogInfo.dogId);
-    setDiagnosisList(listResponse);
-    setFilteredDiag(listResponse); // 가져온 데이터를 필터에도 반영
+    setDiagnosisList(listResponse.diagnoses); // 원본 데이터를 저장
+    setFilteredDiag(listResponse.diagnoses); // 처음엔 전체 데이터를 필터에 반영
   };
 
   useEffect(() => {
@@ -41,17 +40,19 @@ const AIDiagnosis = () => {
   // 필터 변경 함수
   const FilterChange = (filter: string) => {
     if (filter === "") {
-      setFilteredDiag(filteredDiag); // 전체 데이터 보여주기
+      // 필터가 비어 있을 경우 전체 데이터를 표시 (원본 데이터를 사용)
+      setFilteredDiag(diagnosisList);
     } else {
-      const newFilteredDiag = filteredDiag.filter(
-        (item) => item.diagnosisItem.includes(filter) // diagnosisItem 필드를 사용
+      // 필터가 있을 경우 진단 항목을 필터링
+      const newFilteredDiag = diagnosisList.filter(
+        (item) => item.diagnosisItem.includes(filter) // diagnosisItem 필드를 기준으로 필터링
       );
       setFilteredDiag(newFilteredDiag);
     }
   };
 
   return (
-    <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
+    <div className="h-full flex flex-col pt-6 px-4 bg-gray-0 overflow-y-scroll">
       {/* 뒤로가기 버튼 */}
       <button>
         <img
@@ -72,7 +73,7 @@ const AIDiagnosis = () => {
       <DiagnosisFilter onFilterChange={FilterChange} />
 
       {/* AI 진단 결과 리스트 */}
-      <AIDiagnosisList />
+      <AIDiagnosisList diagnosisList={filteredDiag} /> {/* 필터링된 데이터를 넘김 */}
     </div>
   );
 };
