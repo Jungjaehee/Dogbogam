@@ -57,7 +57,7 @@ export const updateMedicalRecord = async (patchedRecord: myMedicalRecord) => {
 };
 
 // 진료 기록 삭제 API 요청 함수
-export const deleteVaccination = async (medicalRecordId: number) => {
+export const deleteMedicalRecord = async (medicalRecordId: number) => {
   try {
 
     const response = await axiosInstance.delete(`/medical-records/${medicalRecordId}`);
@@ -77,7 +77,7 @@ export const getMedicalRecordDetail = async (medicalRecordId: number) => {
   try {
 
     const response = await axiosInstance.get(`/medical-records/${medicalRecordId}`);
-    console.log("진료 기록 상세 정보 ", response.data);
+    // console.log("진료 기록 상세 정보 ", response.data);
 
     return response.data.data;
 
@@ -93,7 +93,7 @@ export const getMyMedicalRecord = async (dogId: number) => {
   try {
 
     const response = await axiosInstance.get(`/medical-records/dog/${dogId}`);
-    console.log("진료 목록 불러오기 성공 :", response.data);
+    // console.log("진료 목록 불러오기 성공 :", response.data);
     
     return response.data;
 
