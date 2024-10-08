@@ -6,15 +6,10 @@ import DiagnosisFilter from "./components/DiagnosisFilter";
 import { getDiagnosisRecords } from "../../api/aiDiagnosisAPI";
 import useUserStore from "../../store/UseUserStore";
 import useAIDiagnosisStore from "../../store/UseAIDiagnosisStore";
-
-// 진단 항목의 타입을 정의합니다.
-interface DiagnosisItem {
-  diagnosisItem: string; // diagnosisItem 필드의 타입
-  // 다른 필요한 필드들도 정의할 수 있습니다.
-}
+import { AiDiagnosis } from "../../models/record.model"
 
 const AIDiagnosis = () => {
-  const [filteredDiag, setFilteredDiag] = useState<DiagnosisItem[]>([]); // 필터된 진단 리스트
+  const [filteredDiag, setFilteredDiag] = useState<AiDiagnosis[]>([]); // 필터된 진단 리스트
   const navigate = useNavigate();
   const { dogInfo } = useUserStore();
   const { setDiagnosisList, diagnosisList } = useAIDiagnosisStore(); // 원본 데이터를 상태로 관리
