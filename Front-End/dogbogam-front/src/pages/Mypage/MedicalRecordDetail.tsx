@@ -5,39 +5,39 @@ import { formatDate } from "../../utils/calcDate";
 import BackButton from "../../assets/MyPage/BackButton.png";
 import VaccineIcon from "../../assets/MyPage/vaccineIcon.png";
 import NoImageIcon from "../../assets/MyPage/noImageIcon.png";
-import { getMedicalRecordDetail } from "../../api/medicalRecordAPI";
+import { getMedicalRecordDetail , deleteMedicalRecord } from "../../api/medicalRecordAPI";
+import useUserStore from "../../store/UseUserStore";
 
 
 const MedicalRecordDetail = () => {
   const navigate = useNavigate();
-
   const location = useLocation();
+  const { dogInfo } = useUserStore();
   const { id } = location.state;
-
   const [recordDetail, setRecordDetail] = useState<MedicalRecord | null>(null);
 
+  const fetchData = async () => {
+    const responseData = await getMedicalRecordDetail(id);
+    setRecordDetail(responseData);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const responseData = await getMedicalRecordDetail(id);
-      setRecordDetail(responseData);
-    };
     fetchData();
   }, [id]);
 
   const handleBackClick = () => {
     navigate(-1); // 뒤로가기
   };
-
-  const handleDeleteClick = () => {
-    console.log("예방 접종 기록 삭제 요청");
+  
+  const handleDeleteClick = async () => {
+    await deleteMedicalRecord(id);
+    navigate(-1)
   };
-
-
-  if (!recordDetail) {
+  
+  const record = recordDetail;
+  
+  if (!record) {
     return <p>진료 기록을 불러오고 있어요!</p>;
   }
-
-  const record = recordDetail;
 
   return (
     <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
@@ -48,10 +48,10 @@ const MedicalRecordDetail = () => {
 
       {/* 제목 */}
       <h1 className="text-xl text-gray-700 font-semibold mb-2">
-        {record.dogId}의 진료 기록
+        {dogInfo.name}의 진료 기록
       </h1>
       <p className="text-gray-500 text-xs mb-2.5">
-        {record.dogId}가 받은 진료내용을 확인하고 추후 진료에 활용할 수 있어요
+        {dogInfo.name}가 받은 진료내용을 확인하고 추후 진료에 활용할 수 있어요
       </p>
 
       <div className="mb-4 bg-gray-100 p-4 rounded-lg shadow-md">
@@ -107,7 +107,7 @@ const MedicalRecordDetail = () => {
             <img
               src={record.imageUrl}
               alt="진단서 및 영수증 사진"
-              className="w-full h-auto object-cover rounded-lg"
+              className="w-full h-full object-cover rounded-lg"
             />
           </div>
         ) : (
@@ -124,7 +124,7 @@ const MedicalRecordDetail = () => {
       {/* 삭제 버튼 */}
       <button
         className="w-full bg-yellow-400 text-white font-semibold py-3 rounded-lg shadow-md mt-4"
-        onClick={handleDeleteClick}
+        onClick={() => handleDeleteClick()}
       >
         내역 삭제
       </button>
