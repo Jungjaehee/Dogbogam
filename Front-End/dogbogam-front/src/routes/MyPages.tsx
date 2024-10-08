@@ -10,6 +10,7 @@ import UpdateHealth  from "../pages/Mypage/UpdateDogHealth";
 import MedicalRecordDetail from "../pages/Mypage/MedicalRecordDetail";
 import VaccinationDetail from "../pages/Mypage/VaccinationDetail";
 import InsuranceDetail from "../pages/Mypage/InsuranceDetail";
+import  AIDiagnosisDetail  from "../pages/Mypage/AIDiagnosisDetail";
 
 const MyPages = () => {
     return (
@@ -29,6 +30,7 @@ const MyPages = () => {
           <Route path="medical-detail/:id" element={<MedicalRecordDetail />} />
           <Route path="insurance-detail/:id" element={<InsuranceDetail />} />
           <Route path="vaccination-detail/:id" element={<VaccinationDetail />} />
+          <Route path="aiDiagnosis-detail/:id" element={<AIDiagnosisDetail/>} />
         </Routes>
       </div>
     );
