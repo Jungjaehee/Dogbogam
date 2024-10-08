@@ -1,5 +1,5 @@
 import React from 'react';
-import { supplement } from '../../api/supplementAPI';
+import { supplement } from '../../../api/supplementAPI';
 
 
 interface SupplementDetailModalProps {
