@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import KakaoMap from "../../components/kakao"; // KakaoMap 컴포넌트를 가져옵니다.
+import { useState } from "react";
+import KakaoMap from "../../components/kakao";
 import { TopBar } from "../../components/Topbar";
 import useUserStore from "../../store/UseUserStore";
 
