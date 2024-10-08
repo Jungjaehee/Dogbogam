@@ -66,7 +66,8 @@ public class AiDiagnosisReportPersistenceAdapter implements CreateAiDiagnosisPor
     @Override
     public Page<AiDiagnosis> findAiDiagnosesByDogId(Long dogId, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<AiDiagnosisEntity> aiDiagnosesPage = jpaRepository.findByDog_DogId(dogId, pageable);
+        Page<AiDiagnosisEntity> aiDiagnosesPage = jpaRepository.findByDog_DogIdAndDiagnosisItemNot(dogId,
+                "견종",pageable);
 
         return aiDiagnosisMapper.entityPagetoDomainPage(aiDiagnosesPage);
     }
