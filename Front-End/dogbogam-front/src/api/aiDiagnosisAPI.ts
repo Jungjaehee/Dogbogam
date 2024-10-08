@@ -21,9 +21,8 @@ export const getDiagnosisDetail = async (diagnosisId: number) => {
     const response = await axiosInstance.get(
       `/ai-diagnosis/report/${diagnosisId}`
     );
-    console.log("ai 진단 기록 상세 정보 ", response.data);
-
-    return response.data;
+    
+    return response.data.data;
   } catch (error) {
     console.error("ai 진단 기록 상세 정보 가져오기 실패 :", error);
   }
