@@ -6,7 +6,7 @@ import { formatDate } from "../../utils/calcDate";
 import BackButton from "../../assets/MyPage/BackButton.png";
 import VaccineIcon from "../../assets/MyPage/vaccineIcon.png";
 import NoImageIcon from "../../assets/MyPage/noImageIcon.png";
-import { getVaccinationDetail } from "../../api/vaccinationRecordAPI";
+import { deleteVaccination, getVaccinationDetail } from "../../api/vaccinationRecordAPI";
 import useUserStore from "../../store/UseUserStore";
 
 const VaccinationDetail = () => {
@@ -16,25 +16,23 @@ const VaccinationDetail = () => {
   const [vaccinationDetail , setVaccinationDetail] = useState<VaccinationRecord | null>(null)
   const { dogInfo } = useUserStore();
 
+  const fetchData = async () => {
+    const responseData = await getVaccinationDetail(id);
+    setVaccinationDetail(responseData);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const responseData = await getVaccinationDetail(id);
-      setVaccinationDetail(responseData);
-    };
     fetchData();
   }, [id]);
-
 
   const handleBackClick = () => {
     navigate(-1); // 뒤로가기
   };
-
-  const handleDeleteClick = () => {
-    console.log("예방 접종 기록 삭제 요청");
+  
+  const handleDeleteClick = async () => {
+    await deleteVaccination(id);
+    navigate(-1)
   };
-
   const record = vaccinationDetail; 
-
   if (!record) {
     return (
       <p>예방 접종 기록을 불러오고 있어요!</p>
@@ -96,7 +94,7 @@ const VaccinationDetail = () => {
         <div>
           <label className="block text-gray-500 text-sm font-bold">비용</label>
           <p className="text-gray-700 text-xs font-semibold">
-            {record.cost.toLocaleString("ko-KR")} 원
+            {record.cost} 원
           </p>
         </div>
       </div>
@@ -128,7 +126,7 @@ const VaccinationDetail = () => {
       {/* 삭제 버튼 */}
       <button
         className="w-full bg-yellow-400 text-white font-semibold py-3 rounded-lg shadow-md mt-4"
-        onClick={handleDeleteClick}
+        onClick={() => handleDeleteClick()}
       >
         내역 삭제
       </button>
