@@ -89,7 +89,6 @@ export const getInsurance = async (diagnosisItem: string) => {
 
 export const getNutrient = async (healthProblems: string) => {
   try {
-    console.log(healthProblems);
     const response = await axiosInstance.get("/supplements/recommend", {
       params: { healthProblems },
     });
