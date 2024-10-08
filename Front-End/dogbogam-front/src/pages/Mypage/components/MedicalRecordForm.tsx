@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import addPhotoIcon from "../../../assets/MyPage/addPhotoIcon.png";
+import deleteIcon from "../../../assets/Signup/trash-bg.png"; // 삭제 아이콘 경로 설정
 import { registMedicalRecord } from "../../../api/medicalRecordAPI";
 import useUserStore from "../../../store/UseUserStore";
 
@@ -7,6 +8,7 @@ const MedicalRecordForm = ({ handleBack }: { handleBack: () => void }) => {
   const { dogInfo } = useUserStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null); // 미리보기 URL
 
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -22,11 +24,20 @@ const MedicalRecordForm = ({ handleBack }: { handleBack: () => void }) => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file)); // 파일 미리보기 URL 생성
     }
   };
 
   const handleFileButtonClick = () => {
     fileInputRef.current?.click();
+  };
+
+  const handleFileRemove = () => {
+    setSelectedFile(null); // 선택한 파일 제거
+    setPreviewUrl(null); // 미리보기 URL 초기화
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // 파일 입력 초기화
+    }
   };
 
   const combineDateTime = (date: string, time: string): Date => {
@@ -43,12 +54,10 @@ const MedicalRecordForm = ({ handleBack }: { handleBack: () => void }) => {
     console.log(updatedMedicalRecord);
     try {
       const response = await registMedicalRecord(updatedMedicalRecord);
-      console.log(response)
-      
+      console.log(response);
       handleBack();
     } catch (error) {
       console.error("병원 진료 기록 등록 실패:", error);
-      
     }
   };
 
@@ -122,23 +131,43 @@ const MedicalRecordForm = ({ handleBack }: { handleBack: () => void }) => {
           }}
         />
       </div>
-            {/* 이미지 업로드 */}
-            <div className="mb-4">
-              <label className="block text-gray-500 text-xs mb-1">
-                검사 결과지 및 메모 추가(선택)
-              </label>
-              <div className="flex items-center space-x-2">
-                <button className="w-7 h-7" onClick={handleFileButtonClick}>
-                  <img src={addPhotoIcon} alt="Add Icon" className="w-7 h-7" />
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    style={{ display: "none" }}
-                    onChange={handleFileChange}
-                  />
-                </button>
-              </div>
+
+      {/* 이미지 업로드 */}
+      <div className="mb-4">
+        <label className="block text-gray-500 text-xs mb-1">
+          검사 결과지 추가(선택)
+        </label>
+        <div className="flex items-center space-x-2">
+          <button className="w-7 h-7" onClick={handleFileButtonClick}>
+            <img src={addPhotoIcon} alt="Add Icon" className="w-7 h-7" />
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+          </button>
+          {previewUrl && (
+            <div className="relative w-12 h-12">
+              {/* 원형 이미지 */}
+              <img
+                src={previewUrl}
+                alt="Preview"
+                className="rounded-full w-full h-full object-cover"
+              />
+
+              {/* 삭제 버튼 */}
+              <button
+                onClick={handleFileRemove}
+                className="absolute bottom-0 right-0 bg-red-500 p-1 rounded-full"
+              >
+                <img src={deleteIcon} alt="Delete Icon" className="w-3 h-3" />
+              </button>
             </div>
+          )}
+        </div>
+      </div>
+
       {/* content 입력 추가 */}
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-semibold mb-1">
