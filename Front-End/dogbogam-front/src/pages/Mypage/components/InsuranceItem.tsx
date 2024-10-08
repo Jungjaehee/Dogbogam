@@ -10,9 +10,10 @@ const InsuranceItem = ({ insurance }: insuranceItemProps) => {
   const navigate = useNavigate();
 
   const ClickInsurance = () => {
-    navigate(`${insurance.insuranceId}`);
-  };
-
+    navigate(`/mypage/insurance-detail/${insurance.insuranceRecordId}`, {
+        state: { id: insurance.insuranceRecordId }
+  });
+  }
   // 가입 날짜를 기준으로 납입 횟수 계산
   const recordDate = new Date(insurance.registDate);
   const paymentsTime = calPaymentsTime(recordDate);

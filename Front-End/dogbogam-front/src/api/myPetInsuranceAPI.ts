@@ -39,13 +39,13 @@ export const deleteInsurance = async (insuranceRecordId: number) => {
   try {
 
     const response = await axiosInstance.delete(`insurance-records/${insuranceRecordId}`);
-    console.log("보험 등록 성공함 : ", response.data);
+    
 
     return response.data;
 
   } catch (error) {
 
-    console.error("보험 등록 실패함 :", error);
+    console.error("보험 삭제 실패함 :", error);
 
   }
 };
@@ -53,11 +53,10 @@ export const deleteInsurance = async (insuranceRecordId: number) => {
 // 특정 보험 디테일 조회 API 요청 함수
 export const getMyInsuranceDetail = async (insuranceRecordId: number) => {
   try {
-
     const response = await axiosInstance.get(`/insurance-records/${insuranceRecordId}`);
     console.log("보험 상세 정보 ", response.data);
 
-    return response.data;
+    return response.data.data;
 
   } catch (error) {
 
@@ -71,9 +70,8 @@ export const getMyInsurances = async (dogId: number) => {
   try {
 
     const response = await axiosInstance.get(`/insurance-records/all/${dogId}`);
-    console.log("보험 목록 불러오기 성공 :", response.data);
 
-    return response.data;
+    return response?.data.data;
 
   } catch (error) {
 

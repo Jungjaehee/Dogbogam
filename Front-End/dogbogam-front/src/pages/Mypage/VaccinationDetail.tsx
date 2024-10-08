@@ -1,38 +1,43 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useLocation } from "react-router-dom";
+import { useEffect , useState } from "react";
 import { VaccinationRecord } from "../../models/record.model";
 import { checkRound } from "../../utils/calcStatus";
 import { formatDate } from "../../utils/calcDate";
 import BackButton from "../../assets/MyPage/BackButton.png";
 import VaccineIcon from "../../assets/MyPage/vaccineIcon.png";
 import NoImageIcon from "../../assets/MyPage/noImageIcon.png";
-
-// 더미 데이터
-const dummyData: VaccinationRecord = {
-  vaccinationRecordId: 1,
-  dogId: 101,
-  recordTime: new Date(),
-  hospital: "서울 동물 병원",
-  vaccinationRound: 3,
-  content: "예방 접종 완료",
-  imageName: null,
-  imageUrl: null,
-  createdAt: new Date(),
-  modifiedAt: null,
-  cost: 0
-};
+import { deleteVaccination, getVaccinationDetail } from "../../api/vaccinationRecordAPI";
+import useUserStore from "../../store/UseUserStore";
 
 const VaccinationDetail = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { id } = location.state
+  const [vaccinationDetail , setVaccinationDetail] = useState<VaccinationRecord | null>(null)
+  const { dogInfo } = useUserStore();
+
+  const fetchData = async () => {
+    const responseData = await getVaccinationDetail(id);
+    setVaccinationDetail(responseData);
+  };
+  useEffect(() => {
+    fetchData();
+  }, [id]);
 
   const handleBackClick = () => {
     navigate(-1); // 뒤로가기
   };
-
-  const handleDeleteClick = () => {
-    console.log("예방 접종 기록 삭제 요청");
+  
+  const handleDeleteClick = async () => {
+    await deleteVaccination(id);
+    navigate(-1)
   };
-
-  const record = dummyData; // 더미 데이터 사용
+  const record = vaccinationDetail; 
+  if (!record) {
+    return (
+      <p>예방 접종 기록을 불러오고 있어요!</p>
+    )
+  }
 
   return (
     <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
@@ -43,7 +48,7 @@ const VaccinationDetail = () => {
 
       {/* 강아지의 예방 접종 기록 제목 */}
       <h1 className="text-xl text-gray-700 font-semibold mb-2">
-        {record.dogId}의 예방 접종 기록
+        {dogInfo.name}의 예방 접종 기록
       </h1>
       <p className="text-gray-500 text-xs mb-2.5">
         성견은 1년 주기로 적정 항목의 예방주사 접종을 권장해요
@@ -89,7 +94,7 @@ const VaccinationDetail = () => {
         <div>
           <label className="block text-gray-500 text-sm font-bold">비용</label>
           <p className="text-gray-700 text-xs font-semibold">
-            {record.cost.toLocaleString("ko-KR")} 원
+            {record.cost} 원
           </p>
         </div>
       </div>
@@ -121,7 +126,7 @@ const VaccinationDetail = () => {
       {/* 삭제 버튼 */}
       <button
         className="w-full bg-yellow-400 text-white font-semibold py-3 rounded-lg shadow-md mt-4"
-        onClick={handleDeleteClick}
+        onClick={() => handleDeleteClick()}
       >
         내역 삭제
       </button>

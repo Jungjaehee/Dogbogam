@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { calRelativeTime } from "../../../utils/calcDate";
 import { MedicalRecord, VaccinationRecord } from "../../../models/record.model";
 import { checkRound } from "../../../utils/calcStatus";
-
 // 타입 가드 함수 - record가 VaccinationRecord인지 확인
 const checkRecord = (
   record: MedicalRecord | VaccinationRecord
@@ -12,20 +11,23 @@ const checkRecord = (
 
 interface RecordItem {
   record: MedicalRecord | VaccinationRecord;
-  // record가 MedicalRecord / VaccinationRecord 타입일 수 있다고 선언
 }
 
 const MedicalRecordItem = ({ record }: RecordItem) => {
   const navigate = useNavigate();
 
   const ClickRecord = () => {
-    // 각 레코드의 id로 상세 페이지로 이동
+    console.log(record)
     if (checkRecord(record)) {
-      // 예방 접종 기록일 경우 API 호출 
-      navigate(`/vaccination/${record.vaccinationRecordId}`);
+      // 예방 접종 기록일 경우 id를 state로 넘겨줌
+      navigate(`/mypage/vaccination-detail/${record.vaccinationRecordId}`, {
+        state: { id: record.vaccinationRecordId },
+      });
     } else {
-      // 병원 진료 기록일 경우 API 호출
-      navigate(`/medical/${record.medicalRecordId}`);
+      // 병원 진료 기록일 경우 id를 state로 넘겨줌
+      navigate(`/mypage/medical-detail/${record.medicalRecordId}`, {
+        state: { id: record.medicalRecordId },
+      });
     }
   };
 

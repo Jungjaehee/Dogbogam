@@ -11,20 +11,20 @@ const MyInsurance = () => {
   const navigate = useNavigate();
 
   const { dogInfo } = useUserStore();
-  const { setInsuranceList, insuranceList } = useInsuranceStore();
+  const { setInsuranceItemList, insuranceItemList } = useInsuranceStore();
 
   const getInsurance = async () => {
     const listResponse = await getMyInsurances(dogInfo.dogId);
-    setInsuranceList(listResponse);
-    console.log(insuranceList)
+    setInsuranceItemList(listResponse.insuranceRecords);
   };
-
+  
+  const fetchInsurance = () => {
+    getInsurance();
+  };
+  
+  console.log(insuranceItemList)
   useEffect(() => {
-    const fetchDiagnosis = async () => {
-      await getInsurance();
-    };
-
-    fetchDiagnosis();
+    fetchInsurance();
   }, []); // 최초 1회 렌더링 될 때 데이터 호출
 
   const ClickBackButton = () => {
@@ -50,7 +50,7 @@ const MyInsurance = () => {
       </p>
 
       {/* 보험 목록 */}
-      <InsuranceList/>
+      <InsuranceList insuranceItemList={insuranceItemList} />
     </div>
   );
 };
