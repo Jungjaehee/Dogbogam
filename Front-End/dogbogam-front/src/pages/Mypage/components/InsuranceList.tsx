@@ -1,40 +1,27 @@
-import { useEffect , useState } from "react";
 import InsuranceItem from "./InsuranceItem";
 import { useNavigate } from "react-router-dom";
 import NonInsuranceIcon from "../../../assets/MyPage/NonInsuranceIcon.png";
 import RegistIcon from "../../../assets/MyPage/RegistIcon.png";
-import useInsuranceStore from "../../../store/UseInsuranceStore";
 import type { insuranceItem } from "../../../models/insurance.model";
 
-const InsuranceList = () => {
+interface InsuranceListProps {
+  insuranceItemList: insuranceItem[];
+} 
+
+const InsuranceList = ({ insuranceItemList }: InsuranceListProps) => {
   const navigate = useNavigate();
 
-  const { insuranceItemList } = useInsuranceStore(); 
-  const [insuranceArray, setInsuranceArray] = useState<insuranceItem[]>([]); 
-
-  useEffect(() => {
-    const data = localStorage.getItem("insuranceStorage");
-    if (data) {
-      const parsedData = JSON.parse(data);
-      const storedInsuranceArray =
-        parsedData.state.insuranceList.data.insuranceRecords;
-      setInsuranceArray(storedInsuranceArray);
-      console.log(storedInsuranceArray);
-    } else {
-      setInsuranceArray(insuranceItemList);
-    }
-  }, [insuranceItemList]); 
-
+  console.log(insuranceItemList);
   const ClickRegistButton = () => {
     navigate("/mypage/regist-insurance");
   };
 
   return (
     <div>
-      {insuranceArray.length > 0 ? (
+      {insuranceItemList.length > 0 ? (
         // 가입 보험이 있을 때
         <>
-          {insuranceArray.map((insurance, index) => (
+          {insuranceItemList.map((insurance, index) => (
             <InsuranceItem
               key={`${insurance.insuranceId}-${index}`}
               insurance={insurance}
