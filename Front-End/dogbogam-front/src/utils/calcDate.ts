@@ -39,7 +39,11 @@ export const calRelativeTime = (date: Date): string | null => {
   } else if (diffInWeeks >= 1) {
     return `${diffInWeeks}주 전`;
   } else {
-    return `${diffInDays}일 전`;
+    if (diffInDays == 0) {
+      return "오늘";
+    } else {
+      return `${diffInDays}일 전`;
+    }
   }
 };
 
