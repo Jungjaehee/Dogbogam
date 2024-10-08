@@ -17,14 +17,15 @@ const MedicalRecordItem = ({ record }: RecordItem) => {
   const navigate = useNavigate();
 
   const ClickRecord = () => {
+    console.log(record)
     if (checkRecord(record)) {
       // 예방 접종 기록일 경우 id를 state로 넘겨줌
-      navigate(`/vaccination/${record.vaccinationRecordId}`, {
+      navigate(`/mypage/vaccination-detail/${record.vaccinationRecordId}`, {
         state: { id: record.vaccinationRecordId },
       });
     } else {
       // 병원 진료 기록일 경우 id를 state로 넘겨줌
-      navigate(`/medical/${record.medicalRecordId}`, {
+      navigate(`/mypage/medical-detail/${record.medicalRecordId}`, {
         state: { id: record.medicalRecordId },
       });
     }
