@@ -65,7 +65,7 @@ const KakaoMap: React.FC<KakaoMapProps> = ({ hospitals, selectedHospital }) => {
     } else {
       // 카카오맵 스크립트를 동적으로 로드
       const script = document.createElement("script");
-      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=f33690c7b7744f9985afb20ba7c3598c&autoload=false&libraries=services`;
+      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_API_KEY}&autoload=false&libraries=services`;
       document.head.appendChild(script);
   
       // 스크립트가 로드된 후 지도 생성
@@ -76,7 +76,6 @@ const KakaoMap: React.FC<KakaoMapProps> = ({ hospitals, selectedHospital }) => {
       };
     }
   }, [hospitals, selectedHospital]);
-  
 
   return (
     <div
