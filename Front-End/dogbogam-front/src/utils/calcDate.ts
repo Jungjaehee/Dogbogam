@@ -65,3 +65,18 @@ export const formatDate = (date: Date) => {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'long' };
   return new Date(date).toLocaleDateString('ko-KR', options);
 };
+
+
+// utils/formatDate.ts
+
+export const getAiDiagnosisDay = (dateString: string) => {
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+  const date = new Date(dateString);
+  const dayOfWeek = daysOfWeek[date.getDay()]; // 요일 변환
+
+  const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")} ${dayOfWeek}`;
+
+  return formattedDate;
+};
