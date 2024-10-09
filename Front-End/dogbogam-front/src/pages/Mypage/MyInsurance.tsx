@@ -32,7 +32,7 @@ const MyInsurance = () => {
   };
 
   return (
-    <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
+    <div className="h-full flex flex-col pt-6 px-4 bg-gray-0 overflow-y-scroll">
       {/* 뒤로가기 버튼 */}
       <button>
         <img
