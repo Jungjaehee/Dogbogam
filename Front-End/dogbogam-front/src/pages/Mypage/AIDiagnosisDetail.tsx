@@ -18,49 +18,53 @@ export const AIDiagnosisDetail = () => {
   const { id } = location.state;
   const { dogInfo } = useUserStore();
 
-   const [result, setResult] = useState<AiDiagnosis>({
-     aiDiagnosisId: id,
-     dogId: 0,
-     createdAt: new Date(),
-     imageUrl: "",
-     normal: true,
-     diagnosisItem: "",
-     diseases: [],
-   });
-   const [insurance, setInsurance] = useState<recommendInsurance>({
-     insuranceId: 0,
-     name: "",
-     fee: "",
-     company: "",
-     image: "",
-   });
-   const [nutrient, setNutrient] = useState<recommendSupplement>({
-     supplementId: 0,
-     productName: "",
-     offer: "",
-     price: 0,
-     imageUrl: "",
-   });  
+  const [result, setResult] = useState<AiDiagnosis>({
+    aiDiagnosisId: id,
+    dogId: 0,
+    createdAt: new Date(),
+    imageUrl: "",
+    normal: true,
+    diagnosisItem: "",
+    diseases: [],
+  });
+  const [insurance, setInsurance] = useState<recommendInsurance>({
+    insuranceId: 0,
+    name: "",
+    fee: "",
+    company: "",
+    image: "",
+  });
+  const [nutrient, setNutrient] = useState<recommendSupplement>({
+    supplementId: 0,
+    productName: "",
+    offer: "",
+    price: 0,
+    imageUrl: "",
+  });
 
-   const getResult = async () => {
-     const resultResponse = await getDiagnosisDetail(id);
-     setResult(resultResponse);
-     const insuranceResponse = await getInsurance(resultResponse.diagnosisItem);
-     setInsurance(insuranceResponse);
-     const problemsArray = dogInfo.healthProblems.map(
-       (health) => health.problem
-     );
-     problemsArray.push(resultResponse.diagnosisItem);
-     const resultString = problemsArray.join(", ");
-     const nutrientResponse = await getNutrient(resultString);
-     setNutrient(nutrientResponse);
-   };
+  const getResult = async () => {
+    const resultResponse = await getDiagnosisDetail(id);
+    setResult(resultResponse);
+    const insuranceResponse = await getInsurance(resultResponse.diagnosisItem);
+    setInsurance(insuranceResponse);
+    const problemsArray = dogInfo.healthProblems.map(
+      (health) => health.problem
+    );
+    problemsArray.push(resultResponse.diagnosisItem);
+    const resultString = problemsArray.join(", ");
+    const nutrientResponse = await getNutrient(resultString);
+    setNutrient(nutrientResponse);
+  };
 
-   useEffect(() => {
-     getResult();
-   }, []);
+  useEffect(() => {
+    getResult();
+  }, []);
 
-const formattedDate = getAiDiagnosisDay(result.createdAt)
+  // createdAt이 문자열일 때만 함수 실행
+  const formattedDate =
+    typeof result.createdAt === "string"
+      ? getAiDiagnosisDay(result.createdAt)
+      : "";
 
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col justify-between overflow-y-auto">
@@ -73,7 +77,9 @@ const formattedDate = getAiDiagnosisDay(result.createdAt)
             <br />
             AI 질병 예측 리포트
           </p>
-          <p className="text-gray-400 font-medium text-sm">{formattedDate}요일에 실시한 검사 결과에요</p>
+          <p className="text-gray-400 font-medium text-sm">
+            {formattedDate}요일에 실시한 검사 결과에요
+          </p>
         </div>
         <div className="space-y-8 mb-1">
           {result.normal ? (
