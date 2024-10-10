@@ -10,13 +10,11 @@ export const TakePhoto = () => {
 
   const next = async (image: File) => {
     navigate("/breed/check", {
-      state: {image: image},
+      state: { image: image },
     });
   };
 
   const { dogInfo } = useUserStore();
-  
-  const webcamRef = React.useRef<Webcam>(null); // 웹캠 참조 추가
 
   const handleCapture = async () => {
     const screenshot = webcamRef.current?.getScreenshot();
@@ -30,6 +28,13 @@ export const TakePhoto = () => {
       next(file);
     }
   };
+
+  const FACING_MODE_ENVIRONMENT_ = "environment";
+  const videoConstraints = {
+    facingMode: FACING_MODE_ENVIRONMENT_,
+  };
+
+  const webcamRef = React.useRef<Webcam>(null); // 웹캠 참조 추가
 
   return (
     <div className="h-full pt-6 px-4 bg-gray-500 flex flex-col relative">
@@ -47,6 +52,7 @@ export const TakePhoto = () => {
         className="z-0"
         audio={false}
         screenshotFormat="image/jpeg"
+        videoConstraints={videoConstraints}
       />
       <TopBar pre={""} title={""} skip={""} />
       <div className="flex-grow flex flex-col justify-center place-items-center space-y-16 relative z-10">

@@ -46,7 +46,7 @@ export const CheckPhoto = () => {
       const timer = setTimeout(() => {
         setLoading(false); // 로딩 종료
         navigate("/AI/result", { state: { id } }); // 로딩이 끝난 후 네비게이트
-      }, 10000); // 10000ms = 10초
+      }, 5000); // 10000ms = 10초
 
       return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
     }
