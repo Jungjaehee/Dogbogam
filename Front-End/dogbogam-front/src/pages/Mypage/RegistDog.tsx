@@ -4,33 +4,25 @@ import { TopBar } from "../../components/Topbar";
 import { useState } from "react";
 import trash from "../../assets/Signup/trash-bg.png";
 import picture from "../../assets/Signup/picture.png";
-import { updateDogInfo } from "../../models/dog.model";
-import useUserStore from "../../store/UseUserStore";
-import { deleteDog } from "../../api/dogAPI";
+import { inputDogInfo } from "../../models/dog.model";
 
-export const UpdateDog = () => {
+export const RegistDog = () => {
   const navigate = useNavigate();
-  const { dogInfo } = useUserStore();
   const [imageSrc, setImageSrc] = useState<string | null>(null);
-  const [updateDogInfo, setUpdateDogInfo] = useState<updateDogInfo>({
-    dogId: dogInfo.dogId,
+  const [inputDogInfo, setInputDogInfo] = useState<inputDogInfo>({
     image: null,
     name: "",
+    gender: "",
     breed: "",
-    birth: "",
+    birthDate: "",
     weight: 0,
     isNeutered: false,
   });
 
-  const clickDeleteButton = () => {
-    deleteDog(dogInfo.dogId);
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setUpdateDogInfo((prev) => ({ ...prev, [name]: value }));
+    setInputDogInfo((prev) => ({ ...prev, [name]: value }));
   };
-
   const handleImageClick = () => {
     document.getElementById("file-input")?.click();
   };
@@ -39,23 +31,33 @@ export const UpdateDog = () => {
     const files = event.target.files;
     if (files && files.length > 0) {
       const file = files[0];
-      setUpdateDogInfo((prev) => ({ ...prev, image: file }));
+      setInputDogInfo((prev) => ({ ...prev, image: file })); // 선택된 파일을 상태에 저장합니다.
+      console.log("Selected file:", file);
 
       // FileReader를 사용하여 이미지 URL 생성
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageSrc(reader.result as string);
+        setImageSrc(reader.result as string); // 이미지 URL을 상태에 저장
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // 파일을 Data URL로 읽기
     }
   };
 
+  const [genderError, setGenderError] = useState("");
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (updateDogInfo.weight) {
-      navigate("/mypage/updateHealth", {
+    e.preventDefault(); // 기본 제출 동작 방지
+    if (!inputDogInfo.gender) {
+      setGenderError("이 필드를 선택해야 합니다.");
+      console.log(genderError);
+    } else {
+      setGenderError("");
+    }
+
+    if (inputDogInfo.gender) {
+        {/* 다음 경로 지정 */}
+      navigate("health", {
         state: {
-          updateDogInfo,
+          inputDogInfo,
         },
       });
     }
@@ -63,18 +65,10 @@ export const UpdateDog = () => {
 
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col">
-      <TopBar pre={"/mypage"} title={""} skip={""} />
-      <div className="flex justify-between items-center mb-5">
-        <p className="text-xl font-semibold">
-          우리 아이의 <br /> 정보 수정하기
-        </p>
-        <button
-          className="text-red-500 font-medium text-sm"
-          onClick={() => clickDeleteButton()}
-        >
-          삭제
-        </button>
-      </div>
+      <TopBar pre={"/signup"} title={""} skip={""} />
+      <p className="text-xl font-semibold mb-5">
+        우리 아이의 <br /> 정보를 알려주세요
+      </p>
       <form
         className="flex flex-col justify-between flex-grow"
         onSubmit={handleSubmit}
@@ -107,8 +101,8 @@ export const UpdateDog = () => {
               type="file"
               id="file-input"
               onChange={handleFileChange}
-              style={{ display: "none" }}
-              accept="image/*"
+              style={{ display: "none" }} // input을 숨깁니다.
+              accept="image/*" // 이미지 파일만 선택 가능하도록 설정
             />
             <div className="space-y-2 flex-1">
               <label htmlFor="" className="block font-medium text-sm">
@@ -117,54 +111,59 @@ export const UpdateDog = () => {
               <input
                 type="text"
                 name="name"
-                value={updateDogInfo.name}
-                onChange={handleChange}
+                value={inputDogInfo.name}
+                onChange={handleChange} // 상태 업데이트
                 required
                 maxLength={20}
-                placeholder={dogInfo.name}
+                placeholder="예) 춘삼이"
                 className="border rounded-lg px-4 py-3 w-full text-sm focus:border-blue-100 focus:outline-none"
               />
             </div>
           </div>
-          {/* 중성화 여부 */}
+          {/* 성별 */}
           <div className="space-y-2">
             <label htmlFor="" className="block font-medium text-sm">
-              중성화 여부 <span className="text-main-color">*</span>
+              성별 <span className="text-main-color">*</span>
             </label>
             <div className="flex justify-between gap-2">
               <div
                 className={`px-16 py-3 w-[50%] text-center rounded-lg font-medium text-sm ${
-                  updateDogInfo.isNeutered === true
+                  inputDogInfo.gender === "여아"
                     ? "bg-[#FFF7E3] border border-main-color text-main-color"
                     : "bg-[#F4F4F4] text-[#73787E]"
                 }`}
                 onClick={() => {
-                  setUpdateDogInfo((prevState) => ({
+                  setInputDogInfo((prevState) => ({
                     ...prevState,
-                    isNeutered: true,
+                    gender: "여아",
                   }));
+                  setGenderError("");
                 }}
               >
-                <p>O</p>
+                <p>여아</p>
               </div>
               <div
                 className={`px-16 py-3 w-[50%] text-center rounded-lg font-medium text-sm ${
-                  updateDogInfo.isNeutered === false
+                  inputDogInfo.gender === "남아"
                     ? "bg-[#FFF7E3] border border-main-color text-main-color"
                     : "bg-[#F4F4F4] text-[#73787E]"
                 }`}
                 onClick={() => {
-                  setUpdateDogInfo((prevState) => ({
+                  setInputDogInfo((prevState) => ({
                     ...prevState,
-                    isNeutered: false,
+                    gender: "남아",
                   }));
+                  setGenderError("");
                 }}
               >
-                <p>X</p>
+                <p>남아</p>
               </div>
             </div>
+            {genderError && (
+              <p className="text-sm text-red-500">{genderError}</p>
+            )}
           </div>
-          {/* 견종 */}
+          {/* 반려 동물 타입 */}
           <div className="space-y-2">
             <label htmlFor="" className="block font-medium text-sm">
               견종 <span className="text-main-color">*</span>
@@ -172,23 +171,23 @@ export const UpdateDog = () => {
             <input
               type="text"
               name="breed"
-              value={updateDogInfo.breed}
-              onChange={handleChange}
+              value={inputDogInfo.breed}
+              onChange={handleChange} // 상태 업데이트
               maxLength={20}
-              placeholder={dogInfo.breed}
+              placeholder="예) 말티즈"
               className="border rounded-lg px-4 py-3 w-full text-sm focus:border-blue-100 focus:outline-none"
             />
           </div>
           {/* 생년월일 */}
           <div className="space-y-2">
             <label htmlFor="" className="block font-medium text-sm">
-              생년월일 <span className="text-main-color">*</span>
+              생년월일 <span className="text-[#9FA4A9]">(선택)</span>
             </label>
             <input
               type="text"
-              name="birth"
-              value={updateDogInfo.birth}
-              onChange={handleChange}
+              name="birthDate"
+              value={inputDogInfo.birthDate}
+              onChange={handleChange} // 상태 업데이트
               minLength={6}
               maxLength={6}
               placeholder="예) 240101"
@@ -198,14 +197,16 @@ export const UpdateDog = () => {
           {/* 몸무게 */}
           <div className="space-y-2">
             <label htmlFor="" className="block font-medium text-sm">
-              몸무게 <span className="text-main-color">*</span>
+              몸무게 <span className="text-[#9FA4A9]">(선택)</span>
             </label>
             <div className="flex space-x-5 place-items-center">
               <input
                 type="number"
                 name="weight"
-                value={updateDogInfo.weight!}
-                onChange={handleChange}
+                value={inputDogInfo.weight!}
+                onChange={handleChange} // 상태 업데이트
+                minLength={6}
+                maxLength={6}
                 placeholder="예) 2.4"
                 className="border rounded-lg px-4 py-3 w-full text-sm focus:border-blue-100 focus:outline-none"
               />
@@ -213,7 +214,6 @@ export const UpdateDog = () => {
             </div>
           </div>
         </div>
-
         <Button
           text={"다음"}
           onClick={() => {
@@ -226,4 +226,4 @@ export const UpdateDog = () => {
   );
 };
 
-export default UpdateDog;
+export default RegistDog;

@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 
 interface TopBarProps {
-  pre: String;
-  title: String;
-  skip: String;
+  pre: string;
+  title: string;
+  skip: string;
 }
 
 export const TopBar = ({ pre, title, skip }: TopBarProps) => {

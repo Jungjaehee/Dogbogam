@@ -47,7 +47,7 @@ const MedicalRecordList = ({ records }: MedicalRecordListProps) => {
             onClick={ClickRegistButton}
             className="w-3/4 bg-main-color text-gray-0 font-semibold py-2.5 px-10 rounded-lg shadow-md mt-[8vh]"
           >
-            진료 기록 등록하기
+            등록하기
           </button>
         </div>
       )}

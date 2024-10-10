@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import BackButton from "../../assets/MyPage/BackButton.png";
+import { TopBar } from "../../components/Topbar"
 import InsuranceList from "./components/InsuranceList";
 import useUserStore from "../../store/UseUserStore";
 import useInsuranceStore from "../../store/UseInsuranceStore";
@@ -8,7 +7,6 @@ import { getMyInsurances } from "../../api/myPetInsuranceAPI";
 
 
 const MyInsurance = () => {
-  const navigate = useNavigate();
 
   const { dogInfo } = useUserStore();
   const { setInsuranceItemList, insuranceItemList } = useInsuranceStore();
@@ -22,27 +20,13 @@ const MyInsurance = () => {
     getInsurance();
   };
   
-  console.log(insuranceItemList)
   useEffect(() => {
     fetchInsurance();
   }, []); // 최초 1회 렌더링 될 때 데이터 호출
 
-  const ClickBackButton = () => {
-    navigate(-1);
-  };
-
   return (
     <div className="h-full flex flex-col pt-6 px-4 bg-gray-0 overflow-y-scroll">
-      {/* 뒤로가기 버튼 */}
-      <button>
-        <img
-          src={BackButton}
-          alt="Back Button"
-          className="w-7 h-7 mb-2.5"
-          onClick={ClickBackButton}
-        />
-      </button>
-
+      <TopBar pre={""} title={""} skip={""} />
       {/* 제목 */}
       <h1 className="text-xl text-gray-700 font-semibold mb-2">마이 펫 보험</h1>
       <p className="text-gray-500 text-sm mb-2.5">

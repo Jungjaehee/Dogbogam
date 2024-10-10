@@ -7,7 +7,7 @@ import { BreedResult } from "../pages/Breed/BreedResult";
 
 const BreedPages = () => {
   return (
-    <div className="w-[360px] h-[780px] relative">
+    <div className="h-[100vh] relative">
       <Routes>
         <Route path="/" element={<FindBreed />} />
         <Route path="/photo" element={<TakePhoto />} />

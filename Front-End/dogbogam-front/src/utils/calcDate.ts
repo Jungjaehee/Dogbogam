@@ -1,11 +1,31 @@
 // 나이 계산 함수
-export const calAge = (birthDate: Date | null): number | null => {
-  if (!birthDate) return null;
-  
-  const birthDay = new Date(birthDate)
+export const calAge = (birthDate: string | null): number | null => {
+  if (!birthDate || birthDate.length !== 6) return null; // 유효성 검사
+
   const today = new Date();
-  const age = today.getFullYear() - birthDay.getFullYear();
-  return age-1;
+  const year = parseInt(birthDate.slice(0, 2), 10); // 연도 (2자리)
+  const month = parseInt(birthDate.slice(2, 4), 10) - 1; // 월 (0부터 시작)
+  const day = parseInt(birthDate.slice(4, 6), 10); // 일
+
+  // 2000년대 출생인지 1900년대 출생인지 결정 (기본적으로 2000년대로 설정)
+  const fullYear =
+    year <= today.getFullYear() % 100 ? 2000 + year : 1900 + year;
+
+  const birthDay = new Date(fullYear, month, day);
+
+  let age = today.getFullYear() - birthDay.getFullYear();
+
+  // 생일이 아직 안 지났다면 나이에서 1을 뺌
+  const isBeforeBirthday =
+    today.getMonth() < birthDay.getMonth() ||
+    (today.getMonth() === birthDay.getMonth() &&
+      today.getDate() < birthDay.getDate());
+
+  if (isBeforeBirthday) {
+    age--;
+  }
+
+  return age;
 };
 
 // 가입일 계산하는 함수

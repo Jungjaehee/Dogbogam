@@ -3,7 +3,7 @@ import { useEffect , useState } from "react";
 import { VaccinationRecord } from "../../models/record.model";
 import { checkRound } from "../../utils/calcStatus";
 import { formatDate } from "../../utils/calcDate";
-import BackButton from "../../assets/MyPage/BackButton.png";
+import { TopBar } from "../../components/Topbar"
 import VaccineIcon from "../../assets/MyPage/vaccineIcon.png";
 import NoImageIcon from "../../assets/MyPage/noImageIcon.png";
 import { deleteVaccination, getVaccinationDetail } from "../../api/vaccinationRecordAPI";
@@ -23,10 +23,6 @@ const VaccinationDetail = () => {
   useEffect(() => {
     fetchData();
   }, [id]);
-
-  const handleBackClick = () => {
-    navigate(-1); // 뒤로가기
-  };
   
   const handleDeleteClick = async () => {
     await deleteVaccination(id);
@@ -40,12 +36,8 @@ const VaccinationDetail = () => {
   }
 
   return (
-    <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
-      {/* 뒤로가기 버튼 */}
-      <button onClick={handleBackClick}>
-        <img src={BackButton} alt="Back Button" className="w-7 h-7 mb-2.5" />
-      </button>
-
+    <div className="h-full flex flex-col pt-6 px-4 bg-gray-0 overflow-y-scroll">
+      <TopBar pre={""} title={""} skip={""} />
       {/* 강아지의 예방 접종 기록 제목 */}
       <h1 className="text-xl text-gray-700 font-semibold mb-2">
         {dogInfo.name}의 예방 접종 기록

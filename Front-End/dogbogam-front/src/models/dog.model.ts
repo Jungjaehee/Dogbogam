@@ -37,7 +37,7 @@ export interface updateDogInfo {
   dogId: number;
   name: string;
   breed: string;
-  birthDate: string; // 강아지 고양이
+  birth: string;
   weight: number;
   isNeutered: boolean;
 }

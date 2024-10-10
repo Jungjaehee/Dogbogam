@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import BackButton from "../../assets/MyPage/BackButton.png";
+import { TopBar } from "../../components/Topbar"
 import useUserStore from "../../store/UseUserStore";
 import { insuranceResponse, insuranceItem } from "../../models/insurance.model";
 import {
@@ -32,10 +32,6 @@ const InsuranceDetail = () => {
     fetchData();
   }, [id]);
 
-  const handleBackClick = () => {
-    navigate(-1); // 뒤로가기
-  };
-
   const handleDeleteClick = async () => {
     await deleteInsurance(id);
     navigate(-1);
@@ -58,14 +54,10 @@ const InsuranceDetail = () => {
 
   // 총 납부 금액 계산 (월 납입료 * 총 개월 수)
   const totalPayment = totalMonths * record.monthlyPayment;
-
+  
   return (
     <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
-      {/* 뒤로가기 버튼 */}
-      <button onClick={handleBackClick}>
-        <img src={BackButton} alt="Back Button" className="w-7 h-7 mb-2.5" />
-      </button>
-
+      <TopBar pre={""} title={""} skip={""} />
       {/* 강아지의 예방 접종 기록 제목 */}
       <h1 className="text-xl text-gray-700 font-semibold mb-2">
         <span className="text-yellow-500">{dogInfo.name}</span>의 펫 보험

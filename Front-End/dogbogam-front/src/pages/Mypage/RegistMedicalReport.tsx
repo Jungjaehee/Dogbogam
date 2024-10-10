@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BackButton from "../../assets/MyPage/BackButton.png";
+import { TopBar } from "../../components/Topbar"
 import MedicalRecordForm from "./components/MedicalRecordForm";
 import VaccinationRecordForm from "./components/VaccinationRecordForm";
 
@@ -14,15 +14,7 @@ const RegistMedicalReport = () => {
 
   return (
     <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
-      <button>
-        <img
-          src={BackButton}
-          alt="Back Button"
-          className="w-7 h-7 mb-2.5"
-          onClick={handleBack}
-        />
-      </button>
-
+      <TopBar pre={""} title={""} skip={""} />
       <h1 className="text-xl text-gray-700 font-semibold mb-2">
         진료 기록 추가
       </h1>

@@ -2,10 +2,10 @@ import { useLocation , useNavigate } from "react-router-dom";
 import { useEffect , useState } from "react";
 import { MedicalRecord } from "../../models/record.model";
 import { formatDate } from "../../utils/calcDate";
-import BackButton from "../../assets/MyPage/BackButton.png";
 import VaccineIcon from "../../assets/MyPage/vaccineIcon.png";
 import NoImageIcon from "../../assets/MyPage/noImageIcon.png";
 import { getMedicalRecordDetail , deleteMedicalRecord } from "../../api/medicalRecordAPI";
+import { TopBar } from "../../components/Topbar"
 import useUserStore from "../../store/UseUserStore";
 
 
@@ -23,10 +23,6 @@ const MedicalRecordDetail = () => {
   useEffect(() => {
     fetchData();
   }, [id]);
-
-  const handleBackClick = () => {
-    navigate(-1); // 뒤로가기
-  };
   
   const handleDeleteClick = async () => {
     await deleteMedicalRecord(id);
@@ -40,12 +36,8 @@ const MedicalRecordDetail = () => {
   }
 
   return (
-    <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
-      {/* 뒤로가기 */}
-      <button onClick={handleBackClick}>
-        <img src={BackButton} alt="Back Button" className="w-7 h-7 mb-2.5" />
-      </button>
-
+    <div className="h-full flex flex-col pt-6 px-4 bg-gray-0 overflow-y-scroll">
+      <TopBar pre={""} title={""} skip={""} />
       {/* 제목 */}
       <h1 className="text-xl text-gray-700 font-semibold mb-2">
         {dogInfo.name}의 진료 기록
