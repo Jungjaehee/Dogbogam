@@ -6,7 +6,7 @@ import { DogHealth } from "../pages/Signup/DogHealth";
 
 const SignupPages = () => {
   return (
-    <div className="w-[360px] h-[780px] relative">
+    <div className="h-[100vh] relative">
       <Routes>
         <Route path="/" element={<Signup />} />
         <Route path="/dog" element={<DogInfo />} />

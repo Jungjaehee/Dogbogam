@@ -14,7 +14,7 @@ import  AIDiagnosisDetail  from "../pages/Mypage/AIDiagnosisDetail";
 
 const MyPages = () => {
     return (
-      <div className="w-[360px] h-[780px] relative">
+      <div className="h-[100vh] relative">
         <Routes>
           {/* 최초 마이 페이지 */}
           <Route path="" element={<MyPage />} />
@@ -24,13 +24,19 @@ const MyPages = () => {
           <Route path="medical-record" element={<MedicalRecord />} />
           <Route path="my-insurance" element={<MyInsurance />} />
           <Route path="updateInfo" element={<UpdateDog />} />
-          <Route path="updateHealth" element={<UpdateHealth/>} />
+          <Route path="updateHealth" element={<UpdateHealth />} />
           <Route path="regist-record" element={<RegistMedicalReport />} />
           <Route path="regist-insurance" element={<RegistInsurance />} />
           <Route path="medical-detail/:id" element={<MedicalRecordDetail />} />
           <Route path="insurance-detail/:id" element={<InsuranceDetail />} />
-          <Route path="vaccination-detail/:id" element={<VaccinationDetail />} />
-          <Route path="aiDiagnosis-detail/:id" element={<AIDiagnosisDetail/>} />
+          <Route
+            path="vaccination-detail/:id"
+            element={<VaccinationDetail />}
+          />
+          <Route
+            path="aiDiagnosis-detail/:id"
+            element={<AIDiagnosisDetail />}
+          />
         </Routes>
       </div>
     );

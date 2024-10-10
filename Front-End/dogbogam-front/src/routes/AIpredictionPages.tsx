@@ -6,7 +6,7 @@ import { AIResult } from "../pages/AIprediction/AIResult";
 
 const AIpredictionPages = () => {
   return (
-    <div className="w-[360px] h-[780px] relative">
+    <div className="h-[100vh] relative">
       <Routes>
         <Route path="/" element={<SelectPart />} />
         <Route path="/photo" element={<TakePhoto />} />
