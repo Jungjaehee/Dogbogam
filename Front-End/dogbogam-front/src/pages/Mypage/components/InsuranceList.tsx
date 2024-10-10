@@ -11,7 +11,6 @@ interface InsuranceListProps {
 const InsuranceList = ({ insuranceItemList }: InsuranceListProps) => {
   const navigate = useNavigate();
 
-  console.log(insuranceItemList);
   const ClickRegistButton = () => {
     navigate("/mypage/regist-insurance");
   };

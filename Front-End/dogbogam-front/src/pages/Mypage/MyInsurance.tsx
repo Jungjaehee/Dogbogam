@@ -20,7 +20,6 @@ const MyInsurance = () => {
     getInsurance();
   };
   
-  console.log(insuranceItemList)
   useEffect(() => {
     fetchInsurance();
   }, []); // 최초 1회 렌더링 될 때 데이터 호출

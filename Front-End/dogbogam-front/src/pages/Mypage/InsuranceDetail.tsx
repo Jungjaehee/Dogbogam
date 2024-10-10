@@ -54,7 +54,7 @@ const InsuranceDetail = () => {
 
   // 총 납부 금액 계산 (월 납입료 * 총 개월 수)
   const totalPayment = totalMonths * record.monthlyPayment;
-
+  
   return (
     <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
       <TopBar pre={""} title={""} skip={""} />

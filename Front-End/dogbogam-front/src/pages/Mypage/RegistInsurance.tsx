@@ -41,9 +41,9 @@ const RegistInsurance = () => {
     const insuranceRecord = {
       insuranceId: Number(insuranceId), // 보험 ID
       dogId: dogInfo.dogId, // 강아지 ID
-      registDate: new Date(), 
+      registDate: new Date(registDate), 
       monthlyPayment: Number(monthlyPayment), // 월 납입료
-      expirationDate: new Date(), 
+      expirationDate: new Date(expirationDate), 
     };
 
     try {
@@ -56,7 +56,7 @@ const RegistInsurance = () => {
       
     }
   };
-
+  
   return (
     <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
       <TopBar pre={""} title={""} skip={""} />
