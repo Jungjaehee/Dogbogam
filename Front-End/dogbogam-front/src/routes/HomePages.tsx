@@ -7,13 +7,13 @@ import { Map } from "../pages/Map/Map";
 
 const HomePages = () => {
   return (
-    <div className="w-[360px] h-[780px] relative">
+    <div className="h-[100vh] relative">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/insurance" element={<InsurancePage />} />
-        <Route path="/supplement" element={<SupplementPage/>} />
-        <Route path="/breed" element={<FindBreed/>} />
-        <Route path="/map" element={<Map/>} />
+        <Route path="/supplement" element={<SupplementPage />} />
+        <Route path="/breed" element={<FindBreed />} />
+        <Route path="/map" element={<Map />} />
       </Routes>
     </div>
   );
