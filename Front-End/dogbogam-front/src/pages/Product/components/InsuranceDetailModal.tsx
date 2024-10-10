@@ -3,7 +3,7 @@ import { Insurance } from '../../../models/insurance.model';
 
 const InsuranceDetailModal = (props: { insuranceDetail: Insurance, onClose: () => void }) => {
   if (!props.insuranceDetail) return null;
-
+  
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center overflow-auto z-50">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-80 mx-auto relative">
