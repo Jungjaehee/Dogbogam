@@ -9,7 +9,7 @@ const MedicalRecordButton = () => {
   return (
     
     <button
-      className="flex flex-col items-center justify-center my-5 p-4 bg-gray-100 rounded-lg shadow-md w-full max-w-sm"
+      className="flex flex-col items-center justify-center my-5 p-4 bg-gray-100 rounded-lg shadow-md w-full"
       onClick={() => navigate("medical-record")}
     >
       {/* 아이콘 */}
