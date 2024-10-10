@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import BackButton from "../../assets/MyPage/BackButton.png";
+import { TopBar } from "../../components/Topbar"
 import { registeInsurance } from "../../api/myPetInsuranceAPI"; // 보험 등록 API 함수 임포트
 import useUserStore from "../../store/UseUserStore"; // zustand 스토어에서 강아지 정보와 토큰 가져오기
 import { getInsuranceList } from "../../api/insuranceAPI";
@@ -57,22 +57,9 @@ const RegistInsurance = () => {
     }
   };
 
-  const ClickBackButton = () => {
-    navigate(-1);
-  };
-
   return (
     <div className="h-full flex flex-col pt-6 px-4 bg-gray-0">
-      {/* 뒤로가기 버튼 */}
-      <button>
-        <img
-          src={BackButton}
-          alt="Back Button"
-          className="w-7 h-7 mb-2.5"
-          onClick={ClickBackButton}
-        />
-      </button>
-
+      <TopBar pre={""} title={""} skip={""} />
       {/* 제목 */}
       <h1 className="text-xl text-gray-700 font-semibold mb-2">
         보험 정보 등록
