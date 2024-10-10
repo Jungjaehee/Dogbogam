@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Plus from "../../../assets/icons/plus.png";
 import ModalTop from "../../../assets/icons/modalTop.png";
 import useUserStore from "../../../store/UseUserStore";
-import { getDogInfo } from "../../../api/dogAPI";
+import { getDogInfo, getDogList } from "../../../api/dogAPI";
+import { useNavigate } from "react-router-dom";
 
 interface DogSelectModalProps {
   onClose: () => void;
@@ -10,7 +11,8 @@ interface DogSelectModalProps {
 
 const DogSelectModal: React.FC<DogSelectModalProps> = ({ onClose }) => {
   //api 연결 후에 store에서 불러오기
-  const { token, dogList, setDogInfo } = useUserStore();
+  const { token, dogList, setDogInfo , setDogList } = useUserStore();
+  const navigate = useNavigate();
 
   const onConfirm = async (dogId: number) => {
     const dogResponse = await getDogInfo(token, dogId);
@@ -18,6 +20,21 @@ const DogSelectModal: React.FC<DogSelectModalProps> = ({ onClose }) => {
     setDogInfo(dogResponse);
     onClose();
   };
+  const fetchDogData = async () => {
+    const responseData = await getDogList(token);
+    setDogList(responseData);
+  }
+
+  useEffect(() => {
+    fetchDogData()
+  },[])
+
+  console.log(dogList);
+
+  const ClickRegistButton = () => {
+    navigate("/regist")
+  }
+  
 
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget === e.target) {
@@ -30,7 +47,7 @@ const DogSelectModal: React.FC<DogSelectModalProps> = ({ onClose }) => {
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20"
       onClick={handleModalClick}
     >
-      <div className="bg-white w-[360px] h-[53vh] p-5 rounded-t-3xl shadow-lg absolute bottom-0">
+      <div className="bg-white h-[53vh] p-5 rounded-t-3xl shadow-lg absolute bottom-0">
         <div className="flex items-center justify-center place-items-center mb-10">
           <img src={ModalTop} className="max-w-11 max-h-5" />
         </div>
@@ -42,7 +59,7 @@ const DogSelectModal: React.FC<DogSelectModalProps> = ({ onClose }) => {
             dogList.map((dog) => (
               <div
                 key={dog.dogId}
-                className="flex items-center space-x-2 p-2 mb-6 bg-gray-100 rounded-lg cursor-pointer hover:bg-main-color"
+                className="flex items-center space-x-2 p-2 bg-gray-100 rounded-lg cursor-pointer hover:bg-main-color"
                 onClick={() => onConfirm(dog.dogId)}
               >
                 <img
@@ -59,10 +76,12 @@ const DogSelectModal: React.FC<DogSelectModalProps> = ({ onClose }) => {
         </div>
         <div
           className="flex items-center justify-center cursor-pointer mt-10"
-          onClick={() => console.log("새로운 아이 등록")}
         >
           <img src={Plus} className="w-5 h-5 mr-2" />
-          <p className="text-gray-400 font-medium text-sm">
+          <p
+            className="text-gray-400 font-medium text-sm"
+            onClick={() => ClickRegistButton()}
+          >
             새로운 아이 등록하기
           </p>
         </div>
