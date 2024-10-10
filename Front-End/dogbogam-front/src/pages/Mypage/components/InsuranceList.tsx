@@ -57,7 +57,7 @@ const InsuranceList = ({ insuranceItemList }: InsuranceListProps) => {
             onClick={ClickRegistButton}
             className="w-3/4 bg-main-color text-gray-0 font-semibold py-2.5 px-10 rounded-lg shadow-md mt-[8vh]"
           >
-            마이 펫 보험 등록 하기
+            등록 하기
           </button>
         </div>
       )}
