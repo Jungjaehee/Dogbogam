@@ -22,7 +22,7 @@ const DiagnosisFilter = ({
 
   return (
     <div className="flex items-center justify-start border-gray-300 w-full my-3">
-      {["눈", "피부", "비만", "관절"].map((filter) => (
+      {["눈", "피부", "비만"].map((filter) => (
         <button
           key={filter}
           onClick={() => FilterChange(filter)}
