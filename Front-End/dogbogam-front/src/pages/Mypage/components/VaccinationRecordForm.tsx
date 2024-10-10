@@ -21,6 +21,8 @@ const VaccinationRecordForm = ({ handleBack }: { handleBack: () => void }) => {
     cost: 0,
   });
 
+  const today = new Date().toISOString().split("T")[0];
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -53,6 +55,7 @@ const VaccinationRecordForm = ({ handleBack }: { handleBack: () => void }) => {
       image: selectedFile,
     };
     try {
+      console.log(updatedVaccinationRecord)
       const response = await registVaccination(updatedVaccinationRecord);
       console.log(response);
       handleBack();
@@ -137,6 +140,7 @@ const VaccinationRecordForm = ({ handleBack }: { handleBack: () => void }) => {
             className="w-full py-2 px-3 border rounded-md text-gray-700"
             required
             value={date}
+            max={today}
             onChange={(e) => setDate(e.target.value)}
           />
         </div>
