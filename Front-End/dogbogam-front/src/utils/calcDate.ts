@@ -1,6 +1,6 @@
 // 나이 계산 함수
 export const calAge = (birthDate: string | null): number | null => {
-  if (!birthDate || birthDate.length !== 6) return null; // 유효성 검사
+  if (!birthDate || birthDate.length !== 10) return null; // 유효성 검사
 
   const today = new Date();
   const year = parseInt(birthDate.slice(0, 2), 10); // 연도 (2자리)
