@@ -12,7 +12,7 @@ const DogInfo = () => {
 
   const age =
     typeof dogInfo.birth === "string" && dogInfo.birth
-      ? calAge(dogInfo.birth)
+      ? `${calAge(dogInfo.birth)}세`
       : "모름";
 
   
@@ -22,7 +22,7 @@ const DogInfo = () => {
     navigate("updateInfo")
   }
   return (
-    <div className="flex items-center p-4 bg-white rounded-lg shadow-md w-full max-w-sm">
+    <div className="flex items-center p-4 bg-white rounded-lg shadow-md w-full">
       {/* 강아지 프사 */}
       <img
         src={dogInfo.imageUrl || "https://via.placeholder.com/64"}
@@ -50,7 +50,7 @@ const DogInfo = () => {
         </div>
 
         <p className="text-gray-500">
-          {dogInfo.breed} · {age ? `${age}세` : "나이 모름"} · {dogInfo.weight ? `${dogInfo.weight}kg` : "몸무게 모름"}
+          {dogInfo.breed} · {age} · {dogInfo.weight ? `${dogInfo.weight}kg` : "몸무게 모름"}
         </p>
       </div>
     </div>
