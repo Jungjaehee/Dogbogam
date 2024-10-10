@@ -20,7 +20,7 @@ export const TakePhoto = () => {
 
   const next = async (image: File) => {
     navigate("/AI/check", {
-      state: { selectedProblem: finalProblem, image: image },
+      state: { selectedProblem: selectedProblem, image: image },
     });
   };
 

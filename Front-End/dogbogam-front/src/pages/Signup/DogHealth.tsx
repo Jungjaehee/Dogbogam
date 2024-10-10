@@ -19,6 +19,7 @@ export const DogHealth = () => {
   const location = useLocation();
   const { inputDogInfo, inputUserInfo } = location.state;
   const [problemList, setProblemList] = useState<string[]>([]);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // 버튼 클릭 상태 추가
   const problemName = [
     { image: eye, name: "눈" },
     { image: bone, name: "관절" },
@@ -53,6 +54,7 @@ export const DogHealth = () => {
   };
 
   const signup = async () => {
+    setIsButtonDisabled(true); // 버튼 클릭 상태 변경
     try {
       const userResponse = await userSignup(inputUserInfo);
       const token = userResponse.accessToken;
@@ -62,13 +64,14 @@ export const DogHealth = () => {
       navigate("/signup/success", { replace: true });
     } catch (error) {
       console.log("회원 가입 실패: ", error);
+      setIsButtonDisabled(false); // 실패 시 버튼 다시 활성화
     }
   };
 
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col justify-between">
       <div>
-        <TopBar pre={"/start"} title={""} skip={"success"} />
+        <TopBar pre={"/start"} title={""} skip={""} />
         <div className="space-y-3 mb-16">
           <p className="text-xl font-semibold">
             우리 아이의 <br />
@@ -107,9 +110,9 @@ export const DogHealth = () => {
         </div>
       </div>
       <Button
-        onClick={() => signup()}
+        onClick={isButtonDisabled ? undefined : signup} // 버튼 클릭 상태에 따라 onClick 설정
         text={"회원가입"}
-        bgColor={"bg-main-color"}
+        bgColor={isButtonDisabled ? "bg-gray-500" : "bg-main-color"} // 버튼 색상 변경
       />
     </div>
   );

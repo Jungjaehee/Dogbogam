@@ -73,8 +73,8 @@ export const AIResult = () => {
         <TopBar pre={""} title={""} skip={""} />
         <div className="space-y-3 mb-10">
           <p className="text-xl font-semibold">
-            <span className="text-main-color">새우</span>의{" "}
-            <span className="text-main-color">눈</span>
+            <span className="text-main-color">{dogInfo.name}</span>의{" "}
+            <span className="text-main-color">{result.diagnosisItem}</span>
             <br />
             AI 질병 예측 리포트
           </p>
