@@ -116,7 +116,7 @@ export const patchDogInfo = async (dog: updateDogInfo) => {
     formData.append("dogId", dog.dogId.toString());
     formData.append("name", dog.name);
     formData.append("breed", dog.breed);
-    formData.append("birthDate", dog.birthDate);
+    formData.append("birth", dog.birth);
     formData.append("weight", dog.weight.toString());
     formData.append("isNeutered", dog.isNeutered.toString());
 
