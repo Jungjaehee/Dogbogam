@@ -10,27 +10,27 @@ import { deleteDog } from "../../api/dogAPI";
 
 export const UpdateDog = () => {
   const navigate = useNavigate();
-  const {dogInfo} = useUserStore();
+  const { dogInfo } = useUserStore();
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [updateDogInfo, setUpdateDogInfo] = useState<updateDogInfo>({
     dogId: dogInfo.dogId,
     image: null,
     name: "",
     breed: "",
-    birthDate: "",
+    birth: "",
     weight: 0,
     isNeutered: false,
   });
 
   const clickDeleteButton = () => {
-    deleteDog(dogInfo.dogId)
-  }
-
+    deleteDog(dogInfo.dogId);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUpdateDogInfo((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleImageClick = () => {
     document.getElementById("file-input")?.click();
   };
@@ -39,21 +39,19 @@ export const UpdateDog = () => {
     const files = event.target.files;
     if (files && files.length > 0) {
       const file = files[0];
-      setUpdateDogInfo((prev) => ({ ...prev, image: file })); // 선택된 파일을 상태에 저장합니다.
-      console.log("Selected file:", file);
+      setUpdateDogInfo((prev) => ({ ...prev, image: file }));
 
       // FileReader를 사용하여 이미지 URL 생성
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageSrc(reader.result as string); // 이미지 URL을 상태에 저장
+        setImageSrc(reader.result as string);
       };
-      reader.readAsDataURL(file); // 파일을 Data URL로 읽기
+      reader.readAsDataURL(file);
     }
   };
 
-  
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // 기본 제출 동작 방지
+    e.preventDefault();
     if (updateDogInfo.weight) {
       navigate("/mypage/updateHealth", {
         state: {
@@ -66,9 +64,17 @@ export const UpdateDog = () => {
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col">
       <TopBar pre={"/mypage"} title={""} skip={""} />
-      <p className="text-xl font-semibold mb-5">
-        우리 아이의 <br /> 정보 수정하기
-      </p>
+      <div className="flex justify-between items-center mb-5">
+        <p className="text-xl font-semibold">
+          우리 아이의 <br /> 정보 수정하기
+        </p>
+        <button
+          className="text-red-500 font-medium text-sm"
+          onClick={() => clickDeleteButton()}
+        >
+          삭제
+        </button>
+      </div>
       <form
         className="flex flex-col justify-between flex-grow"
         onSubmit={handleSubmit}
@@ -101,8 +107,8 @@ export const UpdateDog = () => {
               type="file"
               id="file-input"
               onChange={handleFileChange}
-              style={{ display: "none" }} // input을 숨깁니다.
-              accept="image/*" // 이미지 파일만 선택 가능하도록 설정
+              style={{ display: "none" }}
+              accept="image/*"
             />
             <div className="space-y-2 flex-1">
               <label htmlFor="" className="block font-medium text-sm">
@@ -112,7 +118,7 @@ export const UpdateDog = () => {
                 type="text"
                 name="name"
                 value={updateDogInfo.name}
-                onChange={handleChange} // 상태 업데이트
+                onChange={handleChange}
                 required
                 maxLength={20}
                 placeholder={dogInfo.name}
@@ -158,7 +164,7 @@ export const UpdateDog = () => {
               </div>
             </div>
           </div>
-          {/* 반려 동물 타입 */}
+          {/* 견종 */}
           <div className="space-y-2">
             <label htmlFor="" className="block font-medium text-sm">
               견종 <span className="text-main-color">*</span>
@@ -167,7 +173,7 @@ export const UpdateDog = () => {
               type="text"
               name="breed"
               value={updateDogInfo.breed}
-              onChange={handleChange} // 상태 업데이트
+              onChange={handleChange}
               maxLength={20}
               placeholder={dogInfo.breed}
               className="border rounded-lg px-4 py-3 w-full text-sm focus:border-blue-100 focus:outline-none"
@@ -180,9 +186,9 @@ export const UpdateDog = () => {
             </label>
             <input
               type="text"
-              name="birthDate"
-              value={updateDogInfo.birthDate}
-              onChange={handleChange} // 상태 업데이트
+              name="birth"
+              value={updateDogInfo.birth}
+              onChange={handleChange}
               minLength={6}
               maxLength={6}
               placeholder="예) 240101"
@@ -199,9 +205,7 @@ export const UpdateDog = () => {
                 type="number"
                 name="weight"
                 value={updateDogInfo.weight!}
-                onChange={handleChange} // 상태 업데이트
-                minLength={6}
-                maxLength={6}
+                onChange={handleChange}
                 placeholder="예) 2.4"
                 className="border rounded-lg px-4 py-3 w-full text-sm focus:border-blue-100 focus:outline-none"
               />
@@ -216,12 +220,6 @@ export const UpdateDog = () => {
             // signup();
           }}
           bgColor={"bg-main-color"}
-        ></Button>
-
-        <Button
-          text={"반려견 삭제"}
-          onClick={() => clickDeleteButton()}
-          bgColor={"bg-bad-text"}
         ></Button>
       </form>
     </div>
