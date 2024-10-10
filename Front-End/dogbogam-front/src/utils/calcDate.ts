@@ -1,17 +1,30 @@
 // 나이 계산 함수
 export const calAge = (birthDate: string | null): number | null => {
-  if (!birthDate || birthDate.length !== 10) return null; // 유효성 검사
+  if (!birthDate || (birthDate.length !== 6 && birthDate.length !== 10))
+    return null; // 6글자 또는 10글자 유효성 검사
+
+  let year, month, day;
+
+  if (birthDate.length === 6) {
+    // 6글자 (YYMMDD) 형식일 경우 처리
+    const shortYear = parseInt(birthDate.slice(0, 2), 10);
+    month = parseInt(birthDate.slice(2, 4), 10) - 1;
+    day = parseInt(birthDate.slice(4, 6), 10);
+
+    // 2000년대 출생인지 1900년대 출생인지 결정
+    year =
+      shortYear <= new Date().getFullYear() % 100
+        ? 2000 + shortYear
+        : 1900 + shortYear;
+  } else {
+    // 10글자 (YYYY-MM-DD) 형식일 경우 처리
+    year = parseInt(birthDate.slice(0, 4), 10);
+    month = parseInt(birthDate.slice(5, 7), 10) - 1;
+    day = parseInt(birthDate.slice(8, 10), 10);
+  }
 
   const today = new Date();
-  const year = parseInt(birthDate.slice(0, 2), 10); // 연도 (2자리)
-  const month = parseInt(birthDate.slice(2, 4), 10) - 1; // 월 (0부터 시작)
-  const day = parseInt(birthDate.slice(4, 6), 10); // 일
-
-  // 2000년대 출생인지 1900년대 출생인지 결정 (기본적으로 2000년대로 설정)
-  const fullYear =
-    year <= today.getFullYear() % 100 ? 2000 + year : 1900 + year;
-
-  const birthDay = new Date(fullYear, month, day);
+  const birthDay = new Date(year, month, day);
 
   let age = today.getFullYear() - birthDay.getFullYear();
 
@@ -27,6 +40,7 @@ export const calAge = (birthDate: string | null): number | null => {
 
   return age;
 };
+
 
 // 가입일 계산하는 함수
 export const calSignUpDate = (createdTime: Date): number | null => {
