@@ -1,7 +1,7 @@
 import type { myMedicalRecord } from "../models/record.model";
 import { BASE_URL } from "./APIconfig";
 import axiosInstance from "./axiosinstance";
-
+import noImage from "../assets/MyPage/noImage.png";
 // 진료 기록 등록 API 요청 함수
 export const registMedicalRecord = async (record: myMedicalRecord) => {
   try {
@@ -10,6 +10,9 @@ export const registMedicalRecord = async (record: myMedicalRecord) => {
     // 이미지가 있으면 첨부, 없으면 디폴트 이미지
     if (record.image) {
       formData.append("image", record.image);
+    } else {
+      const defaultImage = await fetch(noImage).then((res) => res.blob());
+      formData.append("image", defaultImage, "noImage"); // 디폴트 이미지
     }
 
     // DateTime 형식 변환 (예: 2024-10-07T19:38:00)
