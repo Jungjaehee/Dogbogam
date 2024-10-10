@@ -16,6 +16,7 @@ const RegistInsurance = () => {
   const [monthlyPayment, setMonthlyPayment] = useState("");
   const [registDate, setRegistDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
+
   useEffect(() => {
     const fetchInsuranceList = async () => {
       try {
@@ -30,7 +31,8 @@ const RegistInsurance = () => {
     
     fetchInsuranceList();
   }, []);
-  console.log(insuranceList)
+
+  const today = new Date().toISOString().split("T")[0];
   // 보험 등록 요청 함수
   const ClickSubmitButton = async () => {
     if (!insuranceId || !monthlyPayment || !registDate || !expirationDate) {
@@ -113,6 +115,7 @@ const RegistInsurance = () => {
             className="w-full py-2 px-3 border rounded-md text-gray-700"
             value={registDate}
             onChange={(e) => setRegistDate(e.target.value)}
+            max={today}
             required
           />
         </div>
@@ -126,6 +129,7 @@ const RegistInsurance = () => {
             className="w-full py-2 px-3 border rounded-md text-gray-700"
             value={expirationDate}
             onChange={(e) => setExpirationDate(e.target.value)}
+            min={today}
             required
           />
         </div>
