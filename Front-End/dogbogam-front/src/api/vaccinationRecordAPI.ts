@@ -1,6 +1,7 @@
 import type { myVaccinationRecord } from "../models/record.model";
 import axiosInstance from "./axiosinstance";
 import { BASE_URL } from "./APIconfig";
+import noImage from "../assets/MyPage/noImage.png"
 // 예방접종 기록 등록 API 요청 함수
 // 진료 기록 등록 API 요청 함수
 export const registVaccination = async (record: myVaccinationRecord) => {
@@ -9,6 +10,9 @@ export const registVaccination = async (record: myVaccinationRecord) => {
 
     if (record.image) {
       formData.append("image", record.image);
+    } else {
+      const defaultImage = await fetch(noImage).then((res) => res.blob());
+      formData.append("image", defaultImage, "noImage"); // 디폴트 이미지
     }
 
     // DateTime 형식 변환 (예: 2024-10-07T19:38:00)
@@ -22,11 +26,6 @@ export const registVaccination = async (record: myVaccinationRecord) => {
     formData.append("hospital", record.hospital);
     formData.append("cost", record.cost.toString());
     formData.append("vaccinationRound", record.vaccinationRound.toString());
-
-    // formData 출력 (디버깅용)
-    for (const pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
 
     const response = await axiosInstance.post(
       `${BASE_URL}/vaccination-records`,
