@@ -45,9 +45,9 @@ const MyPage = () => {
       )}
 
       <div>
-        <DogInfo dog={dogInfo} />
+        <DogInfo/>
         <SignUpDay createdTime={dogInfo.createdAt} />
-        <div className="flex space-x-6">
+        <div className="flex space-x-8">
           <AIDiagnosisButton />
           <MyInsuranceButton />
         </div>
