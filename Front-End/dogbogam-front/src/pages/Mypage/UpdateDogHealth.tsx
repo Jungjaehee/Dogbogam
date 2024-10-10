@@ -20,7 +20,7 @@ export const UpdateDogHealth = () => {
   const { updateDogInfo } = location.state;
   const { dogInfo , setDogInfo} = useUserStore();
   const [problemList, setProblemList] = useState<string[]>([]);
-
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const problemName = [
     { image: eye, name: "눈" },
     { image: bone, name: "관절" },
@@ -56,16 +56,16 @@ export const UpdateDogHealth = () => {
   };
 
   const UpdateInfo = async () => {
+    setIsButtonDisabled(true); // 버튼 클릭 상태 변경
     try {
-    await patchDogInfo(updateDogInfo);
-    await UpdateHealth(dogInfo.dogId, problemList);
-     setDogInfo(updateDogInfo);
+      await patchDogInfo(updateDogInfo);
+      await UpdateHealth(dogInfo.dogId, problemList);
+      setDogInfo(updateDogInfo);
       navigate("/mypage", { replace: true });
     } catch (error) {
       console.log("정보 수정 실패: ", error);
+      setIsButtonDisabled(false);
     }
-    console.log(updateDogInfo);
-    console.log(problemList);
   };
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col justify-between">
@@ -109,7 +109,7 @@ export const UpdateDogHealth = () => {
         </div>
       </div>
       <Button
-        onClick={() => UpdateInfo()}
+        onClick={isButtonDisabled ? undefined : UpdateInfo}
         text={"정보 수정"}
         bgColor={"bg-main-color"}
       />

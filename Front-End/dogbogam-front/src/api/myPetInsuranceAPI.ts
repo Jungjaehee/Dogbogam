@@ -7,7 +7,6 @@ export const registeInsurance = async (insuranceRecord: myInsurance) => {
   try {
 
     const response = await axiosInstance.post("/insurance-records", insuranceRecord);
-    console.log("보험 등록 성공함 : ", response.data);
 
     return response.data;
 
@@ -23,7 +22,6 @@ export const updateInsurance = async (patchedInsurance: myInsurance) => {
   try {
 
     const response = await axiosInstance.patch("/insurance-records", patchedInsurance)
-    console.log("보험 등록 성공함 : ", response.data);
 
     return response.data;
 
@@ -54,7 +52,6 @@ export const deleteInsurance = async (insuranceRecordId: number) => {
 export const getMyInsuranceDetail = async (insuranceRecordId: number) => {
   try {
     const response = await axiosInstance.get(`/insurance-records/${insuranceRecordId}`);
-    console.log("보험 상세 정보 ", response.data);
 
     return response.data.data;
 

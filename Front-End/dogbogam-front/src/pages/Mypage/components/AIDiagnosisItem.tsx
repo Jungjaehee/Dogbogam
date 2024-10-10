@@ -18,7 +18,7 @@ const AIDiagnosisItem = ({ diagnosis }: AIDiagnosisItemProps) => {
 
   let status = "";
 
-  if (diagnosis.diseases) {
+  if (!diagnosis.normal) {
     status = calcAIstatus(diagnosis.diseases);
   } else {
     status = "좋음";

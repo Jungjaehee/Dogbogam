@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { TopBar } from "../../components/Topbar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import trash from "../../assets/Signup/trash-bg.png";
 import picture from "../../assets/Signup/picture.png";
-import { updateDogInfo } from "../../models/dog.model";
+import { updateDogInfo as UpdateDogInfoModel } from "../../models/dog.model";
 import useUserStore from "../../store/UseUserStore";
 import { deleteDog } from "../../api/dogAPI";
 
@@ -12,15 +12,20 @@ export const UpdateDog = () => {
   const navigate = useNavigate();
   const { dogInfo } = useUserStore();
   const [imageSrc, setImageSrc] = useState<string | null>(null);
-  const [updateDogInfo, setUpdateDogInfo] = useState<updateDogInfo>({
+  const [updateDogInfo, setUpdateDogInfo] = useState<UpdateDogInfoModel>({
     dogId: dogInfo.dogId,
     image: null,
-    name: "",
-    breed: "",
-    birth: "",
-    weight: 0,
-    isNeutered: false,
+    name: dogInfo.name,
+    breed: dogInfo.breed,
+    birth: dogInfo.birth as unknown as string,
+    weight: dogInfo.weight as unknown as number,
+    isNeutered: dogInfo.isNeutered as unknown as boolean,
   });
+
+  // 이미지 설정
+  useEffect(() => {
+    setImageSrc(dogInfo.imageUrl || null);
+  }, [dogInfo]);
 
   const clickDeleteButton = () => {
     deleteDog(dogInfo.dogId);
@@ -117,11 +122,11 @@ export const UpdateDog = () => {
               <input
                 type="text"
                 name="name"
-                value={updateDogInfo.name}
+                value={updateDogInfo.name || ""} // dogInfo 값이 없을 경우 빈 문자열로 처리
                 onChange={handleChange}
+                placeholder="이름을 입력하세요" // 값이 없으면 placeholder가 표시됨
                 required
                 maxLength={20}
-                placeholder={dogInfo.name}
                 className="border rounded-lg px-4 py-3 w-full text-sm focus:border-blue-100 focus:outline-none"
               />
             </div>
@@ -172,10 +177,10 @@ export const UpdateDog = () => {
             <input
               type="text"
               name="breed"
-              value={updateDogInfo.breed}
+              value={updateDogInfo.breed || ""} // dogInfo 값이 없을 경우 빈 문자열로 처리
               onChange={handleChange}
+              placeholder="견종을 입력하세요" // 값이 없으면 placeholder가 표시됨
               maxLength={20}
-              placeholder={dogInfo.breed}
               className="border rounded-lg px-4 py-3 w-full text-sm focus:border-blue-100 focus:outline-none"
             />
           </div>
@@ -187,11 +192,11 @@ export const UpdateDog = () => {
             <input
               type="text"
               name="birth"
-              value={updateDogInfo.birth}
+              value={updateDogInfo.birth || ""} // dogInfo 값이 없을 경우 빈 문자열로 처리
               onChange={handleChange}
+              placeholder="예) 240101" // 값이 없으면 placeholder가 표시됨
               minLength={6}
               maxLength={6}
-              placeholder="예) 240101"
               className="border rounded-lg px-4 py-3 w-full text-sm focus:border-blue-100 focus:outline-none"
             />
           </div>
@@ -204,9 +209,9 @@ export const UpdateDog = () => {
               <input
                 type="number"
                 name="weight"
-                value={updateDogInfo.weight!}
+                value={updateDogInfo.weight?.toString() || ""} // dogInfo 값이 없을 경우 빈 문자열로 처리
                 onChange={handleChange}
-                placeholder="예) 2.4"
+                placeholder="몸무게를 입력하세요" // 값이 없으면 placeholder가 표시됨
                 className="border rounded-lg px-4 py-3 w-full text-sm focus:border-blue-100 focus:outline-none"
               />
               <span>kg</span>
