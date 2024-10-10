@@ -9,6 +9,7 @@ import MyPages from "./routes/MyPages";
 import { Navbar } from "./components/Navbar";
 import BreedPages from "./routes/BreedPages";
 import PrivateRoute from "./components/Routing/PrivateRoute";
+import RegistPages from "./routes/RegistPages";
 
 function App() {
   const location = useLocation();
@@ -56,6 +57,14 @@ function App() {
             element={
               <PrivateRoute>
                 <BreedPages />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/regist/*"
+            element={
+              <PrivateRoute>
+                <RegistPages />
               </PrivateRoute>
             }
           />
