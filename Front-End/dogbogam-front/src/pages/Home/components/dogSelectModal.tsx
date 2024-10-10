@@ -1,5 +1,4 @@
 import React from "react";
-import Setting from "../../../assets/icons/setting.png";
 import Plus from "../../../assets/icons/plus.png";
 import ModalTop from "../../../assets/icons/modalTop.png";
 import useUserStore from "../../../store/UseUserStore";
@@ -31,13 +30,12 @@ const DogSelectModal: React.FC<DogSelectModalProps> = ({ onClose }) => {
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20"
       onClick={handleModalClick}
     >
-      <div className="bg-white w-[360px] h-[53vh] p-5 rounded-t-3xl shadow-lg transform translate-y-40">
+      <div className="bg-white w-[360px] h-[53vh] p-5 rounded-t-3xl shadow-lg absolute bottom-0">
         <div className="flex items-center justify-center place-items-center mb-10">
           <img src={ModalTop} className="max-w-11 max-h-5" />
         </div>
         <div className="flex items-center mb-10 cursor-pointer mt-10 space-x-28">
           <p className="text-lg font-bold">반려동물을 선택해주세요!</p>
-          <img src={Setting} className="w-3 h-3" />
         </div>
         <div className="mt-2 space-y-2 flex-grow overflow-y-auto">
           {dogList.length > 0 ? (
