@@ -7,10 +7,10 @@ export const registVaccination = async (record: myVaccinationRecord) => {
   try {
     const formData = new FormData();
 
-    // 이미지가 있으면 첨부, 없으면 디폴트 이미지
     if (record.image) {
       formData.append("image", record.image);
     }
+
     // DateTime 형식 변환 (예: 2024-10-07T19:38:00)
     const formattedRecordTime = new Date(record.recordTime)
       .toISOString()
@@ -22,6 +22,11 @@ export const registVaccination = async (record: myVaccinationRecord) => {
     formData.append("hospital", record.hospital);
     formData.append("cost", record.cost.toString());
     formData.append("vaccinationRound", record.vaccinationRound.toString());
+
+    // formData 출력 (디버깅용)
+    for (const pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
 
     const response = await axiosInstance.post(
       `${BASE_URL}/vaccination-records`,
@@ -38,6 +43,7 @@ export const registVaccination = async (record: myVaccinationRecord) => {
     throw error;
   }
 };
+
 
 // 예방접종 기록 수정 API 호풀 함수
 export const updateVaccination = async (patchedInsurance: myVaccinationRecord) => {
