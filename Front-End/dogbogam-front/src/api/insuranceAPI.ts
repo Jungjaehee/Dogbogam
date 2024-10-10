@@ -21,7 +21,6 @@ export interface InsuranceListResponse {
 export const getInsuranceList = async () => {
   try {
     const response = await axiosInstance.get(`/insurances`);
-    console.log(response?.data?.data);
     return response?.data.data;
   } catch (error) {
     console.log("보험 리스트 가져오기 실패", error);
@@ -33,10 +32,8 @@ export const getInsuranceList = async () => {
 export const getInsurance = async (insuranceId: number) => {
   try {
     const response: Response<InsuranceListResponse> = await axiosInstance.get(`/insurances/${insuranceId}`);
-    console.log("보험상세", response.data.data);
     
     const insuranceDetail = Object.values(response.data.data)[0]; 
-    console.log("insuranceDetail", insuranceDetail);
 
     return insuranceDetail;
   } catch (error) {
@@ -52,7 +49,6 @@ export const getInsurance = async (insuranceId: number) => {
 export const geInsuranceBenefit = async() => {
   try {
     const response: Response<string[]> = await axiosInstance.get(`/insurances/benefit`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log("보험 보장혜택 가져오기 실패", error);
@@ -67,7 +63,6 @@ export const getInsuranceSearch = async(benefit: string[]) => {
         benefit
       },
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log("보험 검색 실패", error);
