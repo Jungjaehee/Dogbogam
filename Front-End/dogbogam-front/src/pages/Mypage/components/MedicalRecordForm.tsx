@@ -20,6 +20,8 @@ const MedicalRecordForm = ({ handleBack }: { handleBack: () => void }) => {
     cost: 0,
   });
 
+  const today = new Date().toISOString().split("T")[0];
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -94,6 +96,7 @@ const MedicalRecordForm = ({ handleBack }: { handleBack: () => void }) => {
             className="w-full py-2 px-3 border rounded-md text-gray-700"
             required
             value={date}
+            max={today}
             onChange={(e) => setDate(e.target.value)}
           />
         </div>
