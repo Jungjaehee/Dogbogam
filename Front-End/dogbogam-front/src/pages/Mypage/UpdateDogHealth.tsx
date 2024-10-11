@@ -70,7 +70,7 @@ export const UpdateDogHealth = () => {
   return (
     <div className="h-full pt-6 px-4 bg-white flex flex-col justify-between">
       <div>
-        <TopBar pre={"/mypage/updateInfo"} title={""} skip={"success"} />
+        <TopBar pre={"/mypage/updateInfo"} title={""} skip={""} />
         <div className="space-y-3 mb-16">
           <p className="text-xl font-semibold">
             우리 아이의 <br />
